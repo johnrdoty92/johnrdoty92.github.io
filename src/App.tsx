@@ -3,6 +3,7 @@ import { useCallback, useImperativeHandle, useRef, useState, type Ref } from "re
 import { type Group, MathUtils, Vector2 } from "three";
 import { Brick } from "./components/Brick";
 import { Walls } from "./components/Walls";
+import { Environment } from "./components/Environment";
 
 interface PlatformRef {
   onDragStart: () => void;
@@ -108,6 +109,7 @@ function App() {
       onPointerMove={() => platform.current.onDrag()}
       onPointerUp={() => platform.current.onDragEnd()}
     >
+      <Environment />
       <Platform ref={platform} />
       <axesHelper args={[1.5]} />
       <directionalLight args={["white"]} position={[3, 4, 5]} />
