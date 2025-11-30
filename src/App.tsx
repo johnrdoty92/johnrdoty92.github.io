@@ -5,6 +5,7 @@ import { Brick } from "./components/Brick";
 import { Walls } from "./components/Walls";
 import { Environment } from "./components/Environment";
 import { Floor } from "./components/Floor";
+import { Stats } from "./components/Stats";
 
 interface PlatformRef {
   onDragStart: () => void;
@@ -107,6 +108,7 @@ function App() {
       onPointerMove={() => platform.current.onDrag()}
       onPointerUp={() => platform.current.onDragEnd()}
     >
+      {import.meta.env.DEV && <Stats />}
       <Environment />
       <Platform ref={platform} />
       <axesHelper args={[1.5]} />
