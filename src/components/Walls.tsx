@@ -15,9 +15,12 @@ import { useFrame, useThree, type ThreeElements } from "@react-three/fiber";
 const POSITIVE_X = new Vector3(1, 0, 0);
 const POSITIVE_Y = new Vector3(0, 1, 0);
 
-const wallMaterial = new MeshStandardMaterial();
+const wallMaterial = new MeshStandardMaterial({ roughness: 0.2, metalness: 0 });
 const color = new Color();
-const lightblue = new Color(Color.NAMES.dodgerblue).lerp(new Color(Color.NAMES.white), 0.5);
+const lightblue = new Color(Color.NAMES.midnightblue).lerp(
+  new Color(Color.NAMES.mediumturquoise),
+  0.33
+);
 const mtx = new Matrix4();
 const target = new Vector3();
 
@@ -114,7 +117,7 @@ const Wall = ({
       target.add(new Vector3(0, 10, 0));
       mtx.setPosition(target);
       instances.current.setMatrixAt(i, mtx);
-      color.set(Color.NAMES.dodgerblue).lerp(lightblue, MathUtils.seededRandom(i));
+      color.set(Color.NAMES.midnightblue).lerp(lightblue, MathUtils.seededRandom(i));
       instances.current.setColorAt(i, color);
     }
   }, [count, layerCount, bricksPerRow]);
