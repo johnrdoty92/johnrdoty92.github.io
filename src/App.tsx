@@ -4,6 +4,7 @@ import { type Group, MathUtils, Vector2 } from "three";
 import { Brick } from "./components/Brick";
 import { Walls } from "./components/Walls";
 import { Environment } from "./components/Environment";
+import { Floor } from "./components/Floor";
 
 interface PlatformRef {
   onDragStart: () => void;
@@ -91,10 +92,7 @@ const Platform = ({ ref, ...props }: ThreeElements["group"] & { ref: Ref<Platfor
         color="#951ee5"
       />
       <Walls />
-      <mesh rotation-x={-Math.PI / 2}>
-        <planeGeometry args={[10, 10]} />
-        <meshBasicMaterial />
-      </mesh>
+      <Floor />
     </group>
   );
 };
