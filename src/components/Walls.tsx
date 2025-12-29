@@ -1,19 +1,15 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import {
   Color,
   MathUtils,
   Matrix4,
   MeshStandardMaterial,
-  type PerspectiveCamera,
-  Vector2,
   Vector3,
   type InstancedMesh,
 } from "three";
 import { brickGeometry, brickHeight, brickLength } from "../util/brickGeometry";
-import { useFrame, useThree, type ThreeElements } from "@react-three/fiber";
-
-const POSITIVE_X = new Vector3(1, 0, 0);
-const POSITIVE_Y = new Vector3(0, 1, 0);
+import { useFrame, type ThreeElements } from "@react-three/fiber";
+import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 
 const wallMaterial = new MeshStandardMaterial({ roughness: 0.2, metalness: 0 });
 const color = new Color();
@@ -37,72 +33,13 @@ const getTargetPosition = (
   out.set(0, y, z);
 };
 
-const useWallDimensions = () => {
-  const camera = useThree(({ camera }) => camera as PerspectiveCamera);
-  const renderer = useThree(({ gl }) => gl);
-
-  const calculateDimensions = useCallback(() => {
-    const cameraDistance = camera.position.length();
-    const { x: viewWidth, y: viewHeight } = camera.getViewSize(cameraDistance, new Vector2());
-    const cameraPlaneNormal = camera.position.clone().negate().normalize();
-    const projectedX = POSITIVE_X.clone().projectOnPlane(cameraPlaneNormal);
-    const planeOrthogonal = new Vector3(1, 0, -1).normalize();
-    projectedX.setLength(viewWidth / 2 / Math.cos(projectedX.angleTo(planeOrthogonal)));
-    const alpha = Math.abs(projectedX.z / (Math.abs(projectedX.z) + Math.abs(camera.position.z)));
-    const width = Math.floor(projectedX.lerp(camera.position, alpha).length() / 2);
-
-    const theta = MathUtils.degToRad(camera.fov / 2);
-    const beta = Math.PI / 2 - camera.position.angleTo(POSITIVE_Y);
-    const gamma = Math.PI / 2 - theta;
-    const height =
-      Math.floor((viewHeight / 2) * Math.sin(gamma)) / Math.sin(Math.PI - gamma - beta);
-    return { width, height };
-  }, [camera]);
-
-  const [dimensions, setDimensions] = useState(calculateDimensions);
-
-  useEffect(() => {
-    const observer = new ResizeObserver(() => setDimensions(calculateDimensions()));
-    observer.observe(renderer.domElement);
-    return observer.disconnect;
-  }, [calculateDimensions, renderer]);
-
-  return dimensions;
-};
-
-export const Walls = () => {
-  const dimensions = useWallDimensions();
-  return (
-    <>
-      {/* TODO: store props as array and map */}
-      <Wall {...dimensions} delay={0.125} position={[0.5, 0, 1]} />
-      <Wall
-        {...dimensions}
-        delay={0.125 / 2}
-        startZero
-        position={[1, 0, 0.5]}
-        rotation-y={Math.PI / 2}
-      />
-      <Wall {...dimensions} delay={0.125} position={[-1, 0, -0.5]} rotation-y={(3 * Math.PI) / 2} />
-      <Wall {...dimensions} delay={0.25} startZero position={[-0.5, 0, -1]} rotation-y={Math.PI} />
-    </>
-  );
-};
-
 type WallProps = {
-  height: number;
-  width: number;
   startZero?: boolean;
   delay?: number;
 } & ThreeElements["group"];
 
-const Wall = ({
-  height,
-  width: bricksPerRow,
-  startZero = false,
-  delay = 1,
-  ...props
-}: WallProps) => {
+const Wall = ({ startZero = false, delay = 1, ...props }: WallProps) => {
+  const { width: bricksPerRow, height } = useRotatingDisplayContext().dimensions;
   const instances = useRef<InstancedMesh>(null!);
 
   const layerCount = Math.floor(height / brickHeight - 1);
@@ -142,3 +79,12 @@ const Wall = ({
     </group>
   );
 };
+
+const walls: WallProps[] = [
+  { delay: 0.125, position: [0.5, 0, 1] },
+  { delay: 0.125 / 2, startZero: true, position: [1, 0, 0.5], rotation: [0, Math.PI / 2, 0] },
+  { delay: 0.125, position: [-1, 0, -0.5], rotation: [0, (3 * Math.PI) / 2, 0] },
+  { delay: 0.25, startZero: true, position: [-0.5, 0, -1], rotation: [0, Math.PI, 0] },
+];
+
+export const Walls = () => walls.map((props, i) => <Wall key={i} {...props} />);
