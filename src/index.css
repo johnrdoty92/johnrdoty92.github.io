@@ -16,6 +16,7 @@
 html {
   height: 100dvh;
   overscroll-behavior: none;
+  overflow: hidden;
 }
 
 * {
@@ -48,6 +49,48 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+dialog {
+  padding: 0.5rem;
+  background-color: rgb(11, 20, 86);
+  border-radius: 8px;
+  border: 0.5px solid white;
+  box-shadow: 0px 0px 0px rgb(131, 145, 255);
+  position: absolute;
+  transition: opacity 0.25s ease-in-out, top 0.25s ease-in-out, right 0.25s ease-in-out, box-shadow 0.25s ease-in-out 0.125s;
+  opacity: 0;
+  top: 52.5%;
+  margin-inline: auto;
+  width: 100%;
+  height: calc(50dvh - 1rem);
+}
+
+
+dialog.modal-visible {
+  opacity: 1;
+  top: 50%;
+  box-shadow: 8px 8px 0px rgb(131, 145, 255);
+}
+
+dialog::backdrop {
+  display: none;
+}
+
+@media screen and (min-width: 600px) {
+  dialog {
+    top: 0%;
+    right: -2.5%;
+    margin-right: 1rem;
+    margin-block: auto;
+    width: 50%;
+    height: 100dvh;
+  }
+
+  dialog.modal-visible {
+    top: 0%;
+    right: 0%;
+  }
 }
 
 @media (prefers-color-scheme: light) {
