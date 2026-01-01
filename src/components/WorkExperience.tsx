@@ -8,7 +8,7 @@ const OFFSET = 1.5;
 const placeholderGeometry = new BoxGeometry(1, 2, 1).translate(0, 1, 0);
 
 const Placeholder = (props: ThreeElements["mesh"]) => {
-  const { open, close } = useModalContext();
+  const { open } = useModalContext();
   return (
     <mesh
       {...props}

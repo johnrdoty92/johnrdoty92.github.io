@@ -1,25 +1,18 @@
-import type { ThreeElements } from "@react-three/fiber";
-import { CylinderGeometry } from "three";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
+import { Suspense } from "react";
+import { Laptop } from "./Laptop";
 
 const OFFSET = 1.5;
-
-const placeholderGeometry = new CylinderGeometry(0.5, 0.5, 2).translate(0, 1, 0);
-
-const Placeholder = (props: ThreeElements["mesh"]) => (
-  <mesh {...props} geometry={placeholderGeometry}>
-    <meshNormalMaterial />
-  </mesh>
-);
 
 export const WorkProjects = () => {
   const { width } = useRotatingDisplayContext().dimensions;
   const planePosition = width + width / 2;
   return (
-    <>
-      <Placeholder position={[-planePosition, 2, -planePosition]} />
-      <Placeholder position={[-planePosition - OFFSET, 1, -planePosition]} />
-      <Placeholder position={[-planePosition, 0, -planePosition - OFFSET]} />
-    </>
+    // TODO: handle fallback
+    <Suspense fallback={<></>}>
+      <Laptop screen="hashport" position={[-planePosition, 0, -planePosition]} />
+      <Laptop screen="digital_toolbox" position={[-planePosition - OFFSET, 0, -planePosition]} />
+      <Laptop screen="hashport_metrics" position={[-planePosition, 0, -planePosition - OFFSET]} />
+    </Suspense>
   );
 };
