@@ -1,27 +1,22 @@
-import type { ThreeElements } from "@react-three/fiber";
-import { BoxGeometry, Vector3 } from "three";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
-
-const placeholderGeometry = new BoxGeometry(1, 2, 1).translate(0, 1, 0);
-
-const COUNT = 4;
-
-const Placeholder = (props: ThreeElements["mesh"]) => (
-  <mesh {...props} geometry={placeholderGeometry}>
-    <meshNormalMaterial />
-  </mesh>
-);
-
-const models = Array(COUNT)
-  .fill(0)
-  .map((_, index) => index);
+import { Suspense } from "react";
+import { SocialMediaMinifigure } from "./SocialMediaMinifigure";
 
 export const SocialLinks = () => {
   const { width } = useRotatingDisplayContext().dimensions;
-  const planePosition = width * 2 + 1;
-  const leftEdge = new Vector3(-planePosition, 0, 1);
-  const rightEdge = new Vector3(-1, 0, planePosition);
-  return models.map((index) => (
-    <Placeholder position={new Vector3().lerpVectors(leftEdge, rightEdge, index / COUNT + 0.125)} />
-  ));
+  console.log(width);
+  // TODO: position responsively
+
+  return (
+    <Suspense fallback={<></>}>
+      <SocialMediaMinifigure minifigure="Overalls" position={[6.5, 0, 5.5]} />
+      <SocialMediaMinifigure minifigure="Knight" position={[8, 0, 5]} />
+      <SocialMediaMinifigure
+        minifigure="Spaceman"
+        position={[5.5, 0, 6.5]}
+        rotation-y={Math.PI / 2}
+      />
+      <SocialMediaMinifigure minifigure="Pirate" position={[5, 0, 8]} rotation-y={Math.PI / 2} />
+    </Suspense>
+  );
 };
