@@ -1,39 +1,59 @@
-import type { ThreeElements } from "@react-three/fiber";
-import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
-import { BoxGeometry } from "three";
-import { useModalContext } from "../contexts/Modal";
+import { useFrame, type ThreeElements } from "@react-three/fiber";
+import { AnimationMixer, Mesh } from "three";
+import { Suspense, useEffect, useRef } from "react";
+import { useGLTF } from "../hooks/useGLTF";
 
-const OFFSET = 1.5;
+const WorkExperienceMinifigure = ({
+  model,
+  ...props
+}: ThreeElements["group"] & { model: string }) => {
+  const modelPath = new URL(`../assets/${model}.glb`, import.meta.url).href;
+  const gltf = useGLTF(modelPath);
+  const mixer = useRef<AnimationMixer>(null);
+  const legoMinifigure = useRef<Mesh>(null!);
 
-const placeholderGeometry = new BoxGeometry(1, 2, 1).translate(0, 1, 0);
+  // TODO: replace with animation controller hook
+  useEffect(() => {
+    mixer.current = new AnimationMixer(legoMinifigure.current);
+    const action = mixer.current.clipAction(gltf.animations[1], legoMinifigure.current);
+    action.startAt(Math.random() * 3).play();
+    return () => {
+      action.stop();
+    };
+  }, [gltf]);
 
-const Placeholder = (props: ThreeElements["mesh"]) => {
-  const { open } = useModalContext();
+  useFrame((_, delta) => {
+    mixer.current?.update(delta);
+  });
+
   return (
-    <mesh
+    <group
       {...props}
-      geometry={placeholderGeometry}
-      onClick={() => open("placeholder" + props.userData!.value)}
+      dispose={null}
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
     >
-      <meshNormalMaterial />
-    </mesh>
+      <primitive ref={legoMinifigure} object={gltf.scene} />
+    </group>
   );
 };
 
 export const WorkExperience = () => {
-  const { width } = useRotatingDisplayContext().dimensions;
-  const planePosition = width + width / 2;
+  // TODO: handle responsiveness, if needed
   return (
-    <>
-      <Placeholder userData={{ value: " A" }} position={[planePosition, 2, -planePosition]} />
-      <Placeholder
-        userData={{ value: " B" }}
-        position={[planePosition + OFFSET, 1, -planePosition]}
+    <Suspense fallback={<></>}>
+      <WorkExperienceMinifigure
+        model="Intern"
+        position={[2.5, 0, -5.5]}
+        rotation={[0, Math.PI / 2, 0]}
       />
-      <Placeholder
-        userData={{ value: " C" }}
-        position={[planePosition, 0, -planePosition - OFFSET]}
-      />
-    </>
+      <WorkExperienceMinifigure model="Junior" position={[5, 0, -3]} rotation={[0, Math.PI, 0]} />
+      <WorkExperienceMinifigure model="Senior" position={[2, 1, -3]} rotation={[0, Math.PI, 0]} />
+      <mesh position={[2, 0, -3]}>
+        <boxGeometry args={[3, 2, 2]} />
+        <meshStandardMaterial color="black" />
+      </mesh>
+    </Suspense>
   );
 };
