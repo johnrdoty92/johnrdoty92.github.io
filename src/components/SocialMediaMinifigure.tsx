@@ -1,23 +1,14 @@
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
-import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
-import { useFrame, useLoader, type ThreeElements } from "@react-three/fiber";
+import { useFrame, type ThreeElements } from "@react-three/fiber";
 import { AnimationMixer, type Mesh } from "three";
 import { useEffect, useRef } from "react";
-
-const extensions = (loader: GLTFLoader) => {
-  loader.setMeshoptDecoder(MeshoptDecoder);
-  const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("/draco");
-  loader.setDRACOLoader(dracoLoader);
-};
+import { useGLTF } from "../hooks/useGLTF";
 
 export function SocialMediaMinifigure({
   minifigure,
   ...props
 }: ThreeElements["group"] & { minifigure: string }) {
   const modelPath = new URL(`../assets/${minifigure}.glb`, import.meta.url).href;
-  const gltf = useLoader(GLTFLoader, modelPath, extensions);
+  const gltf = useGLTF(modelPath);
   const mixer = useRef<AnimationMixer>(null);
   const legoMinifigure = useRef<Mesh>(null!);
 

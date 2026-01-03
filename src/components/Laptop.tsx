@@ -1,7 +1,4 @@
 import { useLoader, type ThreeElements } from "@react-three/fiber";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
-import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import {
   type Mesh,
   type MeshPhysicalMaterial,
@@ -9,22 +6,17 @@ import {
   TextureLoader,
 } from "three";
 import { useEffect, useMemo } from "react";
+import { useGLTF } from "../hooks/useGLTF";
 
-type GLTFResult = ReturnType<typeof useLoader<string, typeof GLTFLoader>> & {
+type GLTFResult = ReturnType<typeof useGLTF> & {
   nodes: { laptop: Mesh; stool: Mesh };
   materials: { laptop: MeshPhysicalMaterial; black: MeshStandardMaterial };
 };
 
 const laptopModelPath = new URL(`../assets/Laptop.glb`, import.meta.url).href;
-const extensions = (loader: GLTFLoader) => {
-  loader.setMeshoptDecoder(MeshoptDecoder);
-  const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("/draco");
-  loader.setDRACOLoader(dracoLoader);
-};
 
 export function Laptop({ screen, ...props }: ThreeElements["group"] & { screen: string }) {
-  const { nodes, materials } = useLoader(GLTFLoader, laptopModelPath, extensions) as GLTFResult;
+  const { nodes, materials } = useGLTF(laptopModelPath) as GLTFResult;
   const laptopMaterial = useMemo(() => materials.laptop.clone(), [materials]);
   useEffect(() => () => laptopMaterial.dispose(), [laptopMaterial]);
 
@@ -55,4 +47,4 @@ export function Laptop({ screen, ...props }: ThreeElements["group"] & { screen: 
   );
 }
 
-useLoader.preload(GLTFLoader, laptopModelPath, extensions);
+useGLTF.preload(laptopModelPath);
