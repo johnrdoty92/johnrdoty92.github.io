@@ -1,4 +1,10 @@
-import { useFrame, useLoader, type ThreeElements, type ThreeEvent } from "@react-three/fiber";
+import {
+  useFrame,
+  useLoader,
+  useThree,
+  type ThreeElements,
+  type ThreeEvent,
+} from "@react-three/fiber";
 import {
   MathUtils,
   Matrix4,
@@ -13,6 +19,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useGLTF } from "../hooks/useGLTF";
 import { getAssetUrl } from "../util/getAssetUrl";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
+import { useModalContext } from "../contexts/Modal";
 
 type LaptopGraph = {
   nodes: { laptop: Mesh; stool: Mesh };
@@ -22,28 +29,18 @@ type LaptopGraph = {
 const laptopModelPath = getAssetUrl("Laptop");
 const GENERATED_LAPTOP_ORIGIN: Vector3Tuple = [0, 1.88, 0.168];
 const laptopOrigin = new Vector3(...GENERATED_LAPTOP_ORIGIN);
-// TODO: make responsive: either to left of modal, or above
-const focusedPosition = new Vector3(8.5, 3, 8.5);
 const facingCenter = (5 * Math.PI) / 4;
 
 const amplitude = 0.1;
 const frequency = 2;
-const offset = 1.5;
-const getTransforms = (planePosition: number) =>
+const getTransforms = (length: number, spacing: number) =>
   ({
-    left: {
-      position: [-planePosition, 0, -planePosition - offset],
-      rotation: [0, (3 * Math.PI) / 2, 0],
-    },
-    right: {
-      position: [-planePosition - offset, 0, -planePosition],
-      rotation: [0, Math.PI, 0],
-    },
-    center: {
-      position: [-planePosition, 0, -planePosition],
-      rotation: [0, facingCenter, 0],
-    },
+    left: { position: [-length, 0, -length - spacing], rotation: [0, (3 * Math.PI) / 2, 0] },
+    right: { position: [-length - spacing, 0, -length], rotation: [0, Math.PI, 0] },
+    center: { position: [-length, 0, -length], rotation: [0, facingCenter, 0] },
   } as const);
+
+const MIN_OBJECT_CLEARANCE = 2;
 
 export function Laptop({
   screen,
@@ -53,22 +50,37 @@ export function Laptop({
   screen: string;
   position: "left" | "right" | "center";
 }) {
+  const size = useThree((state) => state.size);
+  const camera = useThree((state) => state.camera);
   const { width } = useRotatingDisplayContext().dimensions;
-  const planePosition = width + width / 2;
+  const { open } = useModalContext();
+
   const laptop = useRef<Mesh>(null!);
   const screenTexture = useLoader(TextureLoader, getAssetUrl(screen, ".png"));
   const { nodes, materials } = useGLTF<LaptopGraph>(laptopModelPath);
   const laptopMaterial = useMemo(() => materials.laptop.clone(), [materials]);
+
   const [isFocused, setIsFocused] = useState(false);
 
-  const transforms = getTransforms(planePosition)[position];
+  const length = Math.max(width, MIN_OBJECT_CLEARANCE);
+  const spacing = Math.max(MIN_OBJECT_CLEARANCE, width / 2 - 0.5);
+  const transforms = getTransforms(length, spacing)[position];
+  // TODO: rewrite as useMediaQuery hook? Remove magic numbers.
+  const focusedPosition =
+    size.width <= 600
+      ? new Vector3(8.5, 3, 8.5)
+      : camera.position
+          .clone()
+          .multiplyScalar(0.85)
+          .applyAxisAngle(new Vector3(0, 1, 0), -Math.PI / 32);
+
   const parentMatrix = new Matrix4();
   const targetPosition = new Vector3();
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
     setIsFocused((f) => !f);
-    // TODO: handle modal open, may need to pass a callback to handle resetting state on close
+    open("TODO: handle modal open, may need to pass a callback to handle resetting state on close");
   };
 
   const handleMiss = () => {
@@ -79,9 +91,8 @@ export function Laptop({
   const accumulator = useRef(0);
   useFrame(({ clock }, delta) => {
     // TODO: refactor for readability and performance
-    targetPosition
-      .copy(focusedPosition)
-      .applyMatrix4(parentMatrix.copy(laptop.current.parent!.matrixWorld).invert());
+    parentMatrix.copy(laptop.current.parent!.matrixWorld).invert();
+    targetPosition.copy(focusedPosition).applyMatrix4(parentMatrix);
     const multiplier = 2;
     const scaledDelta = multiplier * (isFocused ? delta : -delta);
     accumulator.current = MathUtils.clamp(accumulator.current + scaledDelta, 0, 1);
@@ -90,12 +101,8 @@ export function Laptop({
     const elapsed = clock.getElapsedTime();
     laptop.current.position.y += amplitude * Math.sin(elapsed * frequency) * accumulator.current;
     if (!isFocused) {
-      const y = laptop.current.position.y;
-      // TODO: adjust for responsive screen
       const heightAmplitude = 2;
-      laptop.current.position.setY(
-        y + heightAmplitude * Math.sin(MathUtils.lerp(0, Math.PI, alpha))
-      );
+      laptop.current.position.y += heightAmplitude * Math.sin(MathUtils.lerp(0, Math.PI, alpha));
     }
     const rotationDiff = transforms.rotation[1] - facingCenter;
     laptop.current.rotation.y = MathUtils.lerp(0, -rotationDiff, alpha);
@@ -124,6 +131,7 @@ export function Laptop({
         geometry={nodes.stool.geometry}
         material={materials.black}
         position={[0, 0.704, 0]}
+        rotation-y={position === "center" ? Math.PI / 4 : 0}
         scale={0.703}
       />
     </group>
