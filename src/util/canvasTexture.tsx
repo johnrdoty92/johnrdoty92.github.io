@@ -1,3 +1,4 @@
+import { Color } from "three";
 import { brickHeight } from "./brickGeometry";
 
 export type CanvasDrawingOptions = { icon: string; label: string; color: string };
@@ -9,7 +10,7 @@ export const drawCanvasTexture = (
   { icon, label, color }: CanvasDrawingOptions
 ) => {
   // TODO: organize this better
-  ctx.font = `${canvasTextureSize / 4}px serif`;
+  ctx.font = `${canvasTextureSize / 4}px sans-serif`;
   ctx.fillStyle = color;
   const logoWidth = canvasTextureSize * (2 / 3);
   const logoHeight = brickHeight * logoWidth;
@@ -19,11 +20,28 @@ export const drawCanvasTexture = (
   const height = (canvasTextureSize / 2) * brickHeight;
   const heightOffset = canvasTextureSize - height;
   ctx.fillRect(0, heightOffset, canvasTextureSize, height);
-  ctx.fillStyle = "white";
+  // TODO: need a better way to get contrast text
+  const { r, g, b } = new Color(color);
+  const textColor = (r + g + b) / 3 < 0.3 ? "white" : "black";
+  ctx.fillStyle = textColor;
   ctx.textBaseline = "middle";
-  ctx.fillText(label, padding, canvasTextureSize - height / 2, canvasTextureSize - padding * 2);
+  ctx.textAlign = "center";
+  ctx.fillText(
+    label,
+    canvasTextureSize / 2,
+    canvasTextureSize - height / 2,
+    canvasTextureSize - padding * 2
+  );
   ctx.strokeStyle = "white";
-  const path = new Path2D(icon);
+
+  const ICON_PADDING = 16;
+  const targetIconHeight = logoHeight - ICON_PADDING;
+  const ICON_SIZE = 100;
+  const matrix = new DOMMatrix()
+    .scale(targetIconHeight / ICON_SIZE)
+    .translate((logoWidth - targetIconHeight) / 2, ICON_PADDING / 2);
+  const path = new Path2D();
+  path.addPath(new Path2D(icon), matrix);
   ctx.stroke(path);
   ctx.fill(path);
 };

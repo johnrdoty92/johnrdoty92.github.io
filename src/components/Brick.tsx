@@ -6,6 +6,7 @@ import {
   drawCanvasTexture,
   type CanvasDrawingOptions,
 } from "../util/canvasTexture";
+import { SRGBColorSpace } from "three";
 
 export type BrickProps = CanvasDrawingOptions & ThreeElements["mesh"];
 
@@ -20,12 +21,10 @@ export const Brick = ({ label, icon, color, ...props }: BrickProps) => {
   }, [label, icon, color]);
 
   return (
-    <>
-      <mesh {...props} geometry={brickGeometry}>
-        <meshStandardMaterial>
-          <canvasTexture attach="map" args={[canvas]} />
-        </meshStandardMaterial>
-      </mesh>
-    </>
+    <mesh {...props} geometry={brickGeometry}>
+      <meshStandardMaterial>
+        <canvasTexture attach="map" args={[canvas]} colorSpace={SRGBColorSpace} />
+      </meshStandardMaterial>
+    </mesh>
   );
 };
