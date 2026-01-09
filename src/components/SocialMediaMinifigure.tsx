@@ -1,45 +1,61 @@
-import { useFrame, type ThreeElements } from "@react-three/fiber";
-import { AnimationMixer, type Mesh } from "three";
-import { useEffect, useRef } from "react";
+import { type ObjectMap, type ThreeElements } from "@react-three/fiber";
+import { AnimationAction, AnimationClip, LoopOnce } from "three";
 import { useGLTF } from "../hooks/useGLTF";
+import { useEffect, useRef } from "react";
+import { useAnimations, type OnFinished } from "../hooks/useAnimations";
+import type { SOCIAL_MEDIA_PROPS } from "../constants/socialMedia";
+
+const getRandomTimeout = (duration = 2500) => Math.random() * duration;
+
+const queueAction = (action: AnimationAction) => {
+  return setTimeout(() => action.reset().play(), getRandomTimeout());
+};
+
+interface MinifigureGLTF extends Partial<ObjectMap> {
+  animations: (AnimationClip & { name: "look_left" | "look_right" })[];
+}
+
+type SocialMediaMinifigureProps = {
+  minifigure: (typeof SOCIAL_MEDIA_PROPS)[number]["minifigure"];
+  animation: MinifigureGLTF["animations"][number]["name"];
+  href: string;
+} & ThreeElements["group"];
 
 export function SocialMediaMinifigure({
   minifigure,
+  animation,
+  href,
   ...props
-}: ThreeElements["group"] & { minifigure: string }) {
+}: SocialMediaMinifigureProps) {
   const modelPath = new URL(`../assets/${minifigure}.glb`, import.meta.url).href;
-  const gltf = useGLTF(modelPath);
-  const mixer = useRef<AnimationMixer>(null);
-  const legoMinifigure = useRef<Mesh>(null!);
+  const gltf = useGLTF<MinifigureGLTF>(modelPath);
+  const { mixer, actions } = useAnimations(gltf);
+  const timeout = useRef<number | null>(null);
 
   useEffect(() => {
-    // TODO: handle some timeouts to make this feel a little more natural
-    // choose from either animation (0 or 1)
-    mixer.current = new AnimationMixer(legoMinifigure.current);
-    const action = mixer.current.clipAction(
-      gltf.animations[minifigure.includes("Overall") || minifigure.includes("Pirate") ? 0 : 1],
-      legoMinifigure.current
-    );
-    action.startAt(Math.random() * 3).play();
-    return () => {
-      action.stop();
-    };
-  }, [gltf]);
+    const action = actions[animation];
+    action.loop = LoopOnce;
+    timeout.current = queueAction(action);
 
-  useFrame((_, delta) => {
-    mixer.current?.update(delta);
-  });
+    const handleFinished: OnFinished = ({ action }) => (timeout.current = queueAction(action));
+    mixer.addEventListener("finished", handleFinished);
+
+    return () => {
+      if (timeout.current !== null) clearTimeout(timeout.current);
+      mixer.removeEventListener("finished", handleFinished);
+    };
+  }, [mixer, actions]);
+
   return (
     <group
       {...props}
       dispose={null}
       onClick={(e) => {
         e.stopPropagation();
-        // TODO: handle opening link
-        console.log("clicked: ", minifigure);
+        window.open(href, "_blank");
       }}
     >
-      <primitive ref={legoMinifigure} object={gltf.scene} />
+      <primitive object={gltf.scene} />
     </group>
   );
 }

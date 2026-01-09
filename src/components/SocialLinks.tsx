@@ -1,22 +1,41 @@
-import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { Suspense } from "react";
 import { SocialMediaMinifigure } from "./SocialMediaMinifigure";
+import { useThree } from "@react-three/fiber";
+import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
+import { MathUtils } from "three";
+import { SOCIAL_MEDIA_PROPS } from "../constants/socialMedia";
+
+const MINIFIGURE_DIMENSIONS = {
+  width: 2,
+  depth: 1.5,
+};
 
 export const SocialLinks = () => {
-  const { width } = useRotatingDisplayContext().dimensions;
-  console.log(width);
-  // TODO: position responsively
+  const originToCameraDistance = useThree(({ camera }) => camera).position.length();
+  const screenWidth = useThree((state) => state.size.width);
+  const wallWidth = useRotatingDisplayContext().dimensions.width;
+
+  const isDown600 = screenWidth < 600;
+  const origin = MathUtils.clamp(
+    isDown600 ? wallWidth / 2 : wallWidth,
+    MINIFIGURE_DIMENSIONS.depth,
+    Math.floor(originToCameraDistance / 2)
+  );
 
   return (
+    // TODO: handle fallback
     <Suspense fallback={<></>}>
-      <SocialMediaMinifigure
-        minifigure="Overalls"
-        position={[-5.5, 0, 6.5]}
-        rotation-y={-Math.PI / 2}
-      />
-      <SocialMediaMinifigure minifigure="Knight" position={[-5, 0, 8]} rotation-y={-Math.PI / 2} />
-      <SocialMediaMinifigure minifigure="Spaceman" position={[-6.5, 0, 5.5]} rotation-y={0} />
-      <SocialMediaMinifigure minifigure="Pirate" position={[-8, 0, 5]} rotation-y={0} />
+      {SOCIAL_MEDIA_PROPS.map((props, i) => {
+        const isEven = i % 2 === 0;
+        const rotationY = isEven ? 0 : -Math.PI / 2;
+        const positionOffsetMultiplier = Math.floor(i / 2) + 1;
+        const positionOffset = MINIFIGURE_DIMENSIONS.width * positionOffsetMultiplier - 1;
+        const x = isEven ? -origin - positionOffset : -origin;
+        const z = isEven ? origin : origin + positionOffset;
+        return (
+          <SocialMediaMinifigure key={i} {...props} position={[x, 0, z]} rotation-y={rotationY} />
+        );
+      })}
     </Suspense>
   );
 };
