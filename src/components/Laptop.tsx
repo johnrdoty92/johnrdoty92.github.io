@@ -80,7 +80,7 @@ export function Laptop({
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
     setIsFocused((f) => !f);
-    open("TODO: handle modal open, may need to pass a callback to handle resetting state on close");
+    open("TODO: handle modal open key", () => setIsFocused(false));
   };
 
   const handleMiss = () => {

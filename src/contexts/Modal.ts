@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 
 export type ModalContextValue = {
-  open: (key: string) => void;
+  open: (key: string, onClose?: () => void) => void;
   close: () => void;
 };
 

@@ -14,17 +14,20 @@ const MODAL_CLASSNAMES = {
 
 export const Modal = ({ children }: PropsWithChildren) => {
   const modal = useRef<HTMLDialogElement>(null!);
+  const onCloseRef = useRef<(() => void) | undefined>(undefined);
   const [content, setContent] = useState<ReactNode | null>(null);
 
-  const open: ModalContextValue["open"] = useCallback((key) => {
+  const open: ModalContextValue["open"] = useCallback((key, onClose) => {
     // TODO: use the key to set the content based on the resume data
     setContent(key);
     modal.current.showModal();
     modal.current.classList.add(MODAL_CLASSNAMES.VISIBLE);
+    onCloseRef.current = onClose;
   }, []);
 
   const close: ModalContextValue["close"] = useCallback(() => {
     modal.current.classList.remove(MODAL_CLASSNAMES.VISIBLE);
+    onCloseRef.current?.();
   }, []);
 
   const handleTransitionEnd: TransitionEventHandler<HTMLDialogElement> = (e) => {
