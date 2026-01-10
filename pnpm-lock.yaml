@@ -8,6 +8,9 @@ dependencies:
   '@react-three/fiber':
     specifier: ^9.4.0
     version: 9.4.0(@types/react@19.2.2)(react-dom@19.2.0)(react@19.2.0)(three@0.181.0)
+  fuse.js:
+    specifier: ^7.1.0
+    version: 7.1.0
   react:
     specifier: ^19.1.1
     version: 19.2.0
@@ -1364,6 +1367,11 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /fuse.js@7.1.0:
+    resolution: {integrity: sha512-trLf4SzuuUxfusZADLINj+dE8clK1frKdmqiJNb1Es75fmI5oY6X2mxLVUciLLjxqw/xr72Dhy+lER6dGd02FQ==}
+    engines: {node: '>=10'}
+    dev: false
 
   /glob-parent@5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}

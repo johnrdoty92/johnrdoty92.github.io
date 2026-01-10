@@ -77,6 +77,16 @@ dialog::backdrop {
   display: none;
 }
 
+input[type="text"] {
+  /* TODO: handle focus styles */
+  position: fixed;
+  padding: 1em;
+  z-index: 1;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%)
+}
+
 @media screen and (min-width: 600px) {
   dialog {
     top: 0%;

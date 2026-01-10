@@ -1,5 +1,7 @@
+import Fuse from "fuse.js/min-basic";
 import { brickHeight } from "../util/brickGeometry";
 import { Brick } from "./Brick";
+import { useSearchValue } from "../hooks/useSearchValue";
 
 type Skill = {
   name: string;
@@ -119,7 +121,13 @@ const SKILLS: Skill[] = [
   },
 ];
 
+const fuse = new Fuse(SKILLS, { keys: ["name", "tags"], threshold: 0.25 });
+
 export const Skills = () => {
+  const searchValue = useSearchValue();
+  const results = fuse.search(searchValue);
+  const matches = new Set(results.map(({ item }) => item.name));
+
   const columnCount = 2;
   const columnHeight = Math.floor(SKILLS.length / columnCount);
 
@@ -128,13 +136,14 @@ export const Skills = () => {
     const height = (i % columnHeight) * brickHeight;
     const isLeftColumn = column === 0;
     const rotationY = isLeftColumn ? undefined : Math.PI / 2;
+    const isMatch = matches.has(name) || matches.size === 0;
     return (
       <Brick
         key={i}
         label={name}
         color={color}
         icon={path}
-        visibility="normal"
+        visibility={isMatch ? "normal" : "dimmed"}
         rotation-y={rotationY}
         position={isLeftColumn ? [3, height, 5] : [5, height, 3]}
       />

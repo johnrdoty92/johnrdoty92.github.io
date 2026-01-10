@@ -10,11 +10,13 @@ import { WorkProjects } from "./components/WorkProjects";
 import { SocialLinks } from "./components/SocialLinks";
 import { Modal } from "./components/Modal";
 import { Skills } from "./components/Skills";
+import { Search } from "./components/Search";
 
 function App() {
   const rotatingDisplay = useRef<RotatingDisplayHandle>(null!);
   return (
     <Modal>
+      <Search />
       <Canvas
         camera={{ position: [10, 2.5, 10] }}
         onPointerLeave={() => rotatingDisplay.current.onDragEnd()}
@@ -32,7 +34,6 @@ function App() {
           <Walls />
           <Floor />
         </RotatingDisplay>
-        <axesHelper args={[1.5]} />
       </Canvas>
     </Modal>
   );
