@@ -1,16 +1,21 @@
-import { type ThreeElements } from "@react-three/fiber";
-import { useMemo } from "react";
+import type { ThreeElements } from "@react-three/fiber";
+import { useMemo, useRef } from "react";
 import { brickGeometry } from "../util/brickGeometry";
 import {
   canvasTextureSize,
   drawCanvasTexture,
   type CanvasDrawingOptions,
 } from "../util/canvasTexture";
-import { SRGBColorSpace } from "three";
+import { Color, MeshPhysicalMaterial, SRGBColorSpace } from "three";
+import { useToggleAnimationState } from "../hooks/useToggleAnimationState";
 
-export type BrickProps = CanvasDrawingOptions & ThreeElements["mesh"];
+export type BrickProps = { visibility: "normal" | "dimmed" | "selected" } & CanvasDrawingOptions &
+  ThreeElements["mesh"];
 
-export const Brick = ({ label, icon, color, ...props }: BrickProps) => {
+const visible = new Color("white");
+const dimmed = new Color(0.04, 0.05, 0.2);
+
+export const Brick = ({ label, icon, color, visibility, ...props }: BrickProps) => {
   const canvas = useMemo(() => {
     const node = document.createElement("canvas");
     node.width = canvasTextureSize;
@@ -20,11 +25,25 @@ export const Brick = ({ label, icon, color, ...props }: BrickProps) => {
     return node;
   }, [label, icon, color]);
 
+  const material = useRef<MeshPhysicalMaterial>(null!);
+
+  useToggleAnimationState(visibility === "dimmed", (alpha) => {
+    material.current.color.lerpColors(visible, dimmed, alpha);
+  });
+
   return (
     <mesh {...props} geometry={brickGeometry}>
-      <meshStandardMaterial>
+      <meshPhysicalMaterial
+        ref={material}
+        ior={1.4}
+        specularIntensity={0.25}
+        roughness={0.1}
+        metalness={0.02}
+        clearcoat={0.6}
+        clearcoatRoughness={0.6}
+      >
         <canvasTexture attach="map" args={[canvas]} colorSpace={SRGBColorSpace} />
-      </meshStandardMaterial>
+      </meshPhysicalMaterial>
     </mesh>
   );
 };
