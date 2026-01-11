@@ -55,6 +55,7 @@ export function Laptop({
   const screenTexture = useLoader(TextureLoader, getAssetUrl(screen, ".png"));
   const { nodes, materials } = useGLTF<LaptopGraph>(laptopModelPath);
   const laptopMaterial = useMemo(() => materials.laptop.clone(), [materials]);
+  useEffect(() => () => laptopMaterial.dispose(), [laptopMaterial]);
 
   const [isFocused, setIsFocused] = useState(false);
 
