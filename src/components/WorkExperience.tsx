@@ -1,15 +1,10 @@
-import {
-  useFrame,
-  useThree,
-  type ObjectMap,
-  type ThreeElements,
-  type ThreeEvent,
-} from "@react-three/fiber";
+import { useFrame, type ObjectMap, type ThreeElements, type ThreeEvent } from "@react-three/fiber";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useGLTF } from "../hooks/useGLTF";
 import { useAnimations } from "../hooks/useAnimations";
 import { MathUtils, Vector3, type AnimationClip, type Group, type Vector3Tuple } from "three";
 import { useModalContext } from "../contexts/Modal";
+import { useTargetFocusedPosition } from "../hooks/useTargetFocusedPosition";
 
 interface MinifigureGLTF extends Partial<ObjectMap> {
   animations: (AnimationClip & { name: "typing" | "main" })[];
@@ -18,27 +13,19 @@ interface MinifigureGLTF extends Partial<ObjectMap> {
 const WorkExperienceMinifigure = ({
   model,
   ...props
-}: ThreeElements["group"] & { model: string }) => {
+}: Omit<ThreeElements["group"], "position"> & { model: string; position: Vector3Tuple }) => {
   const modelPath = new URL(`../assets/${model}.glb`, import.meta.url).href;
   const { open } = useModalContext();
   const gltf = useGLTF<MinifigureGLTF>(modelPath);
   const { actions } = useAnimations(gltf);
   const ref = useRef<Group>(null!);
-  const size = useThree((state) => state.size);
-  const camera = useThree((state) => state.camera);
 
   const [isFocused, setIsFocused] = useState(false);
 
-  // TODO: use mediaquery? remove magic numbers and shift dependency on screen size
-  const focusedPosition =
-    size.width <= 600
-      ? new Vector3(6, 2, -6)
-      : camera.position
-          .clone()
-          .multiply({ x: 1, y: 0.5, z: -1 })
-          .multiplyScalar(0.5)
-          .applyAxisAngle(new Vector3(0, 1, 0), -Math.PI / 8);
-  const origin = new Vector3(...(props.position as Vector3Tuple));
+  const origin = new Vector3(...props.position);
+  const focusedPosition = useTargetFocusedPosition(0.55, { x: 0, y: -0.5, z: 0 });
+  const { x, y, z } = focusedPosition;
+  focusedPosition.set(x, y, -z);
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
@@ -74,7 +61,7 @@ const WorkExperienceMinifigure = ({
     const zAmplitude = 0.1;
     const zFrequency = 0.5;
     const zBounce = zAmplitude * Math.sin(elapsed * zFrequency) * accumulator.current;
-    const z = MathUtils.lerp((props.rotation as Vector3Tuple)[2], Math.PI / 16, alpha) + zBounce;
+    const z = MathUtils.lerp((props.rotation as Vector3Tuple)[2], Math.PI / 64, alpha) + zBounce;
     ref.current.rotation.set(x, y, z, "YXZ");
   });
 

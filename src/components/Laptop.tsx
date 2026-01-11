@@ -1,10 +1,4 @@
-import {
-  useFrame,
-  useLoader,
-  useThree,
-  type ThreeElements,
-  type ThreeEvent,
-} from "@react-three/fiber";
+import { useFrame, useLoader, type ThreeElements, type ThreeEvent } from "@react-three/fiber";
 import {
   MathUtils,
   Matrix4,
@@ -20,6 +14,7 @@ import { useGLTF } from "../hooks/useGLTF";
 import { getAssetUrl } from "../util/getAssetUrl";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { useModalContext } from "../contexts/Modal";
+import { useTargetFocusedPosition } from "../hooks/useTargetFocusedPosition";
 
 type LaptopGraph = {
   nodes: { laptop: Mesh; stool: Mesh };
@@ -28,6 +23,9 @@ type LaptopGraph = {
 
 const laptopModelPath = getAssetUrl("Laptop");
 const GENERATED_LAPTOP_ORIGIN: Vector3Tuple = [0, 1.88, 0.168];
+const GENERATED_LAPTOP_SCALE = 0.623;
+const GENERATED_STOOL_ORIGIN: Vector3Tuple = [0, 0.704, 0];
+const GENERATED_STOOL_SCALE = 0.703;
 const laptopOrigin = new Vector3(...GENERATED_LAPTOP_ORIGIN);
 const facingCenter = (5 * Math.PI) / 4;
 
@@ -50,8 +48,6 @@ export function Laptop({
   screen: string;
   position: "left" | "right" | "center";
 }) {
-  const size = useThree((state) => state.size);
-  const camera = useThree((state) => state.camera);
   const { width } = useRotatingDisplayContext().dimensions;
   const { open } = useModalContext();
 
@@ -65,14 +61,9 @@ export function Laptop({
   const length = Math.max(width, MIN_OBJECT_CLEARANCE);
   const spacing = Math.max(MIN_OBJECT_CLEARANCE, width / 2 - 0.5);
   const transforms = getTransforms(length, spacing)[position];
-  // TODO: rewrite as useMediaQuery hook? Remove magic numbers.
-  const focusedPosition =
-    size.width <= 600
-      ? new Vector3(8.5, 3, 8.5)
-      : camera.position
-          .clone()
-          .multiplyScalar(0.85)
-          .applyAxisAngle(new Vector3(0, 1, 0), -Math.PI / 32);
+  const focusedPosition = useTargetFocusedPosition(0.85, { x: 0, y: 0.25, z: 0 });
+  const { x, y, z } = focusedPosition;
+  focusedPosition.set(z, y, x);
 
   const parentMatrix = new Matrix4();
   const targetPosition = new Vector3();
@@ -125,14 +116,14 @@ export function Laptop({
         material-map={screenTexture}
         material-map-flipY={false}
         position={GENERATED_LAPTOP_ORIGIN}
-        scale={0.623}
+        scale={GENERATED_LAPTOP_SCALE}
       />
       <mesh
         geometry={nodes.stool.geometry}
         material={materials.black}
-        position={[0, 0.704, 0]}
+        position={GENERATED_STOOL_ORIGIN}
         rotation-y={position === "center" ? Math.PI / 4 : 0}
-        scale={0.703}
+        scale={GENERATED_STOOL_SCALE}
       />
     </group>
   );
