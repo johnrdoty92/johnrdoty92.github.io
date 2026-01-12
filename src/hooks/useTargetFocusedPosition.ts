@@ -2,8 +2,8 @@ import { useThree } from "@react-three/fiber";
 import { type PerspectiveCamera, Vector2, Vector3, type Vector3Like } from "three";
 import { useMediaQuery } from "./useMediaQuery";
 import { MOBILE_BREAKPOINT_QUERY } from "../constants/styles";
+import { POSITIVE_Y } from "../constants/vectors";
 
-const UP = new Vector3(0, 1, 0);
 const DIAGONAL = new Vector3(-1, 0, 1);
 
 export const useTargetFocusedPosition = (
@@ -20,7 +20,7 @@ export const useTargetFocusedPosition = (
   const base = (isMobileScreen ? viewSize.y : viewSize.x) / 2;
   const displacement = camera.position
     .clone()
-    .cross(isMobileScreen ? DIAGONAL : UP)
+    .cross(isMobileScreen ? DIAGONAL : POSITIVE_Y)
     .setLength(base);
   const maxPosition = new Vector3().subVectors(scaledOrigin, displacement);
   const alpha = isMobileScreen ? 0.7 : 0.5;

@@ -1,22 +1,11 @@
 import { useFrame, useThree, type ThreeElements } from "@react-three/fiber";
-import {
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-  type Dispatch,
-  type Ref,
-  type SetStateAction,
-} from "react";
+import { useCallback, useEffect, useImperativeHandle, useRef, useState, type Ref } from "react";
 import { MathUtils, PerspectiveCamera, Vector2, Vector3, type Group } from "three";
 import { RotatingDisplayContext } from "../contexts/RotatingDisplay";
+import { useSectionsContext } from "../contexts/Sections";
+import { POSITIVE_X, POSITIVE_Y } from "../constants/vectors";
 
-const SECTION_COUNT = 4;
 const ANIMATION_THRESHOLD = 0.00001;
-const RIGHT = 1;
-const LEFT = -1;
-type Direction = typeof RIGHT | typeof LEFT;
 
 const point = new Vector2();
 
@@ -24,11 +13,7 @@ export interface RotatingDisplayHandle {
   onDragStart: () => void;
   onDrag: () => void;
   onDragEnd: () => void;
-  setSection: Dispatch<SetStateAction<number>>;
 }
-
-const POSITIVE_X = new Vector3(1, 0, 0);
-const POSITIVE_Y = new Vector3(0, 1, 0);
 
 const useDimensions = () => {
   const camera = useThree(({ camera }) => camera as PerspectiveCamera);
@@ -73,12 +58,7 @@ export const RotatingDisplay = ({
   const dragOrigin = useRef<Vector2 | null>(null);
 
   const targetRotation = useRef<number | null>(null);
-  const [section, setSection] = useState(0);
-  const activeSection = MathUtils.euclideanModulo(section, SECTION_COUNT);
-
-  const rotatePlatform = useCallback((direction: Direction) => {
-    setSection((q) => q + direction);
-  }, []);
+  const { rotate, section } = useSectionsContext();
 
   useFrame((_, delta) => {
     const currentRotation = group.current.rotation.y;
@@ -123,17 +103,16 @@ export const RotatingDisplay = ({
         const dragDelta = dragOrigin.current.x - currentPoint.x;
         if (Math.abs(dragDelta) > 0.5) {
           const direction = dragDelta < 0 ? 1 : -1;
-          rotatePlatform(direction);
+          rotate(direction);
         }
         dragOrigin.current = null;
       },
-      setSection,
     }),
-    [get, section, rotatePlatform]
+    [get, section, rotate]
   );
 
   return (
-    <RotatingDisplayContext.Provider value={{ activeSection, dimensions }}>
+    <RotatingDisplayContext.Provider value={{ dimensions }}>
       <group {...props} ref={group} />
     </RotatingDisplayContext.Provider>
   );

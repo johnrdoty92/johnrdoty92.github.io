@@ -1,11 +1,7 @@
 import { createContext, useContext } from "react";
 
 type RotatingDisplayContextValue = {
-  activeSection: number;
-  dimensions: {
-    width: number;
-    height: number;
-  };
+  dimensions: { width: number; height: number };
 };
 
 export const RotatingDisplayContext = createContext<RotatingDisplayContextValue | null>(null);
