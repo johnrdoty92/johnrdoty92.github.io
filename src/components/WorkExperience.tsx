@@ -5,6 +5,7 @@ import { useAnimations } from "../hooks/useAnimations";
 import { MathUtils, Vector3, type AnimationClip, type Group, type Vector3Tuple } from "three";
 import { useModalContext } from "../contexts/Modal";
 import { useTargetFocusedPosition } from "../hooks/useTargetFocusedPosition";
+import { hoverHandlers } from "../util/hoverHandlers";
 
 interface MinifigureGLTF extends Partial<ObjectMap> {
   animations: (AnimationClip & { name: "typing" | "main" })[];
@@ -68,6 +69,7 @@ const WorkExperienceMinifigure = ({
   return (
     <group
       {...props}
+      {...hoverHandlers}
       ref={ref}
       dispose={null}
       onClick={handleClick}

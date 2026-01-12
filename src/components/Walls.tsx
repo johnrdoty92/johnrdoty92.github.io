@@ -71,10 +71,15 @@ const Wall = ({ startZero = false, delay = 1, ...props }: WallProps) => {
       instances.current.setMatrixAt(i, mtx.setPosition(target.setY(currentY)));
     }
     instances.current.instanceMatrix.needsUpdate = true;
+    instances.current.computeBoundingSphere();
   });
 
   return (
-    <group {...props}>
+    <group
+      {...props}
+      onPointerOver={(e) => e.stopPropagation()}
+      onPointerOut={(e) => e.stopPropagation()}
+    >
       <instancedMesh ref={instances} args={[brickGeometry, wallMaterial, count]} />
     </group>
   );

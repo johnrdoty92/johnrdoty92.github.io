@@ -4,6 +4,7 @@ import { useGLTF } from "../hooks/useGLTF";
 import { useEffect, useRef } from "react";
 import { useAnimations, type OnFinished } from "../hooks/useAnimations";
 import type { SOCIAL_MEDIA_PROPS } from "../constants/socialMedia";
+import { hoverHandlers } from "../util/hoverHandlers";
 
 const getRandomTimeout = (duration = 2500) => Math.random() * duration;
 
@@ -49,6 +50,7 @@ export function SocialMediaMinifigure({
   return (
     <group
       {...props}
+      {...hoverHandlers}
       dispose={null}
       onClick={(e) => {
         e.stopPropagation();

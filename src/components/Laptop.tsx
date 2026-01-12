@@ -15,6 +15,7 @@ import { getAssetUrl } from "../util/getAssetUrl";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { useModalContext } from "../contexts/Modal";
 import { useTargetFocusedPosition } from "../hooks/useTargetFocusedPosition";
+import { hoverHandlers } from "../util/hoverHandlers";
 
 type LaptopGraph = {
   nodes: { laptop: Mesh; stool: Mesh };
@@ -105,6 +106,7 @@ export function Laptop({
   return (
     <group
       {...props}
+      {...hoverHandlers}
       dispose={null}
       {...transforms}
       onClick={handleClick}
