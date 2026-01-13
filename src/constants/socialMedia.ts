@@ -1,9 +1,10 @@
-
+export const githubUrl = "https://github.com/johnrdoty92";
+export const linkedInUrl = "https://www.linkedin.com/in/johnrdoty/";
 export const SOCIAL_MEDIA_PROPS = [
   {
     minifigure: "Spaceman",
     animation: "look_left",
-    href: "https://www.linkedin.com/in/johnrdoty/",
+    href: linkedInUrl,
   },
   {
     minifigure: "Overalls",
@@ -13,7 +14,7 @@ export const SOCIAL_MEDIA_PROPS = [
   {
     minifigure: "Pirate",
     animation: "look_left",
-    href: "https://github.com/johnrdoty92",
+    href: githubUrl,
   },
   {
     minifigure: "Knight",
