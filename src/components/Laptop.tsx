@@ -49,7 +49,7 @@ export function Laptop({
   screen: string;
   position: "left" | "right" | "center";
 }) {
-  const { width } = useRotatingDisplayContext().dimensions;
+  const { width } = useRotatingDisplayContext();
   const { open } = useModalContext();
 
   const laptop = useRef<Mesh>(null!);

@@ -13,6 +13,7 @@ import { Skills } from "./components/Skills";
 import { SectionsProvider } from "./components/SectionsProvider";
 import { CarouselButtons } from "./components/CarouselButtons";
 import { InteractionArea } from "./components/InteractionArea";
+import { SectionHeaders } from "./components/SectionHeaders";
 
 function App() {
   const rotatingDisplay = useRef<RotatingDisplayHandle>(null!);
@@ -31,6 +32,7 @@ function App() {
           {import.meta.env.DEV && <Stats />}
           <Environment />
           <RotatingDisplay ref={rotatingDisplay}>
+            <SectionHeaders />
             <Skills />
             <WorkExperience />
             <WorkProjects />

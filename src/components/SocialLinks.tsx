@@ -13,7 +13,7 @@ const MINIFIGURE_DIMENSIONS = {
 export const SocialLinks = () => {
   const originToCameraDistance = useThree(({ camera }) => camera).position.length();
   const screenWidth = useThree((state) => state.size.width);
-  const wallWidth = useRotatingDisplayContext().dimensions.width;
+  const { width: wallWidth } = useRotatingDisplayContext();
 
   const isDown600 = screenWidth < 600;
   const origin = MathUtils.clamp(

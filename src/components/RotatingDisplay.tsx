@@ -112,7 +112,7 @@ export const RotatingDisplay = ({
   );
 
   return (
-    <RotatingDisplayContext.Provider value={{ dimensions }}>
+    <RotatingDisplayContext.Provider value={dimensions}>
       <group {...props} ref={group} />
     </RotatingDisplayContext.Provider>
   );

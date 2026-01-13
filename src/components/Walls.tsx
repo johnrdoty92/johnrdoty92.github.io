@@ -39,7 +39,7 @@ type WallProps = {
 } & ThreeElements["group"];
 
 const Wall = ({ startZero = false, delay = 1, ...props }: WallProps) => {
-  const { width: bricksPerRow, height } = useRotatingDisplayContext().dimensions;
+  const { width: bricksPerRow, height } = useRotatingDisplayContext();
   const instances = useRef<InstancedMesh>(null!);
 
   const layerCount = Math.floor(height / brickHeight - 1);
