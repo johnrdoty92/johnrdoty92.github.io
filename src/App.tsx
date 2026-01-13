@@ -10,15 +10,17 @@ import { WorkProjects } from "./components/WorkProjects";
 import { SocialLinks } from "./components/SocialLinks";
 import { Modal } from "./components/Modal";
 import { Skills } from "./components/Skills";
-import { Search } from "./components/Search";
 import { SectionsProvider } from "./components/SectionsProvider";
+import { CarouselButtons } from "./components/CarouselButtons";
+import { InteractionArea } from "./components/InteractionArea";
 
 function App() {
   const rotatingDisplay = useRef<RotatingDisplayHandle>(null!);
   return (
     <SectionsProvider>
       <Modal>
-        <Search />
+        <InteractionArea />
+        <CarouselButtons />
         <Canvas
           camera={{ position: [10, 2.5, 10] }}
           onPointerLeave={() => rotatingDisplay.current.onDragEnd()}

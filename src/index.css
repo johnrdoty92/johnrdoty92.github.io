@@ -17,6 +17,7 @@ html {
   height: 100dvh;
   overscroll-behavior: none;
   overflow: hidden;
+  font-size: 100%;
 }
 
 * {
@@ -77,15 +78,50 @@ dialog::backdrop {
   display: none;
 }
 
-input[type="text"] {
-  /* TODO: handle focus styles */
+.interaction-area {
   position: fixed;
-  padding: 1em;
   z-index: 1;
   bottom: 10%;
   left: 50%;
-  transform: translateX(-50%)
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
+
+input[type="text"] {
+  /* TODO: handle focus styles */
+  padding: 1em;
+  font-size: 1rem;
+}
+
+p.swipe-prompt {
+  /* TODO: animate gesture */
+  text-align: center;
+  font-size: 2rem;
+}
+
+p.swipe-prompt.acknowledged {
+  /* TODO: animate disappear */
+  display: none;
+}
+
+button.carousel {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  width: min-content;
+}
+
+button.carousel.left {
+  left: 1%;
+}
+
+button.carousel.right {
+  right: 1%;
+}
+
 
 @media screen and (min-width: 600px) {
   dialog {

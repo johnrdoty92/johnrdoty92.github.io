@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 
 type SectionsContextValue = {
   section: number;
-  activeSection: number;
+  activeSection: 0 | 1 | 2 | 3;
   rotate: (direction: 1 | -1) => void;
 };
 

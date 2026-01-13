@@ -77,6 +77,7 @@ const Wall = ({ startZero = false, delay = 1, ...props }: WallProps) => {
   return (
     <group
       {...props}
+      onClick={(e) => e.stopPropagation()}
       onPointerOver={(e) => e.stopPropagation()}
       onPointerOut={(e) => e.stopPropagation()}
     >
