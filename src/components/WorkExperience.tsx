@@ -6,6 +6,7 @@ import { MathUtils, Vector3, type AnimationClip, type Group, type Vector3Tuple }
 import { useModalContext } from "../contexts/Modal";
 import { useTargetFocusedPosition } from "../hooks/useTargetFocusedPosition";
 import { hoverHandlers } from "../util/hoverHandlers";
+import { ClickIndicator } from "./ClickIndicator";
 
 interface MinifigureGLTF extends Partial<ObjectMap> {
   animations: (AnimationClip & { name: "typing" | "main" })[];
@@ -75,6 +76,7 @@ const WorkExperienceMinifigure = ({
       onClick={handleClick}
       onPointerMissed={() => setIsFocused(false)}
     >
+      <ClickIndicator visible={!isFocused} position={[0, 3, 0]} />
       <primitive object={gltf.scene} />
     </group>
   );

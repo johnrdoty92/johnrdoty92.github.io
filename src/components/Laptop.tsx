@@ -16,6 +16,7 @@ import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { useModalContext } from "../contexts/Modal";
 import { useTargetFocusedPosition } from "../hooks/useTargetFocusedPosition";
 import { hoverHandlers } from "../util/hoverHandlers";
+import { ClickIndicator } from "./ClickIndicator";
 
 type LaptopGraph = {
   nodes: { laptop: Mesh; stool: Mesh };
@@ -112,6 +113,7 @@ export function Laptop({
       onClick={handleClick}
       onPointerMissed={handleMiss}
     >
+      <ClickIndicator position={[0, 2.75, 0]} />
       <mesh
         ref={laptop}
         geometry={nodes.laptop.geometry}
