@@ -1,7 +1,8 @@
 import { useLoader, useThree } from "@react-three/fiber";
 import { Suspense, useEffect } from "react";
-import { EquirectangularReflectionMapping, TextureLoader } from "three";
-import ggsHouse from "../assets/ggs_house.webp";
+import { EquirectangularReflectionMapping } from "three";
+import { HDRLoader } from "three/examples/jsm/loaders/HDRLoader.js";
+import hdri from "../assets/bambanani_sunset_2k.hdr?url";
 
 export const Environment = () => {
   return (
@@ -13,15 +14,15 @@ export const Environment = () => {
 
 const EnvironmentMap = () => {
   const scene = useThree((state) => state.scene);
-  const map = useLoader(TextureLoader, ggsHouse);
+  const map = useLoader(HDRLoader, hdri);
 
   useEffect(() => {
     map.mapping = EquirectangularReflectionMapping;
     scene.environment = map;
-    scene.environmentIntensity = 1.5;
+    scene.environmentIntensity = 0.9;
   }, [scene, map]);
 
   return null;
 };
 
-useLoader.preload(TextureLoader, ggsHouse);
+useLoader.preload(HDRLoader, hdri);
