@@ -4,6 +4,8 @@ import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { brickWidth } from "../util/brickGeometry";
+import { useMediaQuery } from "../hooks/useMediaQuery";
+import { MOBILE_BREAKPOINT_QUERY } from "../constants/styles";
 
 extend({ TextGeometry });
 
@@ -15,7 +17,7 @@ declare module "@react-three/fiber" {
 
 export const SectionHeaders = () => {
   const { height } = useRotatingDisplayContext();
-  const [x, y, z] = [brickWidth, height - 2.5, brickWidth];
+  const [x, y, z] = [brickWidth, height - 2.6, brickWidth];
   return (
     <Suspense fallback={<></>}>
       <Header label="Skills" position={[x + 1, y, z]} />
@@ -28,7 +30,8 @@ export const SectionHeaders = () => {
 
 const Header = ({ label, ...props }: ThreeElements["group"] & { label: string }) => {
   const font = useLoader(FontLoader, "/Noto_Sans_Regular.json");
-  const size = 0.75;
+  const isMobileScreen = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
+  const size = isMobileScreen ? 0.5 : 0.75;
   const lineGap = 0.25;
   // TODO: add accessibility
   // TODO: animate into place or hide until animation is complete
