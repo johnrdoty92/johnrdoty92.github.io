@@ -5,9 +5,27 @@ export type CanvasDrawingOptions = { icon: string; label: string; color: string 
 
 export const canvasTextureSize = 256;
 
+// https://www.w3.org/WAI/GL/wiki/Relative_luminance
+const getLuminance = (r: number, g: number, b: number) => {
+  const R = r <= 0.03928 ? r / 12.92 : ((r + 0.055) / 1.055) ** 2.4;
+  const G = g <= 0.03928 ? g / 12.92 : ((g + 0.055) / 1.055) ** 2.4;
+  const B = b <= 0.03928 ? b / 12.92 : ((b + 0.055) / 1.055) ** 2.4;
+  return 0.2126 * R + 0.7152 * G + 0.0722 * B;
+};
+
+const getContrastText = ({ r, g, b }: Color) => {
+  const foregroundLuminance = getLuminance(1, 1, 1);
+  const backgroundLuminance = getLuminance(r, g, b);
+  const contrast = (foregroundLuminance + 0.05) / (backgroundLuminance + 0.05);
+  const threshold = 4.5;
+  return contrast >= threshold ? "white" : "black";
+};
+
+const backgroundColor = new Color();
+
 export const drawCanvasTexture = (
   ctx: CanvasRenderingContext2D,
-  { icon, label, color }: CanvasDrawingOptions
+  { icon, label, color }: CanvasDrawingOptions,
 ) => {
   // TODO: organize this better
   ctx.font = `${canvasTextureSize / 5.75}px sans-serif`;
@@ -20,9 +38,7 @@ export const drawCanvasTexture = (
   const height = (canvasTextureSize / 2) * brickHeight;
   const heightOffset = canvasTextureSize - height;
   ctx.fillRect(0, heightOffset, canvasTextureSize, height);
-  // TODO: need a better way to get contrast text
-  const { r, g, b } = new Color(color);
-  const textColor = (r + g + b) / 3 < 0.3 ? "white" : "black";
+  const textColor = getContrastText(backgroundColor.set(color));
   ctx.fillStyle = textColor;
   ctx.textBaseline = "middle";
   ctx.textAlign = "center";
@@ -30,7 +46,7 @@ export const drawCanvasTexture = (
     label,
     canvasTextureSize / 2,
     canvasTextureSize - height / 2,
-    canvasTextureSize - padding * 2
+    canvasTextureSize - padding * 2,
   );
   ctx.strokeStyle = "white";
 
