@@ -87,12 +87,12 @@ export const WorkExperience = () => {
     <Suspense fallback={<></>}>
       <WorkExperienceMinifigure
         model="Intern"
-        position={[2.5, 0, -5.5]}
+        position={[3, 0, -5.5]}
         rotation={[0, Math.PI / 2, 0]}
       />
-      <WorkExperienceMinifigure model="Junior" position={[5, 0, -3]} rotation={[0, Math.PI, 0]} />
-      <WorkExperienceMinifigure model="Senior" position={[2, 1, -3]} rotation={[0, Math.PI, 0]} />
-      <mesh position={[2, 0, -3]}>
+      <WorkExperienceMinifigure model="Junior" position={[5.5, 0, -3]} rotation={[0, Math.PI, 0]} />
+      <WorkExperienceMinifigure model="Senior" position={[2.5, 1, -3]} rotation={[0, Math.PI, 0]} />
+      <mesh position={[2.5, 0, -3]}>
         <boxGeometry args={[3, 2, 2]} />
         <meshStandardMaterial color="black" />
       </mesh>

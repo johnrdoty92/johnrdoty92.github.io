@@ -6,7 +6,7 @@ import { MathUtils } from "three";
 import { SOCIAL_MEDIA_PROPS } from "../constants/socialMedia";
 
 const MINIFIGURE_DIMENSIONS = {
-  width: 2,
+  width: 2.5,
   depth: 1.5,
 };
 
@@ -19,7 +19,7 @@ export const SocialLinks = () => {
   const origin = MathUtils.clamp(
     isDown600 ? wallWidth / 2 : wallWidth,
     MINIFIGURE_DIMENSIONS.depth,
-    Math.floor(originToCameraDistance / 2)
+    Math.floor(originToCameraDistance / 2),
   );
 
   return (
