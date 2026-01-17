@@ -91,10 +91,10 @@ dialog::backdrop {
   position: fixed;
   z-index: 1;
   bottom: 10%;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1em;
 }
 
@@ -115,22 +115,26 @@ p.swipe-prompt.acknowledged {
   display: none;
 }
 
-button.carousel {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1;
+.carousel {
+  font-size: 0.875rem;
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1em;
+  display: flex;
+  justify-content: space-between;
+  max-width: 1000px;
+}
+
+.carousel button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.carousel p {
   width: min-content;
 }
-
-button.carousel.left {
-  left: 1%;
-}
-
-button.carousel.right {
-  right: 1%;
-}
-
 
 @media screen and (min-width: 600px) {
   dialog {

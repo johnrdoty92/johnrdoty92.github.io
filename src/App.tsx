@@ -11,7 +11,6 @@ import { SocialLinks } from "./components/SocialLinks";
 import { Modal } from "./components/Modal";
 import { Skills } from "./components/Skills";
 import { SectionsProvider } from "./components/SectionsProvider";
-import { CarouselButtons } from "./components/CarouselButtons";
 import { InteractionArea } from "./components/InteractionArea";
 import { SectionHeaders } from "./components/SectionHeaders";
 import { Lighting } from "./components/Lighting";
@@ -22,7 +21,6 @@ function App() {
     <SectionsProvider>
       <Modal>
         <InteractionArea />
-        <CarouselButtons />
         <Canvas
           camera={{ position: [10, 2.5, 10] }}
           onPointerLeave={() => rotatingDisplay.current.onDragEnd()}
