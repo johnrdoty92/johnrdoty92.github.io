@@ -41,7 +41,7 @@ export const Floor = () => {
         instances.setMatrixAt(i, mtx);
       }
     },
-    [gridSize]
+    [gridSize],
   );
 
   useEffect(() => {
@@ -53,12 +53,11 @@ export const Floor = () => {
   return (
     <group>
       <instancedMesh
-        castShadow
         args={[studGeometry, studMaterial, studCount]}
         position={[-0.5, -brickHeight, -0.5]}
         ref={ref}
       />
-      <mesh receiveShadow rotation-x={-Math.PI / 2} material={studMaterial}>
+      <mesh rotation-x={-Math.PI / 2} material={studMaterial}>
         <planeGeometry args={[gridSize, gridSize]} />
       </mesh>
     </group>

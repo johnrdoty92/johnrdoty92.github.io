@@ -15,7 +15,7 @@ const wallMaterial = new MeshStandardMaterial({ roughness: 0.2, metalness: 0 });
 const color = new Color();
 const lightblue = new Color(Color.NAMES.midnightblue).lerp(
   new Color(Color.NAMES.mediumturquoise),
-  0.15
+  0.15,
 );
 const mtx = new Matrix4();
 const target = new Vector3();
@@ -24,7 +24,7 @@ const getTargetPosition = (
   index: number,
   bricksPerRow: number,
   startZero: boolean,
-  out: Vector3
+  out: Vector3,
 ) => {
   const rowLevel = Math.floor(index / bricksPerRow);
   const y = rowLevel * brickHeight;

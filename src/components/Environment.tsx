@@ -19,7 +19,7 @@ const EnvironmentMap = () => {
   useEffect(() => {
     map.mapping = EquirectangularReflectionMapping;
     scene.environment = map;
-    scene.environmentIntensity = 0.9;
+    scene.environmentIntensity = 0.8;
   }, [scene, map]);
 
   return null;

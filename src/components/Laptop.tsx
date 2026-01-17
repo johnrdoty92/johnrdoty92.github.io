@@ -38,7 +38,7 @@ const getTransforms = (length: number, spacing: number) =>
     left: { position: [-length, 0, -length - spacing], rotation: [0, (3 * Math.PI) / 2, 0] },
     right: { position: [-length - spacing, 0, -length], rotation: [0, Math.PI, 0] },
     center: { position: [-length, 0, -length], rotation: [0, facingCenter, 0] },
-  } as const);
+  }) as const;
 
 const MIN_OBJECT_CLEARANCE = 2;
 
