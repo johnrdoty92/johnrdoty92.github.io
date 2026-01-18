@@ -11,8 +11,7 @@ export const InteractionArea = () => {
       <SwipePrompt />
       <CarouselButtons />
       <Search />
-      {/* TODO: handle fallback and loading indicator */}
-      <Suspense fallback={<></>}>
+      <Suspense fallback={<button disabled>Loading Resume...</button>}>
         <DownloadResumeButton />
       </Suspense>
     </div>
