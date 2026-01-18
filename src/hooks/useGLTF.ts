@@ -3,10 +3,12 @@ import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.j
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { GLTFLoader, type GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
 
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath("/draco");
+dracoLoader.preload();
+
 const extensions = (loader: GLTFLoader) => {
   loader.setMeshoptDecoder(MeshoptDecoder);
-  const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("/draco");
   loader.setDRACOLoader(dracoLoader);
 };
 
