@@ -18,6 +18,7 @@ const lightblue = new Color(Color.NAMES.midnightblue).lerp(
   0.15,
 );
 const mtx = new Matrix4();
+const startingHeightOffset = 20;
 const target = new Vector3();
 
 const getTargetPosition = (
@@ -51,7 +52,7 @@ const Wall = ({ startZero = false, delay = 1, ...props }: WallProps) => {
   useLayoutEffect(() => {
     for (let i = 0; i < count; i++) {
       getTargetPosition(i, bricksPerRow, startZero, target);
-      target.add(new Vector3(0, 10, 0));
+      target.y += startingHeightOffset;
       mtx.setPosition(target);
       instances.current.setMatrixAt(i, mtx);
       color.set(Color.NAMES.midnightblue).lerp(lightblue, MathUtils.seededRandom(i));

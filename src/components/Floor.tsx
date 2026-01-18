@@ -14,7 +14,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useToggleAnimationState } from "../hooks/useToggleAnimationState";
 
 const floorColor = 0x004a2d;
-const floorStartingY = -10;
+const floorStartingPosition = new Vector3(10, -15, 10);
+const floorTargetPosition = new Vector3();
 const floorStartingRotationY = Math.PI / 4;
 const studMaterial = new MeshStandardMaterial({ color: floorColor, roughness: 0.4, metalness: 0 });
 
@@ -51,7 +52,7 @@ export const Floor = () => {
   );
 
   useToggleAnimationState(true, (alpha) => {
-    floor.current.position.setY(MathUtils.lerp(floorStartingY, 0, alpha));
+    floor.current.position.lerpVectors(floorStartingPosition, floorTargetPosition, alpha);
     floor.current.rotation.y = MathUtils.lerp(floorStartingRotationY, 0, alpha);
   });
 

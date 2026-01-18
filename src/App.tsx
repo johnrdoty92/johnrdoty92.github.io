@@ -14,6 +14,7 @@ import { SectionsProvider } from "./components/SectionsProvider";
 import { InteractionArea } from "./components/InteractionArea";
 import { SectionHeaders } from "./components/SectionHeaders";
 import { Lighting } from "./components/Lighting";
+import { Fog } from "./components/Fog";
 
 function App() {
   const rotatingDisplay = useRef<RotatingDisplayHandle>(null!);
@@ -29,6 +30,7 @@ function App() {
           onPointerUp={() => rotatingDisplay.current.onDragEnd()}
         >
           {import.meta.env.DEV && <Stats />}
+          <Fog />
           <Environment />
           <Lighting />
           <RotatingDisplay ref={rotatingDisplay}>
