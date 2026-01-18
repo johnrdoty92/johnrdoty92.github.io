@@ -1,7 +1,8 @@
 import { Resume, type ResumeProps } from "@johnrdoty92/resume-generator";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { pdf } from "@react-pdf/renderer";
 import { githubUrl, linkedInUrl } from "../constants/socialMedia";
 import { SKILLS } from "../constants/skills";
+import { useState } from "react";
 
 const resumeProps: ResumeProps = {
   author: "John Doty",
@@ -110,13 +111,28 @@ const resumeProps: ResumeProps = {
 };
 
 const DownloadResumeButton = () => {
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownload = async () => {
+    try {
+      setIsDownloading(true);
+      const blob = await pdf(<Resume {...resumeProps} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.target = "_blank";
+      link.download = "John_Doty_Full_Stack_Engineer.pdf";
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
-    <PDFDownloadLink
-      fileName="John_Doty_Full_Stack_Engineer.pdf"
-      document={<Resume {...resumeProps} />}
-    >
-      Download Resume
-    </PDFDownloadLink>
+    <button onClick={handleDownload}>{isDownloading ? "Downloading..." : "Download Resume"}</button>
   );
 };
 
