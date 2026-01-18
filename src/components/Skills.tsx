@@ -37,6 +37,7 @@ export const Skills = () => {
     return (
       <Brick
         key={i}
+        delay={height + x}
         label={name}
         color={color}
         icon={path}
