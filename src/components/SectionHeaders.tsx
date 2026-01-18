@@ -38,7 +38,7 @@ const Header = ({
   ...props
 }: Omit<ThreeElements["group"], "position"> & { label: string; position: Vector3Tuple }) => {
   const header = useRef<Group>(null!);
-  const font = useLoader(FontLoader, "/Noto_Sans_Regular.json");
+  const font = useLoader(FontLoader, "/Poppins_Bold.json");
   const isMobileScreen = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
   const size = isMobileScreen ? 0.5 : 0.75;
   const lineGap = 0.25;
@@ -57,7 +57,7 @@ const Header = ({
       {label.split(" ").map((text, i) => (
         <mesh key={i} position-y={-i * size - (i > 0 ? lineGap : 0)}>
           <meshBasicMaterial />
-          <textGeometry args={[text, { font, size, depth: 0.1, curveSegments: 1 }]} />
+          <textGeometry args={[text, { font, size, depth: 0.075, curveSegments: 2 }]} />
         </mesh>
       ))}
     </group>
