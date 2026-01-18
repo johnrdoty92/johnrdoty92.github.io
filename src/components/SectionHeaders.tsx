@@ -1,11 +1,13 @@
 import { extend, useLoader, type ThreeElement, type ThreeElements } from "@react-three/fiber";
-import { Suspense } from "react";
+import { Suspense, useRef } from "react";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { brickWidth } from "../util/brickGeometry";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { MOBILE_BREAKPOINT_QUERY } from "../constants/styles";
+import { Group, MathUtils, type Vector3Tuple } from "three";
+import { useToggleAnimationState } from "../hooks/useToggleAnimationState";
 
 extend({ TextGeometry });
 
@@ -28,15 +30,30 @@ export const SectionHeaders = () => {
   );
 };
 
-const Header = ({ label, ...props }: ThreeElements["group"] & { label: string }) => {
+const startingYOffset = 4;
+
+const Header = ({
+  label,
+  position: [x, y, z],
+  ...props
+}: Omit<ThreeElements["group"], "position"> & { label: string; position: Vector3Tuple }) => {
+  const header = useRef<Group>(null!);
   const font = useLoader(FontLoader, "/Noto_Sans_Regular.json");
   const isMobileScreen = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
   const size = isMobileScreen ? 0.5 : 0.75;
   const lineGap = 0.25;
   // TODO: add accessibility
-  // TODO: animate into place or hide until animation is complete
+
+  useToggleAnimationState(
+    true,
+    (alpha) => {
+      header.current.visible = true;
+      header.current.position.setY(MathUtils.lerp(y + startingYOffset, y, alpha));
+    },
+    { delay: 3000 },
+  );
   return (
-    <group {...props}>
+    <group {...props} visible={false} ref={header} position={[x, y + startingYOffset, z]}>
       {label.split(" ").map((text, i) => (
         <mesh key={i} position-y={-i * size - (i > 0 ? lineGap : 0)}>
           <meshBasicMaterial />
