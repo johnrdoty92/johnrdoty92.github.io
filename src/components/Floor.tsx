@@ -12,12 +12,12 @@ import {
 import { brickWidth, studGeometry, brickHeight } from "../util/brickGeometry";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useToggleAnimationState } from "../hooks/useToggleAnimationState";
+import { theme } from "../constants/styles";
 
-const floorColor = 0x004a2d;
 const floorStartingPosition = new Vector3(10, -15, 10);
 const floorTargetPosition = new Vector3();
 const floorStartingRotationY = Math.PI / 4;
-const studMaterial = new MeshStandardMaterial({ color: floorColor, roughness: 0.4, metalness: 0 });
+const studMaterial = new MeshStandardMaterial({ color: theme.dark, roughness: 0.4, metalness: 0 });
 
 const mtx = new Matrix4();
 const position = new Vector3();

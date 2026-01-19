@@ -5,7 +5,7 @@ import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { brickWidth } from "../util/brickGeometry";
 import { useMediaQuery } from "../hooks/useMediaQuery";
-import { MOBILE_BREAKPOINT_QUERY } from "../constants/styles";
+import { MOBILE_BREAKPOINT_QUERY, theme } from "../constants/styles";
 import { Group, MathUtils, type Vector3Tuple } from "three";
 import { useToggleAnimationState } from "../hooks/useToggleAnimationState";
 
@@ -58,7 +58,7 @@ const Header = ({
     <group {...props} visible={false} ref={header} position={[x, y + startingYOffset, z]}>
       {label.split(" ").map((text, i) => (
         <mesh key={i} position-y={-i * size - (i > 0 ? lineGap : 0)}>
-          <meshBasicMaterial />
+          <meshBasicMaterial color={theme.light} />
           <textGeometry args={[text, { font, size, depth: 0.075, curveSegments: 2 }]} />
         </mesh>
       ))}

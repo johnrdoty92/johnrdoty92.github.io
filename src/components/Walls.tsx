@@ -10,16 +10,16 @@ import {
 import { brickGeometry, brickHeight, brickLength } from "../util/brickGeometry";
 import { useFrame, type ThreeElements } from "@react-three/fiber";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
+import { theme } from "../constants/styles";
 
-const wallMaterial = new MeshStandardMaterial({ roughness: 0.2, metalness: 0 });
-const color = new Color();
-const lightblue = new Color(Color.NAMES.midnightblue).lerp(
-  new Color(Color.NAMES.mediumturquoise),
-  0.15,
-);
 const mtx = new Matrix4();
 const startingHeightOffset = 20;
 const target = new Vector3();
+const wallMaterial = new MeshStandardMaterial({ roughness: 0.2, metalness: 0 });
+const color = new Color();
+const gradientStops = [theme.dark, theme.secondary, theme.primary, theme.light].map(
+  (c) => new Color(c),
+);
 
 const getTargetPosition = (
   index: number,
@@ -32,6 +32,13 @@ const getTargetPosition = (
   const offset = rowLevel % 2 === (startZero ? 0 : 1) ? 1 : 0;
   const z = (index % bricksPerRow) * brickLength + offset;
   out.set(0, y, z);
+};
+
+const getGradientColor = (index: number, total: number, colors: Color[], out: Color) => {
+  const sectionLength = total / (colors.length - 1);
+  const colorIndex1 = Math.floor(index / sectionLength);
+  const colorIndex2 = Math.min(colors.length - 1, colorIndex1 + 1);
+  out.lerpColors(colors[colorIndex1], colors[colorIndex2], MathUtils.seededRandom(index));
 };
 
 type WallProps = {
@@ -55,7 +62,7 @@ const Wall = ({ startZero = false, delay = 1, ...props }: WallProps) => {
       target.y += startingHeightOffset;
       mtx.setPosition(target);
       instances.current.setMatrixAt(i, mtx);
-      color.set(Color.NAMES.midnightblue).lerp(lightblue, MathUtils.seededRandom(i));
+      getGradientColor(i, count, gradientStops, color);
       instances.current.setColorAt(i, color);
     }
   }, [count, layerCount, bricksPerRow]);
