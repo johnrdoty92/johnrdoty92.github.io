@@ -7,6 +7,8 @@ import { useModalContext } from "../contexts/Modal";
 import { useTargetFocusedPosition } from "../hooks/useTargetFocusedPosition";
 import { hoverHandlers } from "../util/hoverHandlers";
 import { ClickIndicator } from "./ClickIndicator";
+import { useSectionsContext } from "../contexts/Sections";
+import { SECTIONS } from "../constants/sections";
 
 interface MinifigureGLTF extends Partial<ObjectMap> {
   animations: (AnimationClip & { name: "typing" | "main" })[];
@@ -18,10 +20,13 @@ const WorkExperienceMinifigure = ({
 }: Omit<ThreeElements["group"], "position"> & { model: string; position: Vector3Tuple }) => {
   const modelPath = new URL(`../assets/${model}.glb`, import.meta.url).href;
   const { open } = useModalContext();
+  const { activeSection } = useSectionsContext();
+  const isActiveSection = activeSection === SECTIONS.workExperience;
+
   const gltf = useGLTF<MinifigureGLTF>(modelPath);
   const { actions } = useAnimations(gltf);
-  const ref = useRef<Group>(null!);
 
+  const ref = useRef<Group>(null!);
   const [isFocused, setIsFocused] = useState(false);
 
   const origin = new Vector3(...props.position);
@@ -36,9 +41,14 @@ const WorkExperienceMinifigure = ({
   };
 
   useEffect(() => {
+    if (!isActiveSection) {
+      actions.main.fadeOut(0.5).stop();
+      actions.typing.fadeOut(0.5).stop();
+      return;
+    }
     actions[isFocused ? "main" : "typing"].reset().fadeIn(0.5).play();
     actions[isFocused ? "typing" : "main"].fadeOut(0.5);
-  }, [actions, isFocused]);
+  }, [actions, isFocused, isActiveSection]);
 
   const accumulator = useRef(0);
   useFrame(({ clock }, delta) => {

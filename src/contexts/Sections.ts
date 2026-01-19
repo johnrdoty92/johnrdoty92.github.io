@@ -1,8 +1,9 @@
 import { createContext, useContext } from "react";
+import type { Section } from "../constants/sections";
 
 type SectionsContextValue = {
   section: number;
-  activeSection: 0 | 1 | 2 | 3;
+  activeSection: Section;
   rotate: (direction: 1 | -1) => void;
 };
 

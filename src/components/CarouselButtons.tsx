@@ -1,9 +1,10 @@
-import { MathUtils } from "three";
 import { IS_TOUCH_DEVICE } from "../constants/device";
 import { useSectionsContext } from "../contexts/Sections";
 import type { PropsWithChildren } from "react";
+import type { Section } from "../constants/sections";
+import { clampAsSectionValue } from "../util/clampAsSectionValue";
 
-const SECTIONS = {
+const SECTION_LABELS: Record<Section, string> = {
   0: "Skills",
   1: "Contacts",
   2: "Work Projects",
@@ -37,8 +38,8 @@ export const CarouselButtons = ({ children }: PropsWithChildren) => {
 
   if (IS_TOUCH_DEVICE) return children;
 
-  const next = SECTIONS[MathUtils.euclideanModulo(activeSection - 1, 4) as 0 | 1 | 2 | 3];
-  const previous = SECTIONS[MathUtils.euclideanModulo(activeSection + 1, 4) as 0 | 1 | 2 | 3];
+  const next = SECTION_LABELS[clampAsSectionValue(activeSection - 1)];
+  const previous = SECTION_LABELS[clampAsSectionValue(activeSection + 1)];
 
   return (
     <>

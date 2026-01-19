@@ -5,6 +5,8 @@ import { useEffect, useRef } from "react";
 import { useAnimations, type OnFinished } from "../hooks/useAnimations";
 import type { SOCIAL_MEDIA_PROPS } from "../constants/socialMedia";
 import { hoverHandlers } from "../util/hoverHandlers";
+import { useSectionsContext } from "../contexts/Sections";
+import { SECTIONS } from "../constants/sections";
 
 const getRandomTimeout = (duration = 2500) => Math.random() * duration;
 
@@ -33,9 +35,18 @@ export function SocialMediaMinifigure({
   const { mixer, actions } = useAnimations(gltf);
   const timeout = useRef<number | null>(null);
 
+  const { activeSection } = useSectionsContext();
+  const isActiveSection = activeSection === SECTIONS.contact;
+
   useEffect(() => {
     const action = actions[animation];
     action.loop = LoopOnce;
+
+    if (!isActiveSection) {
+      action.fadeOut(0.5).stop();
+      return;
+    }
+
     timeout.current = queueAction(action);
 
     const handleFinished: OnFinished = ({ action }) => (timeout.current = queueAction(action));
@@ -45,7 +56,7 @@ export function SocialMediaMinifigure({
       if (timeout.current !== null) clearTimeout(timeout.current);
       mixer.removeEventListener("finished", handleFinished);
     };
-  }, [mixer, actions]);
+  }, [mixer, actions, isActiveSection]);
 
   return (
     <group
