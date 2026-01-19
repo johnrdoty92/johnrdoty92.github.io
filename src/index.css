@@ -5,7 +5,6 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -25,6 +24,27 @@ html {
   overscroll-behavior: none;
   overflow: hidden;
   font-size: 100%;
+}
+
+body {
+  background-color: var(--dark);
+  transition: background-color 300ms ease;
+}
+
+.skills {
+  background-color: var(--dark);
+}
+
+.contact {
+  background-color: var(--secondary);
+}
+
+.workExperience {
+  background-color: var(--focus);
+}
+
+.workProject {
+  background-color: var(--primary);
 }
 
 * {
