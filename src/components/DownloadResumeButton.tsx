@@ -132,7 +132,7 @@ const DownloadResumeButton = () => {
   };
 
   return (
-    <button onClick={handleDownload}>{isDownloading ? "Downloading..." : "Download Resume"}</button>
+    <button className="download" onClick={handleDownload}>{isDownloading ? "Downloading..." : "Download Resume"}</button>
   );
 };
 

@@ -1,6 +1,7 @@
 import { MathUtils } from "three";
 import { IS_TOUCH_DEVICE } from "../constants/device";
 import { useSectionsContext } from "../contexts/Sections";
+import type { PropsWithChildren } from "react";
 
 const SECTIONS = {
   0: "Skills",
@@ -31,24 +32,25 @@ const Chrevron = ({ direction }: { direction: "right" | "left" }) => (
   </svg>
 );
 
-export const CarouselButtons = () => {
+export const CarouselButtons = ({ children }: PropsWithChildren) => {
   const { activeSection, rotate } = useSectionsContext();
 
-  if (IS_TOUCH_DEVICE) return null;
+  if (IS_TOUCH_DEVICE) return children;
 
   const next = SECTIONS[MathUtils.euclideanModulo(activeSection - 1, 4) as 0 | 1 | 2 | 3];
   const previous = SECTIONS[MathUtils.euclideanModulo(activeSection + 1, 4) as 0 | 1 | 2 | 3];
 
   return (
-    <div className="carousel">
-      <button onClick={() => rotate(1)}>
+    <>
+      <button className="carousel-button" onClick={() => rotate(1)}>
         <Chrevron direction="left" />
         <p>{previous}</p>
       </button>
-      <button onClick={() => rotate(-1)}>
+      {children}
+      <button className="carousel-button" onClick={() => rotate(-1)}>
         <p>{next}</p>
         <Chrevron direction="right" />
       </button>
-    </div>
+    </>
   );
 };

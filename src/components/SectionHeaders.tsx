@@ -19,7 +19,9 @@ declare module "@react-three/fiber" {
 
 export const SectionHeaders = () => {
   const { height } = useRotatingDisplayContext();
-  const [x, y, z] = [brickWidth, height - 2.6, brickWidth];
+  const isMobile = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
+  const heightOffset = isMobile ? 2.6 : 3.6;
+  const [x, y, z] = [brickWidth, height - heightOffset, brickWidth];
   return (
     <Suspense fallback={<></>}>
       <Header label="Skills" position={[x + 1, y, z]} />

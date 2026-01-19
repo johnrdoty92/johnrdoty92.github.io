@@ -11,6 +11,10 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --border-radius: 24px;
+  --primary: #646cff;
+  --secondary: #242424;
 }
 
 html {
@@ -33,7 +37,7 @@ body,
 
 button,
 a {
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   line-height: 1;
@@ -89,20 +93,53 @@ dialog::backdrop {
 }
 
 .interaction-area {
+  pointer-events: none;
   position: fixed;
   z-index: 1;
-  bottom: 10%;
-  width: 100%;
+  inset: 0;
+  padding: 1em;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1em;
 }
 
-input[type="text"] {
-  /* TODO: handle focus styles */
-  padding: 1em;
+.interaction-area :is(.search, button) {
+  pointer-events: all;
+}
+
+.search {
   font-size: 1rem;
+  display: flex;
+  align-items: center;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  margin-bottom: auto;
+  padding: 0.6em 1.2em;
+  outline: 1px solid rgba(255, 255, 255, 0.5);
+  background-color: var(--secondary);
+  transition: outline 250ms ease;
+}
+
+.search:focus-within {
+  outline: 1px solid var(--primary);
+}
+
+.search input[type="text"] {
+  outline: none;
+  border: none;
+  background: none;
+}
+
+.search .icon {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.5);
+  transition: stroke 250ms ease;
+}
+
+.search:focus-within .icon {
+  stroke: var(--primary);
+
 }
 
 p.swipe-prompt {
@@ -116,25 +153,28 @@ p.swipe-prompt.acknowledged {
   display: none;
 }
 
-.carousel {
+.actions {
   font-size: 0.875rem;
   width: 100%;
   margin-inline: auto;
-  padding-inline: 1em;
   display: flex;
-  justify-content: space-between;
-  max-width: 1000px;
+  justify-content: center;
+  max-width: 850px;
 }
 
-.carousel button {
+.actions .download {
+  margin-inline: auto
+}
+
+.carousel-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5em;
+  padding: 0.6em 0.6em;
 }
 
-.carousel p {
-  width: min-content;
+.carousel-button p {
+  padding-inline: 0.6em;
 }
 
 @media screen and (min-width: 600px) {
@@ -150,6 +190,10 @@ p.swipe-prompt.acknowledged {
   dialog.modal-visible {
     top: 0%;
     right: 0%;
+  }
+
+  .interaction-area {
+    padding: 1em 1em 3em;
   }
 }
 

@@ -8,12 +8,15 @@ const DownloadResumeButton = lazy(() => import("../components/DownloadResumeButt
 export const InteractionArea = () => {
   return (
     <div className="interaction-area">
-      <SwipePrompt />
-      <CarouselButtons />
       <Search />
-      <Suspense fallback={<button disabled>Loading Resume...</button>}>
-        <DownloadResumeButton />
-      </Suspense>
+      <SwipePrompt />
+      <div className="actions">
+        <CarouselButtons>
+          <Suspense fallback={<button disabled>Loading Resume...</button>}>
+            <DownloadResumeButton />
+          </Suspense>
+        </CarouselButtons>
+      </div>
     </div>
   );
 };
