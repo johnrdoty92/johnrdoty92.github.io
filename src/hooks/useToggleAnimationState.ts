@@ -25,8 +25,6 @@ export const useToggleAnimationState = (
     if (delayAccumulator.current >= delay) {
       const scaledDelta = speed * (isToggled ? delta : -delta);
       accumulator.current = MathUtils.clamp(accumulator.current + scaledDelta, 0, 1);
-      const isCompleteTransition = accumulator.current === (isToggled ? 1 : 0);
-      if (isCompleteTransition) return;
       const alpha = MathUtils.smoothstep(accumulator.current, 0, 1);
       animate(alpha);
     } else {
