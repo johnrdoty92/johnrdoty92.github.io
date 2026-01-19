@@ -12,7 +12,13 @@ export const InteractionArea = () => {
       <SwipePrompt />
       <div className="actions">
         <CarouselButtons>
-          <Suspense fallback={<button disabled>Loading Resume...</button>}>
+          <Suspense
+            fallback={
+              <button disabled className="download">
+                Loading Resume...
+              </button>
+            }
+          >
             <DownloadResumeButton />
           </Suspense>
         </CarouselButtons>

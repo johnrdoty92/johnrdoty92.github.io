@@ -13,8 +13,11 @@
   -moz-osx-font-smoothing: grayscale;
 
   --border-radius: 24px;
-  --primary: #646cff;
-  --secondary: #242424;
+  --light: #EAE2B7;
+  --focus: #FCBF49;
+  --primary: #F77F00;
+  --secondary: #D62828;
+  --dark: #003049;
 }
 
 html {
@@ -38,27 +41,27 @@ body,
 button,
 a {
   border-radius: var(--border-radius);
-  border: 1px solid transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 0.6em 1.2em;
   line-height: 1;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--dark);
   cursor: pointer;
   transition: border-color 0.25s;
 }
 
 button:hover,
 a:hover {
-  border-color: #646cff;
+  border-color: var(--primary);
 }
 
 button:focus,
 button:focus-visible,
 a:focus,
 a:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 4px auto var(--focus);
 }
 
 a {
@@ -115,31 +118,31 @@ dialog::backdrop {
   border-radius: var(--border-radius);
   font-size: 1rem;
   margin-bottom: auto;
-  padding: 0.6em 1.2em;
-  outline: 1px solid rgba(255, 255, 255, 0.5);
-  background-color: var(--secondary);
+  padding: 0.5em 1em;
+  outline: 1px solid var(--dark);
+  background-color: var(--light);
   transition: outline 250ms ease;
 }
 
+.search .icon {
+  fill: none;
+  stroke: var(--dark);
+  transition: stroke 250ms ease;
+}
+
 .search:focus-within {
-  outline: 1px solid var(--primary);
+  outline: 1px solid var(--secondary);
+}
+
+.search:focus-within .icon {
+  stroke: var(--secondary);
 }
 
 .search input[type="text"] {
   outline: none;
   border: none;
   background: none;
-}
-
-.search .icon {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.5);
-  transition: stroke 250ms ease;
-}
-
-.search:focus-within .icon {
-  stroke: var(--primary);
-
+  color: var(--secondary);
 }
 
 p.swipe-prompt {
@@ -193,7 +196,7 @@ p.swipe-prompt.acknowledged {
   }
 
   .interaction-area {
-    padding: 1em 1em 3em;
+    padding: 0.5em 1em 3em;
   }
 }
 
