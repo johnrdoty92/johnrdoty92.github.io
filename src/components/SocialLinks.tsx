@@ -4,6 +4,8 @@ import { useThree } from "@react-three/fiber";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { MathUtils } from "three";
 import { SOCIAL_MEDIA_PROPS } from "../constants/socialMedia";
+import { useMediaQuery } from "../hooks/useMediaQuery";
+import { MOBILE_BREAKPOINT_QUERY } from "../constants/styles";
 
 const MINIFIGURE_DIMENSIONS = {
   width: 2.5,
@@ -12,19 +14,17 @@ const MINIFIGURE_DIMENSIONS = {
 
 export const SocialLinks = () => {
   const originToCameraDistance = useThree(({ camera }) => camera).position.length();
-  const screenWidth = useThree((state) => state.size.width);
   const { width: wallWidth } = useRotatingDisplayContext();
 
-  const isDown600 = screenWidth < 600;
+  const isMobile = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
   const origin = MathUtils.clamp(
-    isDown600 ? wallWidth / 2 : wallWidth,
+    isMobile ? wallWidth / 2 : wallWidth,
     MINIFIGURE_DIMENSIONS.depth,
     Math.floor(originToCameraDistance / 2),
   );
 
   return (
-    // TODO: handle fallback
-    <Suspense fallback={<></>}>
+    <>
       {SOCIAL_MEDIA_PROPS.map((props, i) => {
         const isEven = i % 2 === 0;
         const rotationY = isEven ? 0 : -Math.PI / 2;
@@ -33,9 +33,12 @@ export const SocialLinks = () => {
         const x = isEven ? -origin - positionOffset : -origin;
         const z = isEven ? origin : origin + positionOffset;
         return (
-          <SocialMediaMinifigure key={i} {...props} position={[x, 0, z]} rotation-y={rotationY} />
+          // TODO: handle fallback
+          <Suspense fallback={<></>}>
+            <SocialMediaMinifigure key={i} {...props} position={[x, 0, z]} rotation-y={rotationY} />
+          </Suspense>
         );
       })}
-    </Suspense>
+    </>
   );
 };

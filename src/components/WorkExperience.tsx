@@ -1,5 +1,5 @@
 import { useFrame, type ObjectMap, type ThreeElements, type ThreeEvent } from "@react-three/fiber";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState, type ComponentProps } from "react";
 import { useGLTF } from "../hooks/useGLTF";
 import { useAnimations } from "../hooks/useAnimations";
 import { MathUtils, Vector3, type AnimationClip, type Group, type Vector3Tuple } from "three";
@@ -9,21 +9,21 @@ import { hoverHandlers } from "../util/hoverHandlers";
 import { ClickIndicator } from "./ClickIndicator";
 import { useSectionsContext } from "../contexts/Sections";
 import { SECTIONS } from "../constants/sections";
+import { getAssetUrl } from "../util/getAssetUrl";
 
 interface MinifigureGLTF extends Partial<ObjectMap> {
   animations: (AnimationClip & { name: "typing" | "main" })[];
 }
 
-const WorkExperienceMinifigure = ({
+const Minifigure = ({
   model,
   ...props
 }: Omit<ThreeElements["group"], "position"> & { model: string; position: Vector3Tuple }) => {
-  const modelPath = new URL(`../assets/${model}.glb`, import.meta.url).href;
   const { open } = useModalContext();
   const { activeSection } = useSectionsContext();
   const isActiveSection = activeSection === SECTIONS.workExperience;
 
-  const gltf = useGLTF<MinifigureGLTF>(modelPath);
+  const gltf = useGLTF<MinifigureGLTF>(getAssetUrl(model));
   const { actions } = useAnimations(gltf);
 
   const ref = useRef<Group>(null!);
@@ -92,6 +92,14 @@ const WorkExperienceMinifigure = ({
   );
 };
 
+const WorkExperienceMinifigure = (props: ComponentProps<typeof Minifigure>) => {
+  return (
+    <Suspense fallback={<></>}>
+      <Minifigure {...props} />
+    </Suspense>
+  );
+};
+
 export const WorkExperience = () => {
   return (
     <Suspense fallback={<></>}>
@@ -102,8 +110,8 @@ export const WorkExperience = () => {
       />
       <WorkExperienceMinifigure model="Junior" position={[5.5, 0, -3]} rotation={[0, Math.PI, 0]} />
       <WorkExperienceMinifigure model="Senior" position={[2.5, 1, -3]} rotation={[0, Math.PI, 0]} />
-      <mesh position={[2.5, 0, -3]}>
-        <boxGeometry args={[3, 2, 2]} />
+      <mesh position={[2.5, 0.5, -3]}>
+        <boxGeometry args={[3, 1, 2]} />
         <meshStandardMaterial color="black" />
       </mesh>
     </Suspense>
