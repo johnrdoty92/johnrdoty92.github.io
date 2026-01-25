@@ -7,9 +7,8 @@ import {
   type MeshStandardMaterial,
   TextureLoader,
   Vector3,
-  type Vector3Tuple,
 } from "three";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useGLTF } from "../hooks/useGLTF";
 import { getAssetUrl } from "../util/getAssetUrl";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
@@ -17,6 +16,7 @@ import { useModalContext } from "../contexts/Modal";
 import { useTargetFocusedPosition } from "../hooks/useTargetFocusedPosition";
 import { hoverHandlers } from "../util/hoverHandlers";
 import { ClickIndicator } from "./ClickIndicator";
+import { brickHeight, studDepth } from "../util/brickGeometry";
 
 type LaptopGraph = {
   nodes: { laptop: Mesh; stool: Mesh };
@@ -24,11 +24,7 @@ type LaptopGraph = {
 };
 
 const laptopModelPath = getAssetUrl("Laptop");
-const GENERATED_LAPTOP_ORIGIN: Vector3Tuple = [0, 1.88, 0.168];
-const GENERATED_LAPTOP_SCALE = 0.623;
-const GENERATED_STOOL_ORIGIN: Vector3Tuple = [0, 0.704, 0];
-const GENERATED_STOOL_SCALE = 0.703;
-const laptopOrigin = new Vector3(...GENERATED_LAPTOP_ORIGIN);
+const laptopOrigin = new Vector3(0, (brickHeight + studDepth) * 2, 0);
 const facingCenter = (5 * Math.PI) / 4;
 
 const amplitude = 0.1;
@@ -56,15 +52,13 @@ export function Laptop({
   const laptop = useRef<Mesh>(null!);
   const screenTexture = useLoader(TextureLoader, getAssetUrl(screen, ".png"));
   const { nodes, materials } = useGLTF<LaptopGraph>(laptopModelPath);
-  const laptopMaterial = useMemo(() => materials.laptop.clone(), [materials]);
-  useEffect(() => () => laptopMaterial.dispose(), [laptopMaterial]);
 
   const [isFocused, setIsFocused] = useState(false);
 
   const length = Math.max(width, MIN_OBJECT_CLEARANCE);
   const spacing = Math.max(MIN_OBJECT_CLEARANCE, width / 2 - 0.5);
   const transforms = getTransforms(length, spacing)[position];
-  const focusedPosition = useTargetFocusedPosition(0.85, { x: 0, y: 0.25, z: 0 });
+  const focusedPosition = useTargetFocusedPosition(0.85);
   const { x, y, z } = focusedPosition;
   focusedPosition.set(z, y, x);
 
@@ -102,8 +96,6 @@ export function Laptop({
     laptop.current.rotation.y = MathUtils.lerp(0, -rotationDiff, alpha);
   });
 
-  useEffect(() => () => laptopMaterial.dispose(), [laptopMaterial]);
-
   return (
     <group
       {...props}
@@ -114,21 +106,18 @@ export function Laptop({
       onPointerMissed={handleMiss}
     >
       <ClickIndicator position={[0, 2.75, 0]} />
-      <mesh
-        ref={laptop}
-        geometry={nodes.laptop.geometry}
-        material={laptopMaterial}
-        material-map={screenTexture}
-        material-map-flipY={false}
-        position={GENERATED_LAPTOP_ORIGIN}
-        scale={GENERATED_LAPTOP_SCALE}
-      />
+      <mesh ref={laptop} geometry={nodes.laptop.geometry}>
+        <meshStandardMaterial
+          map={screenTexture}
+          map-flipY={false}
+          metalness={0.8}
+          roughness={0.5}
+        />
+      </mesh>
       <mesh
         geometry={nodes.stool.geometry}
         material={materials.black}
-        position={GENERATED_STOOL_ORIGIN}
         rotation-y={position === "center" ? Math.PI / 4 : 0}
-        scale={GENERATED_STOOL_SCALE}
       />
     </group>
   );
