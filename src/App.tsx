@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber";
-import { useRef } from "react";
+import { Suspense, useRef } from "react";
 import { Walls } from "./components/Walls";
 import { Environment } from "./components/Environment";
 import { Floor } from "./components/Floor";
@@ -15,6 +15,7 @@ import { InteractionArea } from "./components/InteractionArea";
 import { SectionHeaders } from "./components/SectionHeaders";
 import { Lighting } from "./components/Lighting";
 import { Fog } from "./components/Fog";
+import { Loader } from "./components/Loader";
 
 function App() {
   const rotatingDisplay = useRef<RotatingDisplayHandle>(null!);
@@ -29,19 +30,21 @@ function App() {
           onPointerMove={() => rotatingDisplay.current.onDrag()}
           onPointerUp={() => rotatingDisplay.current.onDragEnd()}
         >
-          {import.meta.env.DEV && <Stats />}
-          <Fog />
-          <Environment />
-          <Lighting />
-          <RotatingDisplay ref={rotatingDisplay}>
-            <SectionHeaders />
-            <Skills />
-            <WorkExperience />
-            <WorkProjects />
-            <SocialLinks />
-            <Walls />
-            <Floor />
-          </RotatingDisplay>
+          <Suspense fallback={<Loader />}>
+            {import.meta.env.DEV && <Stats />}
+            <Fog />
+            <Environment />
+            <Lighting />
+            <RotatingDisplay ref={rotatingDisplay}>
+              <SectionHeaders />
+              <Skills />
+              <WorkExperience />
+              <WorkProjects />
+              <SocialLinks />
+              <Walls />
+              <Floor />
+            </RotatingDisplay>
+          </Suspense>
         </Canvas>
       </Modal>
     </SectionsProvider>

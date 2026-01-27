@@ -1,7 +1,7 @@
 import { useThree } from "@react-three/fiber";
 import { useCallback } from "react";
 
-type WaveConfig = {
+export type WaveConfig = {
   frequency: number;
   amplitude: number;
   phaseShift: number;
@@ -17,9 +17,22 @@ const waveDefaults: WaveConfig = {
 
 export const useWiggle = (config: Partial<WaveConfig> = {}) => {
   const get = useThree((state) => state.get);
-  const { frequency, amplitude, phaseShift, verticalShift } = { ...waveDefaults, ...config };
-  return useCallback(() => {
-    const elapsed = get().clock.getElapsedTime();
-    return amplitude * (Math.sin(elapsed * frequency) + phaseShift) + verticalShift;
-  }, [get, frequency, amplitude, phaseShift, verticalShift]);
+  const wiggleConfig = { ...waveDefaults, ...config };
+  return useCallback(
+    (override?: Partial<WaveConfig>) => {
+      const elapsed = get().clock.getElapsedTime();
+      const amplitude = override?.amplitude ?? wiggleConfig.amplitude;
+      const frequency = override?.frequency ?? wiggleConfig.frequency;
+      const phaseShift = override?.phaseShift ?? wiggleConfig.phaseShift;
+      const verticalShift = override?.verticalShift ?? wiggleConfig.verticalShift;
+      return amplitude * Math.sin((elapsed + phaseShift) * frequency) + verticalShift;
+    },
+    [
+      get,
+      wiggleConfig.frequency,
+      wiggleConfig.amplitude,
+      wiggleConfig.phaseShift,
+      wiggleConfig.verticalShift,
+    ],
+  );
 };
