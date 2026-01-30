@@ -1,12 +1,5 @@
 import { useLayoutEffect, useRef } from "react";
-import {
-  Color,
-  MathUtils,
-  Matrix4,
-  MeshStandardMaterial,
-  Vector3,
-  type InstancedMesh,
-} from "three";
+import { Color, InstancedMesh, MathUtils, Matrix4, MeshStandardMaterial, Vector3 } from "three";
 import { brickGeometry, brickHeight, brickLength } from "../util/brickGeometry";
 import { useFrame, type ThreeElements } from "@react-three/fiber";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
@@ -41,64 +34,62 @@ const getGradientColor = (index: number, total: number, colors: Color[], out: Co
   out.lerpColors(colors[colorIndex1], colors[colorIndex2], MathUtils.seededRandom(index));
 };
 
-type WallProps = {
-  startZero?: boolean;
-  delay?: number;
-} & ThreeElements["group"];
+const wallsProps: ThreeElements["mesh"][] = [
+  { position: [0.5, 0, 1] },
+  { position: [1, 0, 0.5], rotation: [0, Math.PI / 2, 0] },
+  { position: [-1, 0, -0.5], rotation: [0, (3 * Math.PI) / 2, 0] },
+  { position: [-0.5, 0, -1], rotation: [0, Math.PI, 0] },
+];
 
-const Wall = ({ startZero = false, delay = 1, ...props }: WallProps) => {
+export const Walls = () => {
+  const instances = wallsProps.map(() => useRef<InstancedMesh>(null!));
   const { width: bricksPerRow, height } = useRotatingDisplayContext();
-  const instances = useRef<InstancedMesh>(null!);
 
   const layerCount = Math.floor(height / brickHeight - 1);
   const count = layerCount * bricksPerRow;
-  const progress = useRef(-delay);
+  // TODO: need a 0 to 1 way of handling the animation
+  // figure out how much of that 0 to 1 a brick is allowed to take up
+  // but chunking it up into some combo of 1 / count and an overlap.
+  const progress = useRef(0);
   const stagger = 0.05;
   const duration = 0.75;
 
   useLayoutEffect(() => {
     for (let i = 0; i < count; i++) {
-      getTargetPosition(i, bricksPerRow, startZero, target);
-      target.y += startingHeightOffset;
-      mtx.setPosition(target);
-      instances.current.setMatrixAt(i, mtx);
-      getGradientColor(i, count, gradientStops, color);
-      instances.current.setColorAt(i, color);
+      for (let j = 0; j < instances.length; j++) {
+        getTargetPosition(i, bricksPerRow, j % 2 === 1, target);
+        target.y += startingHeightOffset;
+        mtx.setPosition(target);
+        instances[j].current.setMatrixAt(i, mtx);
+        getGradientColor(i, count, gradientStops, color);
+        instances[j].current.setColorAt(i, color);
+      }
     }
   }, [count, layerCount, bricksPerRow]);
 
+  // TODO: pull this into a useImperativeHandle to control from the outside
   useFrame((_, delta) => {
     progress.current += delta;
-    // TODO: bail out early if animation is complete
-    for (let i = 0; i < count; i++) {
-      const threshold = progress.current - i * stagger;
-      if (threshold < 0) continue;
-      const alpha = MathUtils.smootherstep(threshold, 0, duration);
-      getTargetPosition(i, bricksPerRow, startZero, target);
-      const currentY = MathUtils.lerp(height, target.y, alpha);
-      instances.current.setMatrixAt(i, mtx.setPosition(target.setY(currentY)));
+    for (let j = 0; j < instances.length; j++) {
+      for (let i = 0; i < count; i++) {
+        const threshold = progress.current - i * stagger;
+        if (threshold < 0) continue;
+        const alpha = MathUtils.smootherstep(threshold, 0, duration);
+        getTargetPosition(i, bricksPerRow, j % 2 === 1, target);
+        const currentY = MathUtils.lerp(height, target.y, alpha);
+        instances[j].current.setMatrixAt(i, mtx.setPosition(target.setY(currentY)));
+      }
+      instances[j].current.instanceMatrix.needsUpdate = true;
+      instances[j].current.computeBoundingSphere();
     }
-    instances.current.instanceMatrix.needsUpdate = true;
-    instances.current.computeBoundingSphere();
   });
 
-  return (
-    <group
+  return wallsProps.map((props, i) => (
+    <instancedMesh
+      key={i}
       {...props}
-      onClick={(e) => e.stopPropagation()}
-      onPointerOver={(e) => e.stopPropagation()}
-      onPointerOut={(e) => e.stopPropagation()}
-    >
-      <instancedMesh ref={instances} args={[brickGeometry, wallMaterial, count]} />
-    </group>
-  );
+      ref={instances[i]}
+      args={[brickGeometry, wallMaterial, count]}
+    />
+  ));
 };
-
-const walls: WallProps[] = [
-  { delay: 0.125, position: [0.5, 0, 1] },
-  { delay: 0.125 / 2, startZero: true, position: [1, 0, 0.5], rotation: [0, Math.PI / 2, 0] },
-  { delay: 0.125, position: [-1, 0, -0.5], rotation: [0, (3 * Math.PI) / 2, 0] },
-  { delay: 0.25, startZero: true, position: [-0.5, 0, -1], rotation: [0, Math.PI, 0] },
-];
-
-export const Walls = () => walls.map((props, i) => <Wall key={i} {...props} />);
