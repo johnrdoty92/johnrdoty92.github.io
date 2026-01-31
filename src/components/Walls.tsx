@@ -68,14 +68,16 @@ export const Walls = () => {
   }, [count, layerCount, bricksPerRow]);
 
   // TODO: pull this into a useImperativeHandle to control from the outside
+  // totalProgress will be passed in, removing the need for the progress ref
   useFrame((_, delta) => {
     progress.current = MathUtils.clamp(progress.current + delta, 0, duration);
+    const totalProgress = progress.current / duration;
     for (let j = 0; j < instances.length; j++) {
       for (let i = 0; i < count; i++) {
-        const chunk = (1 / count) * duration;
+        const chunk = 1 / count;
         const start = chunk * i - chunk * i * overlap;
-        const stop = chunk * (i + 1) + overlap * (duration - chunk * (i + 1));
-        const alpha = MathUtils.smootherstep(progress.current, start, stop);
+        const stop = chunk * (i + 1) + overlap * (1 - chunk * (i + 1));
+        const alpha = MathUtils.smootherstep(totalProgress, start, stop);
         getTargetPosition(i, bricksPerRow, j % 2 === 1, target);
         // TODO: adjust fog for height?
         const startingHeight = 15;
