@@ -18,12 +18,15 @@ const getTargetPosition = (
   index: number,
   bricksPerRow: number,
   startZero: boolean,
+  // TODO: probably don't need an out?
   out: Vector3,
 ) => {
   const rowLevel = Math.floor(index / bricksPerRow);
   const y = rowLevel * brickHeight;
   const offset = rowLevel % 2 === (startZero ? 0 : 1) ? 1 : 0;
-  const z = (index % bricksPerRow) * brickLength + offset;
+  const isOddRow = rowLevel % 2 === 1;
+  const rowIndex = isOddRow ? index % bricksPerRow : bricksPerRow - 1 - (index % bricksPerRow);
+  const z = rowIndex * brickLength + offset;
   out.set(0, y, z);
 };
 
@@ -47,12 +50,9 @@ export const Walls = () => {
 
   const layerCount = Math.floor(height / brickHeight - 1);
   const count = layerCount * bricksPerRow;
-  // TODO: need a 0 to 1 way of handling the animation
-  // figure out how much of that 0 to 1 a brick is allowed to take up
-  // but chunking it up into some combo of 1 / count and an overlap.
   const progress = useRef(0);
-  const stagger = 0.05;
-  const duration = 0.75;
+  const overlap = 0.1;
+  const duration = 5;
 
   useLayoutEffect(() => {
     for (let i = 0; i < count; i++) {
@@ -69,15 +69,18 @@ export const Walls = () => {
 
   // TODO: pull this into a useImperativeHandle to control from the outside
   useFrame((_, delta) => {
-    progress.current += delta;
+    progress.current = MathUtils.clamp(progress.current + delta, 0, duration);
     for (let j = 0; j < instances.length; j++) {
       for (let i = 0; i < count; i++) {
-        const threshold = progress.current - i * stagger;
-        if (threshold < 0) continue;
-        const alpha = MathUtils.smootherstep(threshold, 0, duration);
+        const chunk = (1 / count) * duration;
+        const start = chunk * i - chunk * i * overlap;
+        const stop = chunk * (i + 1) + overlap * (duration - chunk * (i + 1));
+        const alpha = MathUtils.smootherstep(progress.current, start, stop);
         getTargetPosition(i, bricksPerRow, j % 2 === 1, target);
-        const currentY = MathUtils.lerp(height, target.y, alpha);
-        instances[j].current.setMatrixAt(i, mtx.setPosition(target.setY(currentY)));
+        // TODO: adjust fog for height?
+        const startingHeight = 15;
+        const offsetY = (1 - alpha) * startingHeight + target.y;
+        instances[j].current.setMatrixAt(i, mtx.setPosition(target.setY(offsetY)));
       }
       instances[j].current.instanceMatrix.needsUpdate = true;
       instances[j].current.computeBoundingSphere();
