@@ -7,33 +7,48 @@ import { Walls } from "./Walls";
 import { WorkExperience } from "./WorkExperience";
 import { WorkProjects } from "./WorkProjects";
 import { useRef } from "react";
-import { MathUtils } from "three";
+import { Group, MathUtils } from "three";
 import type { AnimationHandle } from "../hooks/useAnimationHandle";
 
+const overlap = 0.25;
+const durations: [number, number, number, number] = [0.65, 2.5, 2, 0.75];
+const { timings } = durations.reduce<{
+  timings: { min: number; max: number }[];
+  currentStart: number;
+}>(
+  (result, duration) => {
+    result.timings.push({ min: result.currentStart, max: result.currentStart + duration });
+    result.currentStart = result.currentStart + duration - overlap;
+    return result;
+  },
+  { timings: [], currentStart: 0 },
+);
+
 export const Scene = () => {
-  const progress = useRef(0);
+  const acc = useRef(0);
   const floor = useRef<AnimationHandle>(null!);
   const headers = useRef<AnimationHandle>(null!);
   const skills = useRef<AnimationHandle>(null!);
   const walls = useRef<AnimationHandle>(null!);
+  const sections = useRef<Group>(null!);
 
   useFrame((_, delta) => {
-    progress.current += delta;
-    floor.current.animate(MathUtils.clamp(progress.current / 1, 0, 1));
-    headers.current.animate(MathUtils.clamp(progress.current / 1, 0, 1));
-    const skillsAnimationDuration = 2.5;
-    skills.current.animate(MathUtils.clamp(progress.current / skillsAnimationDuration, 0, 1));
-    const wallsAnimationDuration = 5;
-    walls.current.animate(MathUtils.clamp(progress.current / wallsAnimationDuration, 0, 1));
-    // TODO: dispatch action to render models when animations are done?
+    acc.current += delta;
+    floor.current.animate(MathUtils.smootherstep(acc.current, timings[0].min, timings[0].max));
+    walls.current.animate(MathUtils.smootherstep(acc.current, timings[1].min, timings[1].max));
+    skills.current.animate(MathUtils.smootherstep(acc.current, timings[2].min, timings[2].max));
+    headers.current.animate(MathUtils.smootherstep(acc.current, timings[3].min, timings[3].max));
+    sections.current.visible = acc.current >= timings[3].max;
   });
   return (
     <>
       <SectionHeaders ref={headers} />
       <Skills ref={skills} />
-      <WorkExperience />
-      <WorkProjects />
-      <SocialLinks />
+      <group ref={sections}>
+        <WorkExperience />
+        <WorkProjects />
+        <SocialLinks />
+      </group>
       <Walls ref={walls} />
       <Floor ref={floor} />
     </>
