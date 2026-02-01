@@ -8,6 +8,7 @@ import {
 } from "../util/canvasTexture";
 import { Color, MeshPhysicalMaterial, SRGBColorSpace } from "three";
 import { useToggleAnimationState } from "../hooks/useToggleAnimationState";
+import { theme } from "../constants/styles";
 
 export type BrickProps = {
   visibility: "normal" | "dimmed" | "selected";
@@ -15,8 +16,7 @@ export type BrickProps = {
   Omit<ThreeElements["mesh"], "position">;
 
 const visible = new Color("white");
-// TODO: use theme color
-const dimmed = new Color(0.04, 0.05, 0.2);
+const dimmed = new Color(theme.dark);
 
 export const Brick = ({ label, icon, color, visibility, ...props }: BrickProps) => {
   const canvas = useMemo(() => {
