@@ -9,7 +9,7 @@ import {
   Vector3,
   type PerspectiveCamera,
 } from "three";
-import { brickWidth, studGeometry, brickHeight } from "../util/brickGeometry";
+import { brickWidth, studGeometry, brickHeight, studDepth } from "../util/brickGeometry";
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import { theme } from "../constants/styles";
 import { useAnimationHandle, type AnimationHandle } from "../hooks/useAnimationHandle";
@@ -69,8 +69,8 @@ export const Floor = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
         position={[-0.5, -brickHeight, -0.5]}
         ref={onMount}
       />
-      <mesh rotation-x={-Math.PI / 2} material={studMaterial}>
-        <planeGeometry args={[gridSize, gridSize]} />
+      <mesh material={studMaterial} position-y={-studDepth / 2}>
+        <boxGeometry args={[gridSize, studDepth, gridSize]} />
       </mesh>
     </group>
   );
