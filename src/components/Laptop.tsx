@@ -1,11 +1,16 @@
-import { useFrame, useLoader, type ThreeElements, type ThreeEvent } from "@react-three/fiber";
+import {
+  useFrame,
+  useLoader,
+  useThree,
+  type ThreeElements,
+  type ThreeEvent,
+} from "@react-three/fiber";
 import {
   MathUtils,
   Matrix4,
   type Mesh,
   type MeshPhysicalMaterial,
   type MeshStandardMaterial,
-  TextureLoader,
   Vector3,
 } from "three";
 import { useRef, useState } from "react";
@@ -17,6 +22,7 @@ import { useTargetFocusedPosition } from "../hooks/useTargetFocusedPosition";
 import { hoverHandlers } from "../util/hoverHandlers";
 import { ClickIndicator } from "./ClickIndicator";
 import { brickHeight, studDepth } from "../util/brickGeometry";
+import { KTX2Loader } from "three/examples/jsm/Addons.js";
 
 type LaptopGraph = {
   nodes: { laptop: Mesh; stool: Mesh };
@@ -50,7 +56,11 @@ export function Laptop({
   const { open } = useModalContext();
 
   const laptop = useRef<Mesh>(null!);
-  const screenTexture = useLoader(TextureLoader, getAssetUrl(screen, ".png"));
+  const gl = useThree((state) => state.gl);
+  const screenTexture = useLoader(KTX2Loader, getAssetUrl(screen, ".ktx2"), (loader) => {
+    loader.detectSupport(gl);
+    loader.setTranscoderPath("/basis/");
+  });
   const { nodes, materials } = useGLTF<LaptopGraph>(laptopModelPath);
 
   const [isFocused, setIsFocused] = useState(false);
