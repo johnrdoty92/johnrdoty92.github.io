@@ -1,5 +1,7 @@
 import { useRef, type ComponentProps } from "react";
 import { SEARCH_EVENT } from "../hooks/useSearchValue";
+import { useSectionsContext } from "../contexts/Sections";
+import { SECTIONS } from "../constants/sections";
 
 const SearchIcon = (props: ComponentProps<"svg">) => {
   return (
@@ -23,10 +25,12 @@ const SearchIcon = (props: ComponentProps<"svg">) => {
 export const Search = () => {
   const debounceId = useRef<number | null>(null);
   const input = useRef<HTMLInputElement>(null);
+  const isVisible = useSectionsContext().activeSection === SECTIONS.skills;
 
   return (
-    <div className="search">
+    <div className={`search ${isVisible ? "" : "hidden"}`}>
       <input
+        disabled={!isVisible}
         ref={input}
         type="text"
         placeholder="Search skills..."

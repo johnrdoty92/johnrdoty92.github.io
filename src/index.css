@@ -91,10 +91,10 @@ a {
 
 dialog {
   padding: 0.5rem;
-  background-color: rgb(11, 20, 86);
+  background-color: var(--dark);
   border-radius: 8px;
   border: 0.5px solid white;
-  box-shadow: 0px 0px 0px rgb(131, 145, 255);
+  box-shadow: 0px 0px 0px var(--primary);
   position: absolute;
   transition: opacity 0.25s ease-in-out, top 0.25s ease-in-out, right 0.25s ease-in-out, box-shadow 0.25s ease-in-out 0.125s;
   opacity: 0;
@@ -104,11 +104,10 @@ dialog {
   height: calc(50dvh - 1rem);
 }
 
-
 dialog.modal-visible {
   opacity: 1;
   top: 50%;
-  box-shadow: 8px 8px 0px rgb(131, 145, 255);
+  box-shadow: 8px 8px 0px var(--primary);
 }
 
 dialog::backdrop {
@@ -137,11 +136,16 @@ dialog::backdrop {
   align-items: center;
   border-radius: var(--border-radius);
   font-size: 1rem;
-  margin-bottom: auto;
+  margin-top: auto;
   padding: 0.5em 1em;
   outline: 1px solid var(--dark);
   background-color: var(--light);
-  transition: outline 250ms ease;
+  transition: outline 250ms ease, opacity 250ms ease;
+  opacity: 1;
+}
+
+.search.hidden {
+  opacity: 0;
 }
 
 .search .icon {
@@ -218,8 +222,14 @@ p.swipe-prompt.acknowledged {
   .interaction-area {
     padding: 0.5em 1em 3em;
   }
+
+  .search {
+    margin-bottom: auto;
+    margin-top: unset;
+  }
 }
 
+/* TODO: handle user preferences */
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
