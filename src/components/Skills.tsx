@@ -6,8 +6,8 @@ import { useMediaQuery } from "../hooks/useMediaQuery";
 import { MOBILE_BREAKPOINT_QUERY } from "../constants/styles";
 import { SKILLS } from "../constants/skills";
 import { MathUtils, type Group } from "three";
-import { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useMemo, useRef, type RefObject } from "react";
+import { useAnimationHandle, type AnimationHandle } from "../hooks/useAnimationHandle";
 
 const fuse = new Fuse(SKILLS, { keys: ["name", "tags"], threshold: 0.25 });
 
@@ -16,7 +16,7 @@ const TARGET_ROTATION = 0;
 const STARTING_HEIGHT = 8;
 const SPACING = 2;
 
-export const Skills = () => {
+export const Skills = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
   const bricks = useRef<Group>(null!);
   const searchValue = useSearchValue();
   const results = fuse.search(searchValue);
@@ -29,42 +29,46 @@ export const Skills = () => {
   const maxDistance = (columnCount - 1) * SPACING + wallOffset;
   const maxHeight = (columnHeight - 1) * brickHeight;
 
-  const targets = SKILLS.map((_, i) => {
-    const column = Math.floor(i / columnHeight);
-    const isLastColumn = column === columnCount - 1;
-    const isOddColumn = column % 2 === 1;
-    const rotation = isLastColumn || isOddColumn ? Math.PI / 2 : 0;
-    const x = SPACING * column + wallOffset;
-    const y = maxHeight - (i % columnHeight) * brickHeight;
-    const z = maxDistance - x + wallOffset;
-    return { x, y, z, rotation, column };
-  });
+  // TODO: probably don't need memo here, just move to animation handler and update deps
+  const targets = useMemo(
+    () =>
+      SKILLS.map((_, i) => {
+        const column = Math.floor(i / columnHeight);
+        const isLastColumn = column === columnCount - 1;
+        const isOddColumn = column % 2 === 1;
+        const rotation = isLastColumn || isOddColumn ? Math.PI / 2 : 0;
+        const x = SPACING * column + wallOffset;
+        const y = maxHeight - (i % columnHeight) * brickHeight;
+        const z = maxDistance - x + wallOffset;
+        return { x, y, z, rotation, column };
+      }),
+    [columnHeight, columnCount, wallOffset, maxDistance, maxHeight, brickHeight],
+  );
 
   // TODO: sort skills so they appear from top to bottom in order of importance
   // TODO: handle placement if there's overflow. Currently starts by floating at the top
 
-  const progress = useRef(0);
   const overlap = 0.1;
-  const duration = 2.5;
-
-  useFrame((_, delta) => {
-    progress.current = MathUtils.clamp(progress.current + delta, 0, duration);
-    const totalAlpha = progress.current / duration;
-    const chunk = 1 / bricks.current.children.length;
-    bricks.current.children.forEach((brick, i) => {
-      const index = i;
-      const { x, y, z, rotation, column } = targets[index];
-      const columnTotal = (column + 1) * columnHeight - 1;
-      const animationIndex = (columnTotal - i) * columnCount + column;
-      const start = chunk * animationIndex - chunk * animationIndex * overlap;
-      const stop = chunk * (animationIndex + 1) + (1 - chunk * (animationIndex + 1)) * overlap;
-      const alpha = MathUtils.smoothstep(totalAlpha, start, stop);
-      brick.position.set(x, MathUtils.lerp(y + STARTING_HEIGHT, y, alpha), z);
-      brick.rotation.y = rotation;
-      const rotationAlpha = MathUtils.smoothstep(alpha, 0.8, 1);
-      brick.rotation.z = MathUtils.lerp(STARTING_ROTATION, TARGET_ROTATION, rotationAlpha);
-    });
-  });
+  useAnimationHandle(
+    ref,
+    (totalAlpha) => {
+      const chunk = 1 / bricks.current.children.length;
+      bricks.current.children.forEach((brick, i) => {
+        const index = i;
+        const { x, y, z, rotation, column } = targets[index];
+        const columnTotal = (column + 1) * columnHeight - 1;
+        const animationIndex = (columnTotal - i) * columnCount + column;
+        const start = chunk * animationIndex - chunk * animationIndex * overlap;
+        const stop = chunk * (animationIndex + 1) + (1 - chunk * (animationIndex + 1)) * overlap;
+        const localAlpha = MathUtils.smoothstep(totalAlpha, start, stop);
+        brick.position.set(x, MathUtils.lerp(y + STARTING_HEIGHT, y, localAlpha), z);
+        brick.rotation.y = rotation;
+        const rotationAlpha = MathUtils.smoothstep(localAlpha, 0.8, 1);
+        brick.rotation.z = MathUtils.lerp(STARTING_ROTATION, TARGET_ROTATION, rotationAlpha);
+      });
+    },
+    [targets],
+  );
 
   return (
     <group ref={bricks}>

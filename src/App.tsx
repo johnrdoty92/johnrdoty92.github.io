@@ -1,21 +1,15 @@
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useRef } from "react";
-import { Walls } from "./components/Walls";
 import { Environment } from "./components/Environment";
-import { Floor } from "./components/Floor";
 import { Stats } from "./components/Stats";
 import { RotatingDisplay, type RotatingDisplayHandle } from "./components/RotatingDisplay";
-import { WorkExperience } from "./components/WorkExperience";
-import { WorkProjects } from "./components/WorkProjects";
-import { SocialLinks } from "./components/SocialLinks";
 import { Modal } from "./components/Modal";
-import { Skills } from "./components/Skills";
 import { SectionsProvider } from "./components/SectionsProvider";
 import { InteractionArea } from "./components/InteractionArea";
-import { SectionHeaders } from "./components/SectionHeaders";
 import { Lighting } from "./components/Lighting";
 import { Fog } from "./components/Fog";
 import { Loader } from "./components/Loader";
+import { Scene } from "./components/Scene";
 
 function App() {
   const rotatingDisplay = useRef<RotatingDisplayHandle>(null!);
@@ -36,13 +30,7 @@ function App() {
             <Environment />
             <Lighting />
             <RotatingDisplay ref={rotatingDisplay}>
-              <SectionHeaders />
-              <Skills />
-              <WorkExperience />
-              <WorkProjects />
-              <SocialLinks />
-              <Walls />
-              <Floor />
+              <Scene />
             </RotatingDisplay>
           </Suspense>
         </Canvas>

@@ -10,9 +10,9 @@ import {
   type PerspectiveCamera,
 } from "three";
 import { brickWidth, studGeometry, brickHeight } from "../util/brickGeometry";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useToggleAnimationState } from "../hooks/useToggleAnimationState";
+import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import { theme } from "../constants/styles";
+import { useAnimationHandle, type AnimationHandle } from "../hooks/useAnimationHandle";
 
 const floorStartingPosition = new Vector3(10, -15, 10);
 const floorTargetPosition = new Vector3();
@@ -23,7 +23,7 @@ const mtx = new Matrix4();
 const position = new Vector3();
 const PADDING = 4;
 
-export const Floor = () => {
+export const Floor = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
   const camera = useThree((state) => state.camera as PerspectiveCamera);
   const renderer = useThree((state) => state.gl);
   const floor = useRef<Group>(null!);
@@ -37,7 +37,7 @@ export const Floor = () => {
   const [gridSize, setGridSize] = useState(getGridSize());
   const studCount = gridSize ** 2;
 
-  const ref = useCallback(
+  const onMount = useCallback(
     (instances: InstancedMesh) => {
       if (!instances) return;
       const offset = Math.floor(gridSize / 2);
@@ -51,7 +51,7 @@ export const Floor = () => {
     [gridSize],
   );
 
-  useToggleAnimationState(true, (alpha) => {
+  useAnimationHandle(ref, (alpha) => {
     floor.current.position.lerpVectors(floorStartingPosition, floorTargetPosition, alpha);
     floor.current.rotation.y = MathUtils.lerp(floorStartingRotationY, 0, alpha);
   });
@@ -67,7 +67,7 @@ export const Floor = () => {
       <instancedMesh
         args={[studGeometry, studMaterial, studCount]}
         position={[-0.5, -brickHeight, -0.5]}
-        ref={ref}
+        ref={onMount}
       />
       <mesh rotation-x={-Math.PI / 2} material={studMaterial}>
         <planeGeometry args={[gridSize, gridSize]} />
