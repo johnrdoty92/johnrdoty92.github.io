@@ -181,23 +181,38 @@ p.swipe-prompt.acknowledged {
 }
 
 .actions {
+  position: relative;
   font-size: 0.875rem;
   width: 100%;
   margin-inline: auto;
-  display: flex;
-  justify-content: center;
   max-width: 850px;
 }
 
 .actions .download {
-  margin-inline: auto
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
+/* TODO: style differently from regular button. Maybe have the text jsut be descriptive */
 .carousel-button {
+  position: absolute;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0.6em 0.6em;
+}
+
+.carousel-button.left {
+  left: 0%;
+  top: 50%;
+}
+
+.carousel-button.right {
+  right: 0%;
+  top: 50%;
 }
 
 .carousel-button p {

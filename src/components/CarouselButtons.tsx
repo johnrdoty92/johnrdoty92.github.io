@@ -43,12 +43,12 @@ export const CarouselButtons = ({ children }: PropsWithChildren) => {
 
   return (
     <>
-      <button className="carousel-button" onClick={() => rotate(1)}>
+      <button className="carousel-button left" onClick={() => rotate(1)}>
         <Chrevron direction="left" />
         <p>{previous}</p>
       </button>
       {children}
-      <button className="carousel-button" onClick={() => rotate(-1)}>
+      <button className="carousel-button right" onClick={() => rotate(-1)}>
         <p>{next}</p>
         <Chrevron direction="right" />
       </button>
