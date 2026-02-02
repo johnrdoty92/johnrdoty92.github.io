@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useSectionsContext } from "../contexts/Sections";
 import { IS_TOUCH_DEVICE } from "../constants/device";
+import { getAssetUrl } from "../util/getAssetUrl";
 
 export const SwipePrompt = () => {
   const { activeSection } = useSectionsContext();
@@ -12,5 +13,10 @@ export const SwipePrompt = () => {
   let className = "swipe-prompt";
   if (isAcknowledged.current) className += " acknowledged";
 
-  return <p className={className}>Swipe...</p>;
+  return (
+    <div className={className}>
+      <p>Swipe...</p>
+      <img className="pointer" src={getAssetUrl("pointer", ".webp")} />
+    </div>
+  );
 };

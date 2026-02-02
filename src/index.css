@@ -169,15 +169,36 @@ dialog::backdrop {
   color: var(--secondary);
 }
 
-p.swipe-prompt {
+.swipe-prompt {
   /* TODO: animate gesture */
   text-align: center;
   font-size: 2rem;
 }
 
-p.swipe-prompt.acknowledged {
+.swipe-prompt.acknowledged {
   /* TODO: animate disappear */
   display: none;
+}
+
+/* TODO: style this more like a blocking modal */
+.swipe-prompt img.pointer {
+  animation: swipe 1.5s ease-in-out infinite normal;
+}
+
+@keyframes swipe {
+  0% {
+    opacity: 0;
+    transform: translateX(100%) rotate(15deg);
+  }
+
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-100%) rotate(-15deg);
+  }
 }
 
 .actions {
