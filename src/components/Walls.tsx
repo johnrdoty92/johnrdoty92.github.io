@@ -11,7 +11,7 @@ const startingHeightOffset = 20;
 const target = new Vector3();
 const wallMaterial = new MeshStandardMaterial({ roughness: 0.2, metalness: 0 });
 const color = new Color();
-const gradientStops = [theme.dark, theme.secondary, theme.primary, theme.light].map(
+const gradientStops = [theme.dark, theme.secondary, theme.primary, theme.focus].map(
   (c) => new Color(c),
 );
 

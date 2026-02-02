@@ -11,7 +11,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --border-radius: 24px;
+  --border-radius: 3px;
   --light: #EAE2B7;
   --focus: #FCBF49;
   --primary: #F77F00;
@@ -61,27 +61,35 @@ body,
 button,
 a {
   border-radius: var(--border-radius);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: none;
   padding: 0.6em 1.2em;
   line-height: 1;
-  font-size: 1em;
+  font-size: 1.25em;
   font-weight: 500;
   font-family: inherit;
-  background-color: var(--dark);
+  background-color: var(--primary);
+  color: black;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 100ms ease-in-out;
+  box-shadow: 0px 5px 0px var(--secondary);
 }
 
 button:hover,
 a:hover {
-  border-color: var(--primary);
+  background-color: var(--focus);
 }
 
 button:focus,
 button:focus-visible,
 a:focus,
 a:focus-visible {
-  outline: 4px auto var(--focus);
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+button:active,
+a:active {
+  background-color: var(--light);
 }
 
 a {
@@ -131,7 +139,6 @@ dialog::backdrop {
 }
 
 .search {
-  font-size: 1rem;
   display: flex;
   align-items: center;
   border-radius: var(--border-radius);
@@ -163,6 +170,7 @@ dialog::backdrop {
 }
 
 .search input[type="text"] {
+  font-size: clamp(16px, 1rem, 24px);
   outline: none;
   border: none;
   background: none;
@@ -185,22 +193,6 @@ dialog::backdrop {
   animation: swipe 1.5s ease-in-out infinite normal;
 }
 
-@keyframes swipe {
-  0% {
-    opacity: 0;
-    transform: translateX(100%) rotate(15deg);
-  }
-
-  75% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateX(-100%) rotate(-15deg);
-  }
-}
-
 .actions {
   position: relative;
   font-size: 0.875rem;
@@ -216,14 +208,55 @@ dialog::backdrop {
   transform: translate(-50%, -50%);
 }
 
-/* TODO: style differently from regular button. Maybe have the text jsut be descriptive */
 .carousel-button {
+  box-shadow: unset;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 400;
   position: absolute;
   transform: translateY(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0.6em 0.6em;
+}
+
+.carousel-button,
+.carousel-button:hover,
+.carousel-button:active,
+.carousel-button:focus,
+.carousel-button:focus-visible {
+  background-color: transparent;
+}
+
+.carousel-button p {
+  /* TODO: need a better way of getting contrast color for text */
+  filter: drop-shadow(0px 0px 1.5px black)
+}
+
+.carousel-button:focus,
+.carousel-button:focus-visible {
+  outline: unset;
+}
+
+.carousel-button svg {
+  background-color: color-mix(in srgb, var(--primary), black 37.5%);
+  border-radius: 50%;
+  transition: background-color 100ms ease-in-out;
+}
+
+.carousel-button:hover svg {
+  background-color: var(--primary);
+}
+
+.carousel-button:active svg {
+  background-color: var(--focus);
+  transition: none;
+}
+
+.carousel-button:focus svg {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
 }
 
 .carousel-button.left {
@@ -262,6 +295,22 @@ dialog::backdrop {
   .search {
     margin-bottom: auto;
     margin-top: unset;
+  }
+}
+
+@keyframes swipe {
+  0% {
+    opacity: 0;
+    transform: translateX(100%) rotate(15deg);
+  }
+
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-100%) rotate(-15deg);
   }
 }
 

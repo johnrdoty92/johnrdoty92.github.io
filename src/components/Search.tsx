@@ -32,6 +32,7 @@ export const Search = () => {
       <input
         disabled={!isVisible}
         ref={input}
+        name="skills search"
         type="text"
         placeholder="Search skills..."
         onChange={(e) => {
