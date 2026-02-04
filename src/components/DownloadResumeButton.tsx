@@ -3,17 +3,18 @@ import { pdf } from "@react-pdf/renderer";
 import { githubUrl, linkedInUrl } from "../constants/socialMedia";
 import { SKILLS } from "../constants/skills";
 import { useState } from "react";
+import { personalInfo } from "../constants/personalInfo";
 
 const resumeProps: ResumeProps = {
-  author: "John Doty",
+  author: personalInfo.name,
   keywords: "",
-  title: "John Doty - Full Stack Engineer Resume",
+  title: `${personalInfo.name} - ${personalInfo.title} Resume`,
   // TODO: limit to 10? add flags to help filter?
   skills: SKILLS.map(({ name }) => name),
   contactInfo: {
-    name: "John Doty",
-    email: "johnrdoty92@gmail.com",
-    phone: "(859) 940-9187",
+    name: personalInfo.name,
+    email: personalInfo.email,
+    phone: personalInfo.phone,
     socials: {
       githubUrl,
       linkedInUrl,
@@ -132,7 +133,9 @@ const DownloadResumeButton = () => {
   };
 
   return (
-    <button className="download" onClick={handleDownload}>{isDownloading ? "Downloading..." : "Download Resume"}</button>
+    <button className="download" onClick={handleDownload}>
+      {isDownloading ? "Downloading..." : "Download Resume"}
+    </button>
   );
 };
 
