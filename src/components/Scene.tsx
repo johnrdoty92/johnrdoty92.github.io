@@ -57,7 +57,8 @@ export const Scene = () => {
     const isComplete = acc.current >= timings[4].max;
     sections.current.visible = isComplete;
     if (!document.body.classList.contains("show-interaction-area") && isComplete) {
-      document.body.classList.add("show-interaction-area");
+      // Delay until next frame for Safari
+      requestAnimationFrame(() => document.body.classList.add("show-interaction-area"));
     }
   });
   return (
