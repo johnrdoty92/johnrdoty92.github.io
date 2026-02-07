@@ -43,7 +43,7 @@ export const SectionHeaders = ({ ref }: { ref: RefObject<AnimationHandle> }) => 
   const groupRef = useRef<Group>(null!);
   const { height } = useRotatingDisplayContext();
   const isMobile = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
-  const heightOffset = isMobile ? 2.6 : 3.6;
+  const heightOffset = isMobile ? 2.7 : 3.6;
   const [x, y, z] = [brickWidth, height - heightOffset, brickWidth];
 
   useAnimationHandle(ref, (alpha: number) => {

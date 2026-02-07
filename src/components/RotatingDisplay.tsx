@@ -68,7 +68,7 @@ export const RotatingDisplay = ({
         currentRotation,
         targetRotation.current,
         lambda,
-        delta
+        delta,
       );
     } else {
       const currentRotation = group.current.rotation.y;
@@ -108,7 +108,7 @@ export const RotatingDisplay = ({
         dragOrigin.current = null;
       },
     }),
-    [get, section, rotate]
+    [get, section, rotate],
   );
 
   return (

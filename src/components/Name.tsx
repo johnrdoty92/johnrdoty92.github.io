@@ -15,10 +15,10 @@ export const Name = (props: ThreeElements["group"]) => {
   const meshRef = useRef<Mesh>(null!);
   const isMobile = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
   const font = useLoader(FontLoader, "/Poppins_Bold.json");
-  const size = isMobile ? 0.45 : 0.65;
-  const padding = isMobile ? 0.5 : 1;
+  const size = isMobile ? 0.5 : 0.75;
+  const padding = isMobile ? 0.25 : 1;
   const subheaderSize = size * 0.5;
-  const depth = 0.075;
+  const depth = 0.05;
   const curveSegments = 2;
   const heightOffset = isMobile ? 2.6 : 3;
 
@@ -32,7 +32,7 @@ export const Name = (props: ThreeElements["group"]) => {
     <group {...props}>
       <mesh ref={meshRef} position-y={height - heightOffset} material={nameMaterial}>
         <textGeometry args={[personalInfo.name, { font, size, depth, curveSegments }]} />
-        <mesh position-y={-size} material={titleMaterial}>
+        <mesh position-y={-size + 0.05} material={titleMaterial}>
           <textGeometry
             args={[personalInfo.title, { font, size: subheaderSize, depth, curveSegments }]}
           />

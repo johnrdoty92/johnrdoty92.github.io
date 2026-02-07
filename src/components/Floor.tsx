@@ -21,7 +21,7 @@ const studMaterial = new MeshStandardMaterial({ color: theme.dark, roughness: 0.
 
 const mtx = new Matrix4();
 const position = new Vector3();
-const PADDING = 4;
+const PADDING = 6;
 
 export const Floor = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
   const camera = useThree((state) => state.camera as PerspectiveCamera);
