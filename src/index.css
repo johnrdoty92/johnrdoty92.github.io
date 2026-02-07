@@ -132,6 +132,12 @@ dialog::backdrop {
   flex-direction: column;
   align-items: center;
   gap: 1em;
+  transition: opacity 250ms ease-in-out;
+  opacity: 0;
+}
+
+body.show-interaction-area .interaction-area {
+  opacity: 1
 }
 
 .interaction-area :is(.search, button) {

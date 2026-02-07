@@ -54,7 +54,11 @@ export const Scene = () => {
     walls.current.animate(MathUtils.smootherstep(acc.current, timings[2].min, timings[2].max));
     headers.current.animate(MathUtils.smootherstep(acc.current, timings[3].min, timings[3].max));
     skills.current.animate(MathUtils.smootherstep(acc.current, timings[4].min, timings[4].max));
-    sections.current.visible = acc.current >= timings[4].max;
+    const isComplete = acc.current >= timings[4].max;
+    sections.current.visible = isComplete;
+    if (!document.body.classList.contains("show-interaction-area") && isComplete) {
+      document.body.classList.add("show-interaction-area");
+    }
   });
   return (
     <>
