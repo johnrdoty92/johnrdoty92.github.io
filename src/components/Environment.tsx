@@ -1,10 +1,10 @@
 import { useLoader, useThree } from "@react-three/fiber";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { EquirectangularReflectionMapping } from "three";
 import { UltraHDRLoader } from "three/examples/jsm/loaders/UltraHDRLoader.js";
 import hdri from "../assets/bambanani_sunset_1k.jpg?url";
 
-export const Environment = () => {
+const LoadEnvironment = () => {
   const scene = useThree((state) => state.scene);
   const map = useLoader(UltraHDRLoader, hdri);
 
@@ -15,6 +15,14 @@ export const Environment = () => {
   }, [scene, map]);
 
   return null;
+};
+
+export const Environment = () => {
+  return (
+    <Suspense fallback={null}>
+      <LoadEnvironment />
+    </Suspense>
+  );
 };
 
 useLoader.preload(UltraHDRLoader, hdri);
