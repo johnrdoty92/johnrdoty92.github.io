@@ -8,15 +8,17 @@ import { SKILLS } from "../constants/skills";
 import { MathUtils, type Group } from "three";
 import { useMemo, useRef, type RefObject } from "react";
 import { useAnimationHandle, type AnimationHandle } from "../hooks/useAnimationHandle";
+import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 
 const fuse = new Fuse(SKILLS, { keys: ["name", "tags"], threshold: 0.25 });
 
 const STARTING_ROTATION = Math.PI / 3;
 const TARGET_ROTATION = 0;
-const STARTING_HEIGHT = 8;
+const HEIGHT_OFFSET = 2;
 const SPACING = 2;
 
 export const Skills = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
+  const { height } = useRotatingDisplayContext();
   const bricks = useRef<Group>(null!);
   const searchValue = useSearchValue();
   const results = fuse.search(searchValue);
@@ -61,7 +63,7 @@ export const Skills = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
         const start = chunk * animationIndex - chunk * animationIndex * overlap;
         const stop = chunk * (animationIndex + 1) + (1 - chunk * (animationIndex + 1)) * overlap;
         const localAlpha = MathUtils.smoothstep(totalAlpha, start, stop);
-        brick.position.set(x, MathUtils.lerp(y + STARTING_HEIGHT, y, localAlpha), z);
+        brick.position.set(x, MathUtils.lerp(y + height + HEIGHT_OFFSET, y, localAlpha), z);
         brick.rotation.y = rotation;
         const rotationAlpha = MathUtils.smoothstep(localAlpha, 0.8, 1);
         brick.rotation.z = MathUtils.lerp(STARTING_ROTATION, TARGET_ROTATION, rotationAlpha);
