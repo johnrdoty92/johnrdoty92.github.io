@@ -20,7 +20,7 @@ export const Name = (props: ThreeElements["group"]) => {
   const subheaderSize = size * 0.5;
   const depth = 0.05;
   const curveSegments = 2;
-  const heightOffset = isMobile ? 2.6 : 3;
+  const heightOffset = isMobile ? 2.6 : 3.75;
 
   useLayoutEffect(() => {
     if (!meshRef.current) return;

@@ -147,6 +147,9 @@ body.show-interaction-area .interaction-area {
 .search {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 450px;
   border-radius: var(--border-radius);
   font-size: 1rem;
   margin-bottom: auto;
