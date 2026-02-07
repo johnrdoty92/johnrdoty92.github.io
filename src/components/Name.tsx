@@ -1,62 +1,43 @@
-import { Suspense, useRef, type RefObject } from "react";
-import { useAnimationHandle, type AnimationHandle } from "../hooks/useAnimationHandle";
-import { useHeaderPosition } from "../hooks/useHeaderPosition";
-import { Header } from "./Header";
-import { theme } from "../constants/styles";
-import { Group, Mesh, MeshBasicMaterial } from "three";
-import { SECTION_COUNT } from "../constants/sections";
-import { brickWidth } from "../util/brickGeometry";
+import { useLayoutEffect, useRef } from "react";
+import { MOBILE_BREAKPOINT_QUERY, theme } from "../constants/styles";
+import { Mesh, MeshBasicMaterial } from "three";
 import { personalInfo } from "../constants/personalInfo";
+import { useMediaQuery } from "../hooks/useMediaQuery";
+import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+import { useLoader, type ThreeElements } from "@react-three/fiber";
+import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 
-const material = new MeshBasicMaterial({ color: theme.light, transparent: true });
+const nameMaterial = new MeshBasicMaterial({ color: theme.light, transparent: true });
+const titleMaterial = new MeshBasicMaterial({ color: theme.secondary, transparent: true });
 
-export const Name = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
-  const groupRef = useRef<Group>(null!);
-  const [x, y, z] = useHeaderPosition();
+export const Name = (props: ThreeElements["group"]) => {
+  const { height } = useRotatingDisplayContext();
+  const meshRef = useRef<Mesh>(null!);
+  const isMobile = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
+  const font = useLoader(FontLoader, "/Poppins_Bold.json");
+  const size = isMobile ? 0.45 : 0.65;
+  const padding = isMobile ? 0.5 : 1;
+  const subheaderSize = size * 0.5;
+  const depth = 0.075;
+  const curveSegments = 2;
+  const heightOffset = isMobile ? 2.6 : 3;
 
-  useAnimationHandle(
-    ref,
-    (_: number) => {
-      if (!groupRef.current) return;
-      groupRef.current.position.y = y; // TODO: add offset and animate
-      groupRef.current.children.forEach((child, i) => {
-        const text = child.children[0] as Mesh;
-        text.geometry.computeBoundingBox();
-        // TODO: clean iup logic: +z, +x, -z, -x based on index
-        // TODO: responsive padding
-        if (i % 4 === 0) {
-          child.position.z = text.geometry.boundingBox!.max.x + brickWidth + 0.5;
-          child.position.x = x;
-        } else if (i % 4 === 1) {
-          child.position.x = text.geometry.boundingBox!.max.x + 0.5;
-        } else if (i % 4 === 2) {
-          child.position.z = -text.geometry.boundingBox!.max.x - brickWidth - 0.5;
-          child.position.x = -x;
-        } else if (i % 4 === 3) {
-          child.position.x = -text.geometry.boundingBox!.max.x - 0.5;
-        }
-
-        child.rotation.y = ((i + 1) * Math.PI) / 2;
-      });
-    },
-    [x, y, z],
-  );
+  useLayoutEffect(() => {
+    if (!meshRef.current) return;
+    meshRef.current.geometry.computeBoundingBox();
+    meshRef.current.position.x = -meshRef.current.geometry.boundingBox!.max.x - padding;
+  }, [padding]);
 
   return (
-    <group ref={groupRef}>
-      <Suspense fallback={<></>}>
-        {Array(SECTION_COUNT)
-          .fill(null)
-          .map((_, i) => (
-            <Header
-              key={i}
-              label={personalInfo.name}
-              subheader={personalInfo.title}
-              wrap={false}
-              material={material}
-            />
-          ))}
-      </Suspense>
+    <group {...props}>
+      <mesh ref={meshRef} position-y={height - heightOffset} material={nameMaterial}>
+        <textGeometry args={[personalInfo.name, { font, size, depth, curveSegments }]} />
+        <mesh position-y={-size} material={titleMaterial}>
+          <textGeometry
+            args={[personalInfo.title, { font, size: subheaderSize, depth, curveSegments }]}
+          />
+        </mesh>
+      </mesh>
     </group>
   );
 };
