@@ -66,12 +66,15 @@ a {
   line-height: 1;
   font-size: 1.25em;
   font-weight: 500;
-  font-family: inherit;
-  background-color: var(--primary);
+  font-family: monospace;
+  background-color: white;
+  text-transform: uppercase;
   color: black;
   cursor: pointer;
   transition: background-color 100ms ease-in-out;
-  box-shadow: 0px 5px 0px var(--secondary);
+  border-color: black;
+  border-width: 2px 4px 4px 2px;
+  border-style: solid;
 }
 
 button:hover,
@@ -126,7 +129,7 @@ dialog::backdrop {
   pointer-events: none;
   position: absolute;
   inset: 0;
-  padding: 0.25em 1em 1em;
+  padding: 0.25em 1em 3em;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -144,22 +147,26 @@ body.show-interaction-area .interaction-area {
 }
 
 .search {
+  font-family: monospace;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 1em;
   width: 100%;
   max-width: 450px;
   border-radius: var(--border-radius);
   font-size: 1rem;
   margin-bottom: auto;
   padding: 0.5em 1em;
-  outline: 1px solid var(--dark);
-  background-color: var(--light);
-  transition: outline 250ms ease, opacity 250ms ease;
+  background-color: white;
+  transition: opacity 300ms ease;
   opacity: 1;
+  border-color: black;
+  border-width: 2px 4px 4px 2px;
+  border-style: solid;
   /* Force GPU for mobile devices */
   transform: translateZ(0);
 }
+
 
 .search.hidden {
   opacity: 0;
@@ -168,23 +175,30 @@ body.show-interaction-area .interaction-area {
 .search .icon {
   fill: none;
   stroke: var(--dark);
-  transition: stroke 250ms ease;
+  /* transition: stroke 250ms ease; */
 }
 
 .search:focus-within {
-  outline: 1px solid var(--secondary);
+  background-color: var(--light);
 }
 
-.search:focus-within .icon {
+/* .search:focus-within .icon {
   stroke: var(--secondary);
-}
+} */
 
 .search input[type="text"] {
   font-size: clamp(16px, 1rem, 24px);
+  font-family: inherit;
   outline: none;
   border: none;
   background: none;
-  color: var(--secondary);
+  color: black;
+}
+
+.search input[type="text"]::placeholder {
+  font-family: monospace;
+  color: black;
+  opacity: 0.75
 }
 
 .swipe-prompt {
@@ -218,6 +232,7 @@ body.show-interaction-area .interaction-area {
 
 .carousel-button {
   width: fit-content;
+  border: none;
   box-shadow: unset;
   color: white;
   font-size: 0.8rem;
@@ -244,18 +259,13 @@ body.show-interaction-area .interaction-area {
   background-color: transparent;
 }
 
-.carousel-button p {
-  /* TODO: need a better way of getting contrast color for text */
-  filter: drop-shadow(0px 0px 1.5px black)
-}
-
 .carousel-button:focus,
 .carousel-button:focus-visible {
   outline: unset;
 }
 
 .carousel-button svg {
-  background-color: color-mix(in srgb, var(--primary), black 37.5%);
+  background-color: black;
   border-radius: 50%;
   transition: background-color 100ms ease-in-out;
 }
@@ -294,7 +304,7 @@ body.show-interaction-area .interaction-area {
   }
 
   .interaction-area {
-    padding: 0.5em 1em 3em;
+    padding: 0.5em 1em 6em;
   }
 }
 

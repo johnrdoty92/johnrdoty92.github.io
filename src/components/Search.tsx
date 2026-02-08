@@ -29,6 +29,7 @@ export const Search = () => {
 
   return (
     <div className={`search ${isVisible ? "" : "hidden"}`}>
+      <SearchIcon className="icon" onClick={() => input.current?.focus()} />
       <input
         disabled={!isVisible}
         ref={input}
@@ -44,7 +45,6 @@ export const Search = () => {
           }, 250);
         }}
       />
-      <SearchIcon className="icon" onClick={() => input.current?.focus()} />
     </div>
   );
 };

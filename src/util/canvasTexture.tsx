@@ -28,7 +28,7 @@ export const drawCanvasTexture = (
   { icon, label, color }: CanvasDrawingOptions,
 ) => {
   // TODO: organize this better
-  ctx.font = `${canvasTextureSize / 5.75}px sans-serif`;
+  ctx.font = `${canvasTextureSize / 5.75}px monospace`;
   ctx.fillStyle = color;
   const logoWidth = canvasTextureSize * (2 / 3);
   const logoHeight = brickHeight * logoWidth;
