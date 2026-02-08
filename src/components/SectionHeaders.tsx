@@ -1,12 +1,13 @@
-import { Suspense, useRef, type RefObject } from "react";
+import { useRef, type RefObject } from "react";
 import { Group, MeshBasicMaterial } from "three";
 import { useAnimationHandle, type AnimationHandle } from "../hooks/useAnimationHandle";
 import { MOBILE_BREAKPOINT_QUERY, theme } from "../constants/styles";
-import { extend, useLoader, type ThreeElement, type ThreeElements } from "@react-three/fiber";
-import { FontLoader, TextGeometry } from "three/examples/jsm/Addons.js";
+import { extend, type ThreeElement, type ThreeElements } from "@react-three/fiber";
+import { TextGeometry } from "three/examples/jsm/Addons.js";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { brickWidth } from "../util/brickGeometry";
+import { headerFont } from "../constants/fonts";
 
 extend({ TextGeometry });
 
@@ -21,7 +22,6 @@ const startingYOffset = 4;
 type HeaderProps = { label: string } & ThreeElements["group"];
 
 const Header = ({ label, ...props }: HeaderProps) => {
-  const font = useLoader(FontLoader, "/Poppins_Bold.json");
   const isMobileScreen = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
   const size = isMobileScreen ? 0.5 : 0.75;
   const lineGap = 0.25;
@@ -32,7 +32,7 @@ const Header = ({ label, ...props }: HeaderProps) => {
     <group {...props}>
       {label.split(" ").map((text, i) => (
         <mesh key={i} position-y={-i * size - (i > 0 ? lineGap : 0)} material={material}>
-          <textGeometry args={[text, { font, size, depth, curveSegments }]} />
+          <textGeometry args={[text, { font: headerFont, size, depth, curveSegments }]} />
         </mesh>
       ))}
     </group>
@@ -47,7 +47,6 @@ export const SectionHeaders = ({ ref }: { ref: RefObject<AnimationHandle> }) => 
   const [x, y, z] = [brickWidth, height - heightOffset, brickWidth];
 
   useAnimationHandle(ref, (alpha: number) => {
-    if (!groupRef.current) return; // TODO: use return value to check if mounted or not
     material.opacity = alpha;
     groupRef.current.position.y = (1 - alpha) * startingYOffset;
   });
@@ -62,9 +61,7 @@ export const SectionHeaders = ({ ref }: { ref: RefObject<AnimationHandle> }) => 
   return (
     <group ref={groupRef}>
       {headerProps.map((props, i) => (
-        <Suspense key={i}>
-          <Header {...props} />
-        </Suspense>
+        <Header key={i} {...props} />
       ))}
     </group>
   );

@@ -5,6 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@compai/font-karla':
+    specifier: ^0.0.3
+    version: 0.0.3
+  '@compai/font-press-start-2-p':
+    specifier: ^0.0.4
+    version: 0.0.4
   '@johnrdoty92/resume-generator':
     specifier: ^0.1.0
     version: 0.1.0(@react-pdf/renderer@4.3.2)(react-dom@19.2.0)(react@19.2.0)
@@ -73,6 +79,14 @@ packages:
   /@babel/runtime@7.28.4:
     resolution: {integrity: sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ==}
     engines: {node: '>=6.9.0'}
+    dev: false
+
+  /@compai/font-karla@0.0.3:
+    resolution: {integrity: sha512-9vmrHUHky+g4rFThVqKBQJTdpIekpa7av15wdmZU/45684xhzlGlDlJiX4cWeXpSbey6xyhm0a+HaagZ6CBjhQ==}
+    dev: false
+
+  /@compai/font-press-start-2-p@0.0.4:
+    resolution: {integrity: sha512-HYdPzHk40Y9zc8syhxQt0FcEBPas7cK5Qye63xucmPRHUGIrNrqD63IWPTDixp85Q/ejDwXPP5pvmWt7qyQi4A==}
     dev: false
 
   /@dimforge/rapier3d-compat@0.12.0:

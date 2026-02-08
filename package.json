@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@compai/font-karla": "^0.0.3",
+    "@compai/font-press-start-2-p": "^0.0.4",
     "@johnrdoty92/resume-generator": "^0.1.0",
     "@react-pdf/renderer": "^4.3.2",
     "@react-three/fiber": "^9.4.0",
