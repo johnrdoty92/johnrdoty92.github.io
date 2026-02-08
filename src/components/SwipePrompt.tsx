@@ -8,15 +8,13 @@ export const SwipePrompt = () => {
   const isAcknowledged = useRef(false);
   if (activeSection !== 0) isAcknowledged.current = true;
 
-  if (!IS_TOUCH_DEVICE) return null;
-
   let className = "swipe-prompt";
   if (isAcknowledged.current) className += " acknowledged";
 
   return (
     <div className={className}>
-      <p>Swipe...</p>
-      <img className="pointer" src={getAssetUrl("pointer", ".webp")} />
+      <p>{IS_TOUCH_DEVICE ? "Swipe" : "Drag"}...</p>
+      <img className="pointer" src={getAssetUrl(IS_TOUCH_DEVICE ? "pointer" : "arrow", ".webp")} />
     </div>
   );
 };

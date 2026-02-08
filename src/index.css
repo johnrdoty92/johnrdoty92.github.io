@@ -101,13 +101,15 @@ a {
 }
 
 dialog {
+  font-family: monospace;
   padding: 0.5rem;
   background-color: var(--dark);
-  border-radius: 8px;
-  border: 0.5px solid white;
-  box-shadow: 0px 0px 0px var(--primary);
+  border-radius: var(--border-radius);
+  border-color: white;
+  border-width: 1px 3px 3px 1px;
+  border-style: solid;
   position: absolute;
-  transition: opacity 0.25s ease-in-out, top 0.25s ease-in-out, right 0.25s ease-in-out, box-shadow 0.25s ease-in-out 0.125s;
+  transition: opacity 0.25s ease-in-out, top 0.25s ease-in-out, right 0.25s ease-in-out;
   opacity: 0;
   top: 52.5%;
   margin-inline: auto;
@@ -118,7 +120,6 @@ dialog {
 dialog.modal-visible {
   opacity: 1;
   top: 50%;
-  box-shadow: 8px 8px 0px var(--primary);
 }
 
 dialog::backdrop {
@@ -182,10 +183,6 @@ body.show-interaction-area .interaction-area {
   background-color: var(--light);
 }
 
-/* .search:focus-within .icon {
-  stroke: var(--secondary);
-} */
-
 .search input[type="text"] {
   font-size: clamp(16px, 1rem, 24px);
   font-family: inherit;
@@ -202,17 +199,29 @@ body.show-interaction-area .interaction-area {
 }
 
 .swipe-prompt {
-  /* TODO: animate gesture */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.25em 2em;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: monospace;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 8px 8px rgba(0, 0, 0, 0.5);
   text-align: center;
   font-size: 2rem;
+  opacity: 1;
+  border-radius: var(--border-radius);
+  backdrop-filter: blur(4px);
 }
 
 .swipe-prompt.acknowledged {
-  /* TODO: animate disappear */
-  display: none;
+  opacity: 0;
 }
 
-/* TODO: style this more like a blocking modal */
 .swipe-prompt img.pointer {
   animation: swipe 1.5s ease-in-out infinite normal;
 }
