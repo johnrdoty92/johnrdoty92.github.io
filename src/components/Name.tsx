@@ -25,7 +25,6 @@ export const Name = (props: ThreeElements["group"]) => {
     if (!meshRef.current) return;
     meshRef.current.geometry.computeBoundingBox();
     meshRef.current.position.x = -meshRef.current.geometry.boundingBox!.max.x - padding;
-    console.log(meshRef.current.geometry);
   }, [padding]);
 
   return (

@@ -226,8 +226,16 @@ body.show-interaction-area .interaction-area {
   max-width: 850px;
 }
 
+.download {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+}
+
 .actions button:disabled.download {
-  opacity: 0.5
+  opacity: 0.5;
+
 }
 
 .carousel-button {
