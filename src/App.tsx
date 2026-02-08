@@ -15,7 +15,6 @@ function App() {
   return (
     <SectionsProvider>
       <Modal>
-        <InteractionArea />
         <Canvas
           camera={{ position: [10, 2.5, 10] }}
           onPointerLeave={() => rotatingDisplay.current?.onDragEnd()}
@@ -31,6 +30,7 @@ function App() {
             <Scene />
           </RotatingDisplay>
         </Canvas>
+        <InteractionArea />
       </Modal>
     </SectionsProvider>
   );

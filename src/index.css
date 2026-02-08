@@ -124,8 +124,7 @@ dialog::backdrop {
 
 .interaction-area {
   pointer-events: none;
-  position: fixed;
-  z-index: 1;
+  position: absolute;
   inset: 0;
   padding: 0.25em 1em 1em;
   display: flex;
@@ -158,6 +157,8 @@ body.show-interaction-area .interaction-area {
   background-color: var(--light);
   transition: outline 250ms ease, opacity 250ms ease;
   opacity: 1;
+  /* Force GPU for mobile devices */
+  transform: translateZ(0);
 }
 
 .search.hidden {
