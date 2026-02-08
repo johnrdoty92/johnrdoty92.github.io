@@ -16,7 +16,8 @@ declare module "@react-three/fiber" {
     textGeometry: ThreeElement<typeof TextGeometry>;
   }
 }
-const material = new MeshBasicMaterial({ color: theme.light, transparent: true });
+const face = new MeshBasicMaterial({ color: theme.focus, transparent: true });
+const side = new MeshBasicMaterial({ color: theme.secondary, transparent: true });
 const startingYOffset = 4;
 
 type HeaderProps = { label: string } & ThreeElements["group"];
@@ -25,13 +26,13 @@ const Header = ({ label, ...props }: HeaderProps) => {
   const isMobileScreen = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
   const size = isMobileScreen ? 0.5 : 0.75;
   const lineGap = 0.25;
-  const depth = 0.075;
+  const depth = 0.15;
   const curveSegments = 2;
   // TODO: add accessibility
   return (
     <group {...props}>
       {label.split(" ").map((text, i) => (
-        <mesh key={i} position-y={-i * size - (i > 0 ? lineGap : 0)} material={material}>
+        <mesh key={i} position-y={-i * size - (i > 0 ? lineGap : 0)} material={[face, side]}>
           <textGeometry args={[text, { font: headerFont, size, depth, curveSegments }]} />
         </mesh>
       ))}
@@ -47,7 +48,8 @@ export const SectionHeaders = ({ ref }: { ref: RefObject<AnimationHandle> }) => 
   const [x, y, z] = [brickWidth, height - heightOffset, brickWidth];
 
   useAnimationHandle(ref, (alpha: number) => {
-    material.opacity = alpha;
+    face.opacity = alpha;
+    side.opacity = alpha;
     groupRef.current.position.y = (1 - alpha) * startingYOffset;
   });
 
