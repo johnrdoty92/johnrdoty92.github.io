@@ -37,8 +37,8 @@ const resumeProps: ResumeProps = {
       year: 2014,
     },
   ],
-  workExperience,
-  workProjects,
+  workExperience: Object.values(workExperience),
+  workProjects: Object.values(workProjects),
 };
 
 const DownloadIcon = (props: ComponentProps<"svg">) => {

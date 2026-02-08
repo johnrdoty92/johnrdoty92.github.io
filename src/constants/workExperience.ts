@@ -1,7 +1,7 @@
 import type { ResumeProps } from "@johnrdoty92/resume-generator";
 
-export const workExperience = [
-  {
+export const workExperience = {
+  Senior: {
     company: "Big Ass Fans",
     start: new Date("2024-02-01T00:00"),
     end: "Present",
@@ -14,7 +14,7 @@ export const workExperience = [
       "Configured automated testing pipelines with Jest for UI unit and integration tests.",
     ],
   },
-  {
+  Junior: {
     company: "BCW Group",
     start: new Date("2021-12-01T00:00"),
     end: new Date("2024-02-01T00:00"),
@@ -26,7 +26,7 @@ export const workExperience = [
       "Led and mentored junior engineers through feature commits with code reviews and technical guidance.",
     ],
   },
-  {
+  Intern: {
     company: "Awesome Inc",
     title: "Web Development Intern",
     location: "Lexington, KY",
@@ -37,4 +37,6 @@ export const workExperience = [
       "Styled the website with CSS classes that follow BEM naming conventions.",
     ],
   },
-] as const satisfies ResumeProps["workExperience"];
+} as const satisfies Record<string, ResumeProps["workExperience"][number]>;
+
+export type JobTitle = keyof typeof workExperience;

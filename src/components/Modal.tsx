@@ -1,5 +1,4 @@
 import {
-  type ReactNode,
   useCallback,
   useRef,
   useState,
@@ -7,19 +6,23 @@ import {
   type TransitionEventHandler,
 } from "react";
 import { ModalContext, type ModalContextValue } from "../contexts/Modal";
+import { workExperience, type JobTitle } from "../constants/workExperience";
+import { workProjects, type ProjectName } from "../constants/workProjects";
 
 const MODAL_CLASSNAMES = {
   VISIBLE: "modal-visible",
 } as const;
 
+type Entry = (typeof workExperience)[JobTitle] | (typeof workProjects)[ProjectName];
+
 export const Modal = ({ children }: PropsWithChildren) => {
   const modal = useRef<HTMLDialogElement>(null!);
   const onCloseRef = useRef<(() => void) | undefined>(undefined);
-  const [content, setContent] = useState<ReactNode | null>(null);
+  const [entry, setEntry] = useState<Entry | null>(null);
 
   const open: ModalContextValue["open"] = useCallback((key, onClose) => {
-    // TODO: use the key to set the content based on the resume data
-    setContent(key);
+    const relevantEntry = workExperience[key as JobTitle] || workProjects[key as ProjectName];
+    setEntry(relevantEntry);
     modal.current.showModal();
     modal.current.classList.add(MODAL_CLASSNAMES.VISIBLE);
     onCloseRef.current = onClose;
@@ -42,9 +45,20 @@ export const Modal = ({ children }: PropsWithChildren) => {
     <ModalContext.Provider value={{ open, close }}>
       {children}
       <dialog ref={modal} onTransitionEnd={handleTransitionEnd}>
-        <h2 slot="title">TODO: Add Title</h2>
-        <button onClick={close}>Close</button>
-        <p>{content}</p>
+        {entry &&
+          ("company" in entry ? (
+            <>
+              <h2 slot="title">{entry.title}</h2>
+              <button onClick={close}>Close</button>
+              {/* TODO: add rest of context */}
+            </>
+          ) : (
+            <>
+              <h2 slot="title">{entry.projectName}</h2>
+              <button onClick={close}>Close</button>
+              {/* TODO: add rest of context */}
+            </>
+          ))}
       </dialog>
     </ModalContext.Provider>
   );

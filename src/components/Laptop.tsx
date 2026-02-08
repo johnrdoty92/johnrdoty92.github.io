@@ -23,6 +23,7 @@ import { hoverHandlers } from "../util/hoverHandlers";
 import { ClickIndicator } from "./ClickIndicator";
 import { brickHeight, studDepth } from "../util/brickGeometry";
 import { KTX2Loader } from "three/examples/jsm/Addons.js";
+import type { ProjectName } from "../constants/workProjects";
 
 type LaptopGraph = {
   nodes: { laptop: Mesh; stool: Mesh };
@@ -49,7 +50,7 @@ export function Laptop({
   position,
   ...props
 }: Omit<ThreeElements["group"], "position"> & {
-  screen: string;
+  screen: ProjectName;
   position: "left" | "right" | "center";
 }) {
   const { width } = useRotatingDisplayContext();
@@ -78,7 +79,7 @@ export function Laptop({
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
     setIsFocused((f) => !f);
-    open("TODO: handle modal open key", () => setIsFocused(false));
+    open(screen, () => setIsFocused(false));
   };
 
   const handleMiss = () => {

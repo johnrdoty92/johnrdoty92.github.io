@@ -10,6 +10,7 @@ import { ClickIndicator } from "./ClickIndicator";
 import { useSectionsContext } from "../contexts/Sections";
 import { SECTIONS } from "../constants/sections";
 import { getAssetUrl } from "../util/getAssetUrl";
+import type { JobTitle } from "../constants/workExperience";
 
 interface MinifigureGLTF extends Partial<ObjectMap> {
   animations: (AnimationClip & { name: "typing" | "main" })[];
@@ -18,7 +19,7 @@ interface MinifigureGLTF extends Partial<ObjectMap> {
 const Minifigure = ({
   model,
   ...props
-}: Omit<ThreeElements["group"], "position"> & { model: string; position: Vector3Tuple }) => {
+}: Omit<ThreeElements["group"], "position"> & { model: JobTitle; position: Vector3Tuple }) => {
   const { open } = useModalContext();
   const { activeSection } = useSectionsContext();
   const isActiveSection = activeSection === SECTIONS.workExperience;
@@ -37,7 +38,7 @@ const Minifigure = ({
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
     setIsFocused((f) => !f);
-    open("TODO: handle modal open key", () => setIsFocused(false));
+    open(model, () => setIsFocused(false));
   };
 
   useEffect(() => {

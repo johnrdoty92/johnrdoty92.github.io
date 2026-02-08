@@ -1,7 +1,9 @@
 import { createContext, useContext } from "react";
+import type { JobTitle } from "../constants/workExperience";
+import type { ProjectName } from "../constants/workProjects";
 
 export type ModalContextValue = {
-  open: (key: string, onClose?: () => void) => void;
+  open: (key: JobTitle | ProjectName, onClose?: () => void) => void;
   close: () => void;
 };
 
