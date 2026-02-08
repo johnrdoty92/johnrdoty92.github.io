@@ -62,7 +62,7 @@ export const RotatingDisplay = ({
 
   useFrame((_, delta) => {
     const currentRotation = group.current.rotation.y;
-    const lambda = !dragOrigin.current ? 5 : 2;
+    const lambda = !dragOrigin.current ? 5 : 9;
     if (targetRotation.current !== null) {
       group.current.rotation.y = MathUtils.damp(
         currentRotation,
