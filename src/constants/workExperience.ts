@@ -1,8 +1,11 @@
 import type { ResumeProps } from "@johnrdoty92/resume-generator";
+import { getAssetUrl } from "../util/getAssetUrl";
 
 export const workExperience = {
   Senior: {
     company: "Big Ass Fans",
+    companyUrl: "https://www.bigassfans.com/",
+    logoSrc: getAssetUrl("bigassfans", ".webp"),
     start: new Date("2024-02-01T00:00"),
     end: "Present",
     location: "Lexington, KY",
@@ -16,6 +19,8 @@ export const workExperience = {
   },
   Junior: {
     company: "BCW Group",
+    companyUrl: "https://www.bcw.group/",
+    logoSrc: getAssetUrl("bcw", ".webp"),
     start: new Date("2021-12-01T00:00"),
     end: new Date("2024-02-01T00:00"),
     location: "Remote",
@@ -27,6 +32,8 @@ export const workExperience = {
     ],
   },
   Intern: {
+    companyUrl: "https://www.awesomeinc.com/",
+    logoSrc: getAssetUrl("awesomeinc", ".webp"),
     company: "Awesome Inc",
     title: "Web Development Intern",
     location: "Lexington, KY",
@@ -37,6 +44,12 @@ export const workExperience = {
       "Styled the website with CSS classes that follow BEM naming conventions.",
     ],
   },
-} as const satisfies Record<string, ResumeProps["workExperience"][number]>;
+} as const satisfies Record<
+  string,
+  ResumeProps["workExperience"][number] & {
+    companyUrl: string;
+    logoSrc: string;
+  }
+>;
 
 export type JobTitle = keyof typeof workExperience;

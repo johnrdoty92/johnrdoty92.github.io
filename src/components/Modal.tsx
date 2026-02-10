@@ -8,12 +8,24 @@ import {
 import { ModalContext, type ModalContextValue } from "../contexts/Modal";
 import { workExperience, type JobTitle } from "../constants/workExperience";
 import { workProjects, type ProjectName } from "../constants/workProjects";
+import type { WorkExperience } from "@johnrdoty92/resume-generator";
 
 const MODAL_CLASSNAMES = {
   VISIBLE: "modal-visible",
 } as const;
 
 type Entry = (typeof workExperience)[JobTitle] | (typeof workProjects)[ProjectName];
+
+const formatWorkExperienceDateDelta = ({ start, end: _end }: WorkExperience) => {
+  const end = _end === "Present" ? new Date() : _end;
+  const yearDelta = end.getFullYear() - start.getFullYear();
+  const monthDelta = end.getMonth() - start.getMonth() + 12 * yearDelta;
+  const years = Math.floor(monthDelta / 12);
+  const months = monthDelta % 12;
+  const yearLabel = years > 0 ? `${years} year${years > 1 ? "s" : ""}` : "";
+  const monthLabel = months > 0 ? `${months} month${months > 1 ? "s" : ""}` : "";
+  return "(" + `${yearLabel} ${monthLabel}`.trim() + ")";
+};
 
 export const Modal = ({ children }: PropsWithChildren) => {
   const modal = useRef<HTMLDialogElement>(null!);
@@ -49,8 +61,30 @@ export const Modal = ({ children }: PropsWithChildren) => {
           ("company" in entry ? (
             <>
               <h2 slot="title">{entry.title}</h2>
-              <button onClick={close}>Close</button>
-              {/* TODO: add rest of context */}
+              <div className="stack">
+                <a href={entry.companyUrl} target="_blank" className="company-logo">
+                  <img src={entry.logoSrc} alt={`${entry.company} logo`} />
+                </a>
+                <p className="company">
+                  <a href={entry.companyUrl} target="_blank">
+                    {entry.company}
+                  </a>
+                  <span>({entry.location})</span>
+                </p>
+                <p className="duration">
+                  <span className="dates">
+                    {entry.start.toLocaleDateString()} -{" "}
+                    {entry.end === "Present" ? entry.end : entry.end.toLocaleDateString()}{" "}
+                  </span>
+                  <span className="delta">{formatWorkExperienceDateDelta(entry)}</span>
+                </p>
+                <ul className="achievements">
+                  {entry.achievements.map((achievement, i) => (
+                    <li key={i}>{achievement}</li>
+                  ))}
+                </ul>
+                <button onClick={close}>Close</button>
+              </div>
             </>
           ) : (
             <>
