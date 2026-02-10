@@ -27,6 +27,26 @@ const formatWorkExperienceDateDelta = ({ start, end: _end }: WorkExperience) => 
   return "(" + `${yearLabel} ${monthLabel}`.trim() + ")";
 };
 
+const ExternalLink = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M15 3h6v6" />
+      <path d="M10 14 21 3" />
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+    </svg>
+  );
+};
+
 export const Modal = ({ children }: PropsWithChildren) => {
   const modal = useRef<HTMLDialogElement>(null!);
   const onCloseRef = useRef<(() => void) | undefined>(undefined);
@@ -83,14 +103,31 @@ export const Modal = ({ children }: PropsWithChildren) => {
                     <li key={i}>{achievement}</li>
                   ))}
                 </ul>
-                <button onClick={close}>Close</button>
+                <button aria-label="Close" onClick={close}>
+                  X
+                </button>
               </div>
             </>
           ) : (
             <>
-              <h2 slot="title">{entry.projectName}</h2>
-              <button onClick={close}>Close</button>
-              {/* TODO: add rest of context */}
+              <div className="dialog-title">
+                <h2 slot="title">{entry.projectName}</h2>
+                <button aria-label="Close" onClick={close}>
+                  X
+                </button>
+              </div>
+              <p>
+                <span>{entry.description}</span>{" "}
+                <a href={entry.url} target="_blank" className="project-link">
+                  <span>View Project</span>
+                  <ExternalLink />
+                </a>
+              </p>
+              <ul className="achievements">
+                {entry.achievements.map((achievement, i) => (
+                  <li key={i}>{achievement}</li>
+                ))}
+              </ul>
             </>
           ))}
       </dialog>
