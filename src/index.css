@@ -126,7 +126,7 @@ dialog.modal-visible {
 }
 
 dialog::backdrop {
-  display: none;
+  opacity: 0;
 }
 
 dialog h2 {

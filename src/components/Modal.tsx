@@ -76,11 +76,23 @@ export const Modal = ({ children }: PropsWithChildren) => {
   return (
     <ModalContext.Provider value={{ open, close }}>
       {children}
-      <dialog ref={modal} onTransitionEnd={handleTransitionEnd}>
+      <dialog
+        ref={modal}
+        onTransitionEnd={handleTransitionEnd}
+        onClick={(e) => {
+          const isCloseRequest = e.target === modal.current;
+          if (isCloseRequest) close();
+        }}
+      >
         {entry &&
           ("company" in entry ? (
             <>
-              <h2 slot="title">{entry.title}</h2>
+              <div className="dialog-title">
+                <h2 slot="title">{entry.title}</h2>
+                <button aria-label="Close" onClick={close}>
+                  X
+                </button>
+              </div>
               <div className="stack">
                 <a href={entry.companyUrl} target="_blank" className="company-logo">
                   <img src={entry.logoSrc} alt={`${entry.company} logo`} />
@@ -103,9 +115,6 @@ export const Modal = ({ children }: PropsWithChildren) => {
                     <li key={i}>{achievement}</li>
                   ))}
                 </ul>
-                <button aria-label="Close" onClick={close}>
-                  X
-                </button>
               </div>
             </>
           ) : (
