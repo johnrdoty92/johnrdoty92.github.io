@@ -5,10 +5,10 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@compai/font-karla':
+  '@compai/font-kanit':
     specifier: ^0.0.3
     version: 0.0.3
-  '@compai/font-press-start-2-p':
+  '@compai/font-roboto-condensed':
     specifier: ^0.0.4
     version: 0.0.4
   '@johnrdoty92/resume-generator':
@@ -81,12 +81,12 @@ packages:
     engines: {node: '>=6.9.0'}
     dev: false
 
-  /@compai/font-karla@0.0.3:
-    resolution: {integrity: sha512-9vmrHUHky+g4rFThVqKBQJTdpIekpa7av15wdmZU/45684xhzlGlDlJiX4cWeXpSbey6xyhm0a+HaagZ6CBjhQ==}
+  /@compai/font-kanit@0.0.3:
+    resolution: {integrity: sha512-b+VQT9zPNwBCNYj2bPBSJz2BxS4iq/cr43T6Lamf5cc2KsBZn1ToKc5v4bfR6HmUDjBQXmkmfCIj4JNcPrfeKA==}
     dev: false
 
-  /@compai/font-press-start-2-p@0.0.4:
-    resolution: {integrity: sha512-HYdPzHk40Y9zc8syhxQt0FcEBPas7cK5Qye63xucmPRHUGIrNrqD63IWPTDixp85Q/ejDwXPP5pvmWt7qyQi4A==}
+  /@compai/font-roboto-condensed@0.0.4:
+    resolution: {integrity: sha512-GsAW1KY+L+INqGB6QBVoSuk7F4bZGEaTFGNCvOkljVRqdKTlxlvglHFwZGNzzvKXrqnY8SWUOJwvPNem7LLLHw==}
     dev: false
 
   /@dimforge/rapier3d-compat@0.12.0:

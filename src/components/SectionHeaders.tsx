@@ -26,14 +26,26 @@ const Header = ({ label, ...props }: HeaderProps) => {
   const isMobileScreen = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
   const size = isMobileScreen ? 0.5 : 0.75;
   const lineGap = 0.25;
-  const depth = 0.15;
-  const curveSegments = 2;
   // TODO: add accessibility
   return (
     <group {...props}>
       {label.split(" ").map((text, i) => (
         <mesh key={i} position-y={-i * size - (i > 0 ? lineGap : 0)} material={[face, side]}>
-          <textGeometry args={[text, { font: headerFont, size, depth, curveSegments }]} />
+          <textGeometry
+            args={[
+              text,
+              {
+                font: headerFont,
+                size,
+                depth: 0.15,
+                curveSegments: 2,
+                bevelEnabled: true,
+                bevelSize: 0.03,
+                bevelOffset: 0.01,
+                bevelThickness: 0.05,
+              },
+            ]}
+          />
         </mesh>
       ))}
     </group>
