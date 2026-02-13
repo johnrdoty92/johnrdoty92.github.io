@@ -316,9 +316,12 @@ body.show-interaction-area .interaction-area {
   gap: 0.5em;
 }
 
+.download svg {
+  flex-shrink: 0;
+}
+
 .actions button:disabled.download {
   opacity: 0.5;
-
 }
 
 .carousel-button {
@@ -359,6 +362,7 @@ body.show-interaction-area .interaction-area {
   background-color: black;
   border-radius: 50%;
   transition: background-color 100ms ease-in-out;
+  flex-shrink: 0;
 }
 
 .carousel-button:hover svg {
