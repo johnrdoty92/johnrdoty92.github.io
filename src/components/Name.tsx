@@ -18,12 +18,13 @@ const border = new MeshPhysicalMaterial({
 
 export const Name = (props: ThreeElements["group"]) => {
   const { height } = useRotatingDisplayContext();
-  const meshRef = useRef<Mesh>(null!);
+  const name = useRef<Mesh>(null!);
+  const title = useRef<Mesh>(null!);
   const isMobile = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
-  const size = isMobile ? 0.5 : 0.75;
-  const padding = isMobile ? 0.25 : 1;
+  const size = isMobile ? 0.7 : 0.9;
+  const padding = isMobile ? 0.3 : 1;
   const subheaderSize = size * 0.4;
-  const heightOffset = isMobile ? 2.6 : 3.75;
+  const heightOffset = 3.75;
   const fontBaseProps = {
     depth: 0.15,
     curveSegments: 4,
@@ -33,14 +34,17 @@ export const Name = (props: ThreeElements["group"]) => {
   };
 
   useLayoutEffect(() => {
-    if (!meshRef.current) return;
-    meshRef.current.geometry.computeBoundingBox();
-    meshRef.current.position.x = -meshRef.current.geometry.boundingBox!.max.x - padding;
-  }, [padding]);
+    name.current.geometry.computeBoundingBox();
+    name.current.position.x = -name.current.geometry.boundingBox!.max.x - padding;
+    title.current.geometry.computeBoundingBox();
+    const titleCenter = title.current.geometry.boundingBox!.max.x / 2;
+    const nameCenter = name.current.position.x / 2;
+    title.current.position.x = -titleCenter + nameCenter - padding;
+  }, [padding, Math.random()]);
 
   return (
     <group {...props}>
-      <mesh ref={meshRef} position-y={height - heightOffset} material={[white, border]}>
+      <mesh ref={name} position-y={height - heightOffset} material={[white, border]}>
         <textGeometry
           args={[
             personalInfo.name.toLowerCase(),
@@ -52,19 +56,23 @@ export const Name = (props: ThreeElements["group"]) => {
             },
           ]}
         />
-        <mesh position-y={-size + 0.05} material={[black, white]}>
-          <textGeometry
-            args={[
-              personalInfo.title.toUpperCase(),
-              {
-                ...fontBaseProps,
-                font: subtitleFont,
-                size: subheaderSize,
-                bevelThickness: 0.05,
-              },
-            ]}
-          />
-        </mesh>
+      </mesh>
+      <mesh
+        ref={title}
+        position-y={height - heightOffset - subheaderSize - 0.25}
+        material={[black, white]}
+      >
+        <textGeometry
+          args={[
+            personalInfo.title.toUpperCase(),
+            {
+              ...fontBaseProps,
+              font: subtitleFont,
+              size: subheaderSize,
+              bevelThickness: 0.05,
+            },
+          ]}
+        />
       </mesh>
     </group>
   );

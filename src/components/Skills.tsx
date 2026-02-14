@@ -6,7 +6,7 @@ import { useMediaQuery } from "../hooks/useMediaQuery";
 import { MOBILE_BREAKPOINT_QUERY } from "../constants/styles";
 import { SKILLS } from "../constants/skills";
 import { MathUtils, type Group } from "three";
-import { useMemo, useRef, type RefObject } from "react";
+import { useRef, type RefObject } from "react";
 import { useAnimationHandle, type AnimationHandle } from "../hooks/useAnimationHandle";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 
@@ -15,7 +15,8 @@ const fuse = new Fuse(SKILLS, { keys: ["name", "tags"], threshold: 0.25 });
 const STARTING_ROTATION = Math.PI / 3;
 const TARGET_ROTATION = 0;
 const HEIGHT_OFFSET = 2;
-const SPACING = 2;
+
+const roundUpToHalf = (input: number) => Math.ceil(input * 2) / 2;
 
 export const Skills = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
   const { height } = useRotatingDisplayContext();
@@ -25,27 +26,11 @@ export const Skills = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
   const matches = new Set(results.map(({ item }) => item.name));
 
   const isMobileScreen = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
-  const columnCount = isMobileScreen ? 2 : 3;
+  const columnCount = 3;
   const columnHeight = Math.floor(SKILLS.length / columnCount);
-  const wallOffset = isMobileScreen ? 2 : 3;
-  const maxDistance = (columnCount - 1) * SPACING + wallOffset;
+  const spacing = isMobileScreen ? 1.75 : 2;
+  const wallOffset = isMobileScreen ? 1.5 : 3;
   const maxHeight = (columnHeight - 1) * brickHeight;
-
-  // TODO: probably don't need memo here, just move to animation handler and update deps
-  const targets = useMemo(
-    () =>
-      SKILLS.map((_, i) => {
-        const column = Math.floor(i / columnHeight);
-        const isLastColumn = column === columnCount - 1;
-        const isOddColumn = column % 2 === 1;
-        const rotation = isLastColumn || isOddColumn ? Math.PI / 2 : 0;
-        const x = SPACING * column + wallOffset;
-        const y = maxHeight - (i % columnHeight) * brickHeight;
-        const z = maxDistance - x + wallOffset;
-        return { x, y, z, rotation, column };
-      }),
-    [columnHeight, columnCount, wallOffset, maxDistance, maxHeight, brickHeight],
-  );
 
   // TODO: sort skills so they appear from top to bottom in order of importance
   // TODO: handle placement if there's overflow. Currently starts by floating at the top
@@ -56,8 +41,14 @@ export const Skills = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
     (totalAlpha) => {
       const chunk = 1 / bricks.current.children.length;
       bricks.current.children.forEach((brick, i) => {
-        const index = i;
-        const { x, y, z, rotation, column } = targets[index];
+        const column = Math.floor(i / columnHeight);
+        const isLastColumn = column === columnCount - 1;
+        const isOddColumn = column % 2 === 1;
+        const rotation = isLastColumn || isOddColumn ? Math.PI / 2 : 0;
+        const x = roundUpToHalf(wallOffset + column * spacing);
+        const y = maxHeight - (i % columnHeight) * brickHeight;
+        const columnReversed = columnCount - 1 - column;
+        const z = roundUpToHalf(wallOffset + columnReversed * spacing);
         const columnTotal = (column + 1) * columnHeight - 1;
         const animationIndex = (columnTotal - i) * columnCount + column;
         const start = chunk * animationIndex - chunk * animationIndex * overlap;
@@ -69,7 +60,7 @@ export const Skills = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
         brick.rotation.z = MathUtils.lerp(STARTING_ROTATION, TARGET_ROTATION, rotationAlpha);
       });
     },
-    [targets],
+    [],
   );
 
   return (

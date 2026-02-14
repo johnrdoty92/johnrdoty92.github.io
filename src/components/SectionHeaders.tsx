@@ -24,7 +24,7 @@ type HeaderProps = { label: string } & ThreeElements["group"];
 
 const Header = ({ label, ...props }: HeaderProps) => {
   const isMobileScreen = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
-  const size = isMobileScreen ? 0.5 : 0.75;
+  const size = isMobileScreen ? 0.6 : 0.75;
   const lineGap = 0.25;
   // TODO: add accessibility
   return (
@@ -56,7 +56,7 @@ export const SectionHeaders = ({ ref }: { ref: RefObject<AnimationHandle> }) => 
   const groupRef = useRef<Group>(null!);
   const { height } = useRotatingDisplayContext();
   const isMobile = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
-  const heightOffset = isMobile ? 2.7 : 3.7;
+  const heightOffset = isMobile ? 3.9 : 3.7;
   const [x, y, z] = [brickWidth, height - heightOffset, brickWidth];
 
   useAnimationHandle(ref, (alpha: number) => {
