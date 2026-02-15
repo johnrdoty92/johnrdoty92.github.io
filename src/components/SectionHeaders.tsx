@@ -3,7 +3,7 @@ import { Group, MeshBasicMaterial } from "three";
 import { useAnimationHandle, type AnimationHandle } from "../hooks/useAnimationHandle";
 import { MOBILE_BREAKPOINT_QUERY, theme } from "../constants/styles";
 import { extend, type ThreeElement, type ThreeElements } from "@react-three/fiber";
-import { TextGeometry } from "three/examples/jsm/Addons.js";
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { brickWidth } from "../util/brickGeometry";
