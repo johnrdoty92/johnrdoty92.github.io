@@ -1,7 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { useRef } from "react";
 import { Environment } from "./components/Environment";
-import { Stats } from "./components/Stats";
 import { RotatingDisplay, type RotatingDisplayHandle } from "./components/RotatingDisplay";
 import { Modal } from "./components/Modal";
 import { SectionsProvider } from "./components/SectionsProvider";
@@ -9,6 +8,7 @@ import { InteractionArea } from "./components/InteractionArea";
 import { Lighting } from "./components/Lighting";
 import { Fog } from "./components/Fog";
 import { Scene } from "./components/Scene";
+import { Perf } from "r3f-perf";
 
 function App() {
   const rotatingDisplay = useRef<RotatingDisplayHandle>(null!);
@@ -22,7 +22,7 @@ function App() {
           onPointerMove={() => rotatingDisplay.current?.onDrag()}
           onPointerUp={() => rotatingDisplay.current?.onDragEnd()}
         >
-          {import.meta.env.DEV && <Stats />}
+          {import.meta.env.DEV && <Perf position="bottom-right" />}
           <Fog />
           <Environment />
           <Lighting />
