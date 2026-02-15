@@ -111,6 +111,7 @@ dialog {
   border-color: white;
   border-width: 1px 3px 3px 1px;
   border-style: solid;
+  color: white;
   position: absolute;
   transition: opacity 0.25s ease-in-out, top 0.25s ease-in-out, right 0.25s ease-in-out;
   opacity: 0;
@@ -421,10 +422,8 @@ body.show-interaction-area .interaction-area {
   }
 }
 
-/* TODO: handle user preferences */
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: rgba(255, 255, 255, 0.87);
   }
 }
