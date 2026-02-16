@@ -9,6 +9,7 @@ import { Lighting } from "./components/Lighting";
 import { Fog } from "./components/Fog";
 import { Scene } from "./components/Scene";
 import { Perf } from "r3f-perf";
+import { cameraPosition as position, cameraFar as far } from "./constants/cameraProps";
 
 function App() {
   const rotatingDisplay = useRef<RotatingDisplayHandle>(null!);
@@ -16,7 +17,7 @@ function App() {
     <SectionsProvider>
       <Modal>
         <Canvas
-          camera={{ position: [10, 2.5, 10] }}
+          camera={{ position, far }}
           onPointerLeave={() => rotatingDisplay.current?.onDragEnd()}
           onPointerDown={() => rotatingDisplay.current?.onDragStart()}
           onPointerMove={() => rotatingDisplay.current?.onDrag()}

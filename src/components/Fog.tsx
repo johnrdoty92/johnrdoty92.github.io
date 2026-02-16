@@ -1,9 +1,30 @@
-import { useThree } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import { theme } from "../constants/styles";
+import { useEffect, useRef } from "react";
+import { Color, MathUtils, Fog as TFog } from "three";
+import { useSectionsContext } from "../contexts/Sections";
+import { SECTIONS } from "../constants/sections";
+import { cameraFar } from "../constants/cameraProps";
+
+const sectionColors = {
+  [SECTIONS.skills]: new Color(theme.dark),
+  [SECTIONS.contact]: new Color(theme.secondary),
+  [SECTIONS.workExperience]: new Color(theme.focus),
+  [SECTIONS.workProjects]: new Color(theme.primary),
+};
 
 export const Fog = () => {
-  const distanceToCamera = useThree((state) => state.camera.position.length());
-  const startFog = distanceToCamera;
-  const maxFog = distanceToCamera * 2;
-  return <fog attach="fog" args={[theme.dark, startFog, maxFog]} />;
+  const { activeSection } = useSectionsContext();
+  const fogRef = useRef<TFog>(null!);
+  const acc = useRef(0);
+  const startFog = cameraFar - 2;
+
+  useEffect(() => void (acc.current = 0), [activeSection]);
+
+  useFrame((_, delta) => {
+    acc.current = MathUtils.clamp(acc.current + delta, 0, 1);
+    fogRef.current.color.lerp(sectionColors[activeSection], acc.current);
+  });
+
+  return <fog ref={fogRef} attach="fog" args={[theme.dark, startFog, cameraFar]} />;
 };
