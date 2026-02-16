@@ -8,6 +8,7 @@ import { useMediaQuery } from "../hooks/useMediaQuery";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { brickWidth } from "../util/brickGeometry";
 import { headerFont } from "../constants/fonts";
+import { useMergeTextGeometryGroups } from "../hooks/useMergeTextGeometryGroups";
 
 extend({ TextGeometry });
 
@@ -26,12 +27,14 @@ const Header = ({ label, ...props }: HeaderProps) => {
   const isMobileScreen = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
   const size = isMobileScreen ? 0.6 : 0.75;
   const lineGap = 0.25;
+  const onMount = useMergeTextGeometryGroups();
   // TODO: add accessibility
   return (
     <group {...props}>
       {label.split(" ").map((text, i) => (
         <mesh key={i} position-y={-i * size - (i > 0 ? lineGap : 0)} material={[face, side]}>
           <textGeometry
+            ref={onMount}
             args={[
               text,
               {

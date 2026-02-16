@@ -6,10 +6,10 @@ import { useMediaQuery } from "../hooks/useMediaQuery";
 import { type ThreeElements } from "@react-three/fiber";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { headerFont, subtitleFont } from "../constants/fonts";
+import { useMergeTextGeometryGroups } from "../hooks/useMergeTextGeometryGroups";
 
 const white = new MeshBasicMaterial({ color: "white" });
-const black = new MeshBasicMaterial({ color: "black" });
-const border = new MeshPhysicalMaterial({
+const black = new MeshPhysicalMaterial({
   color: "black",
   metalness: 1,
   roughness: 0,
@@ -21,6 +21,7 @@ export const Name = (props: ThreeElements["group"]) => {
   const name = useRef<Mesh>(null!);
   const title = useRef<Mesh>(null!);
   const isMobile = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
+  const onMount = useMergeTextGeometryGroups();
   const size = isMobile ? 0.7 : 0.9;
   const padding = isMobile ? 0.3 : 1;
   const subheaderSize = size * 0.4;
@@ -44,8 +45,9 @@ export const Name = (props: ThreeElements["group"]) => {
 
   return (
     <group {...props}>
-      <mesh ref={name} position-y={height - heightOffset} material={[white, border]}>
+      <mesh ref={name} position-y={height - heightOffset} material={[white, black]}>
         <textGeometry
+          ref={onMount}
           args={[
             personalInfo.name.toLowerCase(),
             {
@@ -63,6 +65,7 @@ export const Name = (props: ThreeElements["group"]) => {
         material={[black, white]}
       >
         <textGeometry
+          ref={onMount}
           args={[
             personalInfo.title.toUpperCase(),
             {
