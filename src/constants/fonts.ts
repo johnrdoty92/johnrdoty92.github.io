@@ -1,6 +1,6 @@
 import { FontLoader, type FontData } from "three/examples/jsm/loaders/FontLoader.js";
-import subtitle from "@compai/font-roboto-condensed/data/typefaces/roboto-condensed-bold-normal-700.json";
-import header from "@compai/font-kanit/data/typefaces/normal-700.json";
+import subtitle from "./robotoLight";
+import header from "./kanitLight";
 
 const loader = new FontLoader();
 

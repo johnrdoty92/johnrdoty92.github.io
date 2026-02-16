@@ -10,8 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@compai/font-kanit": "^0.0.3",
-    "@compai/font-roboto-condensed": "^0.0.4",
     "@johnrdoty92/resume-generator": "^0.1.0",
     "@react-pdf/renderer": "^4.3.2",
     "@react-three/fiber": "^9.4.0",

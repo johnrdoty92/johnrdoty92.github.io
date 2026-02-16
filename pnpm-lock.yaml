@@ -5,12 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@compai/font-kanit':
-    specifier: ^0.0.3
-    version: 0.0.3
-  '@compai/font-roboto-condensed':
-    specifier: ^0.0.4
-    version: 0.0.4
   '@johnrdoty92/resume-generator':
     specifier: ^0.1.0
     version: 0.1.0(@react-pdf/renderer@4.3.2)(react-dom@19.2.0)(react@19.2.0)
@@ -82,14 +76,6 @@ packages:
   /@babel/runtime@7.28.4:
     resolution: {integrity: sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ==}
     engines: {node: '>=6.9.0'}
-    dev: false
-
-  /@compai/font-kanit@0.0.3:
-    resolution: {integrity: sha512-b+VQT9zPNwBCNYj2bPBSJz2BxS4iq/cr43T6Lamf5cc2KsBZn1ToKc5v4bfR6HmUDjBQXmkmfCIj4JNcPrfeKA==}
-    dev: false
-
-  /@compai/font-roboto-condensed@0.0.4:
-    resolution: {integrity: sha512-GsAW1KY+L+INqGB6QBVoSuk7F4bZGEaTFGNCvOkljVRqdKTlxlvglHFwZGNzzvKXrqnY8SWUOJwvPNem7LLLHw==}
     dev: false
 
   /@dimforge/rapier3d-compat@0.12.0:
