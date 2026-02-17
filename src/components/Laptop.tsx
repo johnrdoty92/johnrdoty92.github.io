@@ -22,7 +22,7 @@ import { useTargetFocusedPosition } from "../hooks/useTargetFocusedPosition";
 import { hoverHandlers } from "../util/hoverHandlers";
 import { ClickIndicator } from "./ClickIndicator";
 import { brickHeight, studDepth } from "../util/brickGeometry";
-import { KTX2Loader } from "three/examples/jsm/Addons.js";
+import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
 import type { ProjectName } from "../constants/workProjects";
 
 type LaptopGraph = {
