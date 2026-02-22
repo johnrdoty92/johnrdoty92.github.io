@@ -64,6 +64,8 @@ export const workExperience = {
       "JavaScript",
       "Node.js",
       "TypeScript",
+      "CSS",
+      "HTML",
     ],
   },
   Intern: {

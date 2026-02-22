@@ -17,7 +17,7 @@ export const Fog = () => {
   const { activeSection } = useSectionsContext();
   const fogRef = useRef<TFog>(null!);
   const acc = useRef(0);
-  const startFog = cameraFar - 2;
+  const startFog = cameraFar - 1.5;
 
   useEffect(() => void (acc.current = 0), [activeSection]);
 
