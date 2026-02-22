@@ -6,8 +6,8 @@ import type { Section } from "../constants/sections";
 const classes: Record<Section, string> = {
   0: "skills",
   1: "contact",
-  2: "workExperience",
-  3: "workProject",
+  2: "workProject",
+  3: "workExperience",
 };
 
 export const SectionsProvider = ({ children }: PropsWithChildren) => {
