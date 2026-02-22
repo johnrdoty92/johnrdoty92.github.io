@@ -5,7 +5,7 @@ type Skill = {
   path: string;
 };
 
-export const SKILLS: Skill[] = [
+export const SKILLS = [
   {
     name: "TypeScript",
     color: "#007acc",
@@ -114,4 +114,4 @@ export const SKILLS: Skill[] = [
     tags: ["CSS 3"],
     path: "M94.4.1 86 90.2 50 99.9 14 90.2 5.6.1H94.4ZM77.6 18.4H21.9L23.2 29.3H50L24.2 40.7 25 51.3 63.3 51.4 62.5 65.6 50 69.1V69.1L49.9 69.1 37.8 66.1 37 57.3H37 25.8 25.8L27.2 74.3 50 81V81L50 81 72.6 74.4 75.5 40.6H50 49.9L50 40.6 76.5 29.3 77.6 18.4Z",
   },
-];
+] as const satisfies Skill[];

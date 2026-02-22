@@ -5,10 +5,13 @@ import { useSearchValue } from "../hooks/useSearchValue";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { MOBILE_BREAKPOINT_QUERY } from "../constants/styles";
 import { SKILLS } from "../constants/skills";
-import { MathUtils, type Group } from "three";
-import { useRef, type RefObject } from "react";
+import { MathUtils, type Sprite, type Group, Vector3, SRGBColorSpace } from "three";
+import { useMemo, useRef, useState, type RefObject } from "react";
 import { useAnimationHandle, type AnimationHandle } from "../hooks/useAnimationHandle";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
+import { useFrame } from "@react-three/fiber";
+import type { WorkExperience } from "@johnrdoty92/resume-generator";
+import { workExperience } from "../constants/workExperience";
 
 const fuse = new Fuse(SKILLS, { keys: ["name", "tags"], threshold: 0.25 });
 
@@ -17,13 +20,66 @@ const TARGET_ROTATION = 0;
 const HEIGHT_OFFSET = 2;
 
 const roundUpToHalf = (input: number) => Math.ceil(input * 2) / 2;
+const sumMonthsOfExperience = ({ start, end: _end }: WorkExperience) => {
+  const end = _end === "Present" ? new Date() : _end;
+  const yearDelta = end.getFullYear() - start.getFullYear();
+  return end.getMonth() - start.getMonth() + 12 * yearDelta;
+};
+
+const target = new Vector3();
 
 export const Skills = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
   const { height } = useRotatingDisplayContext();
   const bricks = useRef<Group>(null!);
+  const experience = useRef<Sprite>(null!);
   const searchValue = useSearchValue();
   const results = fuse.search(searchValue);
   const matches = new Set(results.map(({ item }) => item.name));
+
+  const [focusedIndex, setFocusedIndex] = useState<undefined | number>();
+  const canvas = useMemo(() => {
+    const node = document.createElement("canvas");
+    // TODO: remove magic numbers
+    node.width = 128;
+    node.height = 128;
+    const ctx = node.getContext("2d")!;
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 128 / 4, 128, 128 / 2);
+    ctx.fillStyle = "black";
+    ctx.fillRect(2, 128 / 4 + 2, 128 - 6, 128 / 2 - 6);
+    ctx.font = `${128 / 5.75}px monospace`;
+    ctx.fillStyle = "white";
+    ctx.textBaseline = "bottom";
+    ctx.textAlign = "center";
+    if (focusedIndex !== undefined) {
+      const skillName = SKILLS[focusedIndex].name;
+      const totalMonthsOfExperience = Object.values(workExperience).reduce((total, current) => {
+        if (current.skillsUsed.find((name) => name === skillName)) {
+          total += sumMonthsOfExperience(current);
+        }
+        return total;
+      }, 0);
+      const years = Math.floor(totalMonthsOfExperience / 12);
+      const suffix = years > 1 ? "yrs" : "yr";
+      ctx.fillText(`${years}+ ${suffix}`, 128 / 2, 128 / 2, 128 - 8);
+      ctx.fillText("experience", 128 / 2, (3 * 128) / 4 - 10, 128 - 8);
+    }
+    return node;
+  }, [focusedIndex]);
+
+  useFrame(({ camera }, delta) => {
+    if (focusedIndex === undefined) return;
+    if (bricks.current.children[focusedIndex]) {
+      const { x: x1, y: y1, z: z1 } = experience.current.position;
+      target.lerpVectors(bricks.current.children[focusedIndex].position, camera.position, 0.15);
+      target.y += 1;
+      experience.current.position.set(
+        MathUtils.damp(x1, target.x, 5, delta),
+        MathUtils.damp(y1, target.y, 5, delta),
+        MathUtils.damp(z1, target.z, 5, delta),
+      );
+    }
+  });
 
   const isMobileScreen = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
   const columnCount = 3;
@@ -31,9 +87,6 @@ export const Skills = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
   const spacing = isMobileScreen ? 1.75 : 2;
   const wallOffset = isMobileScreen ? 1.5 : 3;
   const maxHeight = (columnHeight - 1) * brickHeight;
-
-  // TODO: sort skills so they appear from top to bottom in order of importance
-  // TODO: handle placement if there's overflow. Currently starts by floating at the top
 
   const overlap = 0.1;
   useAnimationHandle(
@@ -64,19 +117,30 @@ export const Skills = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
   );
 
   return (
-    <group ref={bricks}>
-      {SKILLS.map(({ name, color, path }, i) => {
-        const isMatch = matches.has(name) || searchValue === "";
-        return (
-          <Brick
-            key={i}
-            visibility={isMatch ? "normal" : "dimmed"}
-            label={name}
-            color={color}
-            icon={path}
-          />
-        );
-      })}
-    </group>
+    <>
+      <sprite visible={focusedIndex !== undefined} ref={experience} scale={1.5}>
+        <spriteMaterial transparent>
+          <canvasTexture attach="map" args={[canvas]} colorSpace={SRGBColorSpace} />
+        </spriteMaterial>
+      </sprite>
+      <group ref={bricks} onPointerMissed={() => setFocusedIndex(undefined)}>
+        {SKILLS.map(({ name, color, path }, i) => {
+          const isMatch = matches.has(name) || searchValue === "";
+          return (
+            <Brick
+              key={i}
+              visibility={isMatch ? "normal" : "dimmed"}
+              label={name}
+              color={i === focusedIndex ? "white" : color}
+              icon={path}
+              onClick={(e) => {
+                e.stopPropagation();
+                setFocusedIndex(i);
+              }}
+            />
+          );
+        })}
+      </group>
+    </>
   );
 };

@@ -1,5 +1,6 @@
 import type { ResumeProps } from "@johnrdoty92/resume-generator";
 import { getAssetUrl } from "../util/getAssetUrl";
+import type { SKILLS } from "./skills";
 
 export const workExperience = {
   Senior: {
@@ -16,6 +17,26 @@ export const workExperience = {
       "Migrated application services from Elastic Beanstalk to AWS App Runner, saving $1,440 annually.",
       "Configured automated testing pipelines with Jest for UI unit and integration tests.",
     ],
+    skillsUsed: [
+      "TypeScript",
+      "Node.js",
+      "JavaScript",
+      "AWS",
+      "PostgreSQL",
+      "React",
+      "Express",
+      "Docker",
+      "Tailwind CSS",
+      "Git",
+      "GraphQL",
+      "Nest.js",
+      "Material UI",
+      "SQLite",
+      "NGINX",
+      "Jest",
+      "HTML",
+      "CSS",
+    ],
   },
   Junior: {
     company: "BCW Group",
@@ -30,6 +51,20 @@ export const workExperience = {
       "Developed, dockerized, and deployed Express apps to AWS EC2 for live data analytics dashboards.",
       "Led and mentored junior engineers through feature commits with code reviews and technical guidance.",
     ],
+    skillsUsed: [
+      "Jest",
+      "NGINX",
+      "SQLite",
+      "Material UI",
+      "Git",
+      "Docker",
+      "Express",
+      "React",
+      "AWS",
+      "JavaScript",
+      "Node.js",
+      "TypeScript",
+    ],
   },
   Intern: {
     companyUrl: "https://www.awesomeinc.com/",
@@ -43,12 +78,14 @@ export const workExperience = {
       "Created component wireframes in Figma to aid in migrating frontend components to Drupal CMS.",
       "Styled the website with CSS classes that follow BEM naming conventions.",
     ],
+    skillsUsed: ["JavaScript", "HTML", "CSS"],
   },
 } as const satisfies Record<
   string,
   ResumeProps["workExperience"][number] & {
     companyUrl: string;
     logoSrc: string;
+    skillsUsed: (typeof SKILLS)[number]["name"][];
   }
 >;
 
