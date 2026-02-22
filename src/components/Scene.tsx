@@ -6,11 +6,12 @@ import { SocialLinks } from "./SocialLinks";
 import { Walls } from "./Walls";
 import { WorkExperience } from "./WorkExperience";
 import { WorkProjects } from "./WorkProjects";
-import { useRef } from "react";
+import { Suspense, useRef } from "react";
 import { Group, MathUtils } from "three";
 import type { AnimationHandle } from "../hooks/useAnimationHandle";
 import { AnimatedName } from "./AnimatedName";
 import { StaticNames } from "./StaticNames";
+import { Environment, type EnvironmentHandle } from "./Environment";
 
 const overlap = 0.25;
 // TODO: make an array so we can map things out below instead of hardcoding each one
@@ -40,6 +41,7 @@ const { timings } = durations.reduce<{
 
 export const Scene = () => {
   const acc = useRef(0);
+  const environment = useRef<EnvironmentHandle>(null);
   const floor = useRef<AnimationHandle>(null!);
   const headers = useRef<AnimationHandle>(null!);
   const name = useRef<AnimationHandle>(null!);
@@ -48,7 +50,9 @@ export const Scene = () => {
   const sections = useRef<Group>(null!);
 
   useFrame((_, delta) => {
-    acc.current += delta;
+    if (environment.current?.checkIsLoaded()) {
+      acc.current += delta;
+    }
     name.current.animate(MathUtils.smootherstep(acc.current, timings[0].min, timings[0].max));
     floor.current.animate(MathUtils.smootherstep(acc.current, timings[1].min, timings[1].max));
     walls.current.animate(MathUtils.smootherstep(acc.current, timings[2].min, timings[2].max));
@@ -63,6 +67,9 @@ export const Scene = () => {
   });
   return (
     <>
+      <Suspense fallback={null}>
+        <Environment ref={environment} />
+      </Suspense>
       <SectionHeaders ref={headers} />
       <AnimatedName ref={name} />
       <Skills ref={skills} />

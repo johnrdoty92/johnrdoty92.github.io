@@ -15,6 +15,12 @@
         left: 50%;
         transform: translate(-50%, -50%);
         width: clamp(50px, 50vw, 200px);
+        transition: opacity ease-out 250ms;
+        opacity: 1;
+      }
+
+      .initials.hidden {
+        opacity: 0;
       }
 
       .initials #wave path {

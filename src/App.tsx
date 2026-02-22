@@ -1,6 +1,5 @@
 import { Canvas } from "@react-three/fiber";
 import { useRef } from "react";
-import { Environment } from "./components/Environment";
 import { RotatingDisplay, type RotatingDisplayHandle } from "./components/RotatingDisplay";
 import { Modal } from "./components/Modal";
 import { SectionsProvider } from "./components/SectionsProvider";
@@ -25,7 +24,6 @@ function App() {
         >
           {import.meta.env.DEV && <Perf position="bottom-right" />}
           <Fog />
-          <Environment />
           <Lighting />
           <RotatingDisplay ref={rotatingDisplay}>
             <Scene />
