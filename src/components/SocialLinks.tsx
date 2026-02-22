@@ -33,8 +33,7 @@ export const SocialLinks = () => {
         const x = isEven ? -origin - positionOffset : -origin;
         const z = isEven ? origin : origin + positionOffset;
         return (
-          // TODO: handle fallback
-          <Suspense key={i} fallback={<></>}>
+          <Suspense key={i}>
             <SocialMediaMinifigure {...props} position={[x, 0, z]} rotation-y={rotationY} />
           </Suspense>
         );

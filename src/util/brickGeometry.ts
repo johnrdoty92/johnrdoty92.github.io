@@ -34,7 +34,6 @@ const solidColorUV = new Vector2(0.9, 0.9);
 const topUV = [solidColorUV, solidColorUV, solidColorUV];
 const solidColorSideUV = [solidColorUV, solidColorUV, solidColorUV, solidColorUV];
 const generateTopUV = () => topUV;
-// TODO: make these center around the origin?
 export const studGeometry = toCreasedNormals(
   new ExtrudeGeometry(studs, {
     bevelSegments,
