@@ -40,8 +40,8 @@ export const Name = (props: ThreeElements["group"]) => {
     title.current.geometry.computeBoundingBox();
     const titleCenter = title.current.geometry.boundingBox!.max.x / 2;
     const nameCenter = name.current.position.x / 2;
-    title.current.position.x = -titleCenter + nameCenter - padding;
-  }, [padding, Math.random()]);
+    title.current.position.x = -titleCenter + nameCenter - padding / 2;
+  }, [padding]);
 
   return (
     <group {...props}>
