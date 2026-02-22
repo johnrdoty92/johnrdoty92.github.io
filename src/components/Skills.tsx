@@ -70,13 +70,13 @@ export const Skills = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
   useFrame(({ camera }, delta) => {
     if (focusedIndex === undefined) return;
     if (bricks.current.children[focusedIndex]) {
-      const { x: x1, y: y1, z: z1 } = experience.current.position;
-      target.lerpVectors(bricks.current.children[focusedIndex].position, camera.position, 0.15);
+      const { x, y, z } = experience.current.position;
+      target.lerpVectors(bricks.current.children[focusedIndex].position, camera.position, 0.2);
       target.y += 1;
       experience.current.position.set(
-        MathUtils.damp(x1, target.x, 5, delta),
-        MathUtils.damp(y1, target.y, 5, delta),
-        MathUtils.damp(z1, target.z, 5, delta),
+        MathUtils.damp(x, target.x, 5, delta),
+        MathUtils.damp(y, target.y, 5, delta),
+        MathUtils.damp(z, target.z, 5, delta),
       );
     }
   });
@@ -118,7 +118,12 @@ export const Skills = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
 
   return (
     <>
-      <sprite visible={focusedIndex !== undefined} ref={experience} scale={1.5}>
+      <sprite
+        visible={focusedIndex !== undefined}
+        ref={experience}
+        scale={1.5}
+        position={[wallOffset + spacing + 1, 1, wallOffset + spacing + 1]}
+      >
         <spriteMaterial transparent>
           <canvasTexture attach="map" args={[canvas]} colorSpace={SRGBColorSpace} />
         </spriteMaterial>
