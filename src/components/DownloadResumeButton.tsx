@@ -11,8 +11,7 @@ const resumeProps: ResumeProps = {
   author: personalInfo.name,
   keywords: "",
   title: `${personalInfo.name} - ${personalInfo.title} Resume`,
-  // TODO: limit to 10? add flags to help filter?
-  skills: SKILLS.map(({ name }) => name),
+  skills: SKILLS.slice(0, 11).map(({ name }) => name),
   contactInfo: {
     name: personalInfo.name,
     email: personalInfo.email,
