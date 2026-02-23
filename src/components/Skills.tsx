@@ -19,6 +19,13 @@ const STARTING_ROTATION = Math.PI / 3;
 const TARGET_ROTATION = 0;
 const HEIGHT_OFFSET = 2;
 
+const CANVAS_SIZE = 128;
+const LAMBDA = 5;
+const INNER_RECT_PADDING_RB = 6;
+const INNER_RECT_PADDING_TL = 2;
+const TEXT_PADDING = 8;
+const LINE_HEIGHT = CANVAS_SIZE / 4 - TEXT_PADDING;
+
 const roundUpToHalf = (input: number) => Math.ceil(input * 2) / 2;
 const sumMonthsOfExperience = ({ start, end: _end }: WorkExperience) => {
   const end = _end === "Present" ? new Date() : _end;
@@ -39,18 +46,23 @@ export const Skills = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
   const [focusedIndex, setFocusedIndex] = useState<undefined | number>();
   const canvas = useMemo(() => {
     const node = document.createElement("canvas");
-    // TODO: remove magic numbers
-    node.width = 128;
-    node.height = 128;
+    node.width = CANVAS_SIZE;
+    node.height = CANVAS_SIZE;
     const ctx = node.getContext("2d")!;
     ctx.fillStyle = "white";
-    ctx.fillRect(0, 128 / 4, 128, 128 / 2);
+    ctx.fillRect(0, CANVAS_SIZE / 4, CANVAS_SIZE, CANVAS_SIZE / 2);
     ctx.fillStyle = "black";
-    ctx.fillRect(2, 128 / 4 + 2, 128 - 6, 128 / 2 - 6);
-    ctx.font = `${128 / 5.75}px monospace`;
+    ctx.fillRect(
+      INNER_RECT_PADDING_TL,
+      CANVAS_SIZE / 4 + INNER_RECT_PADDING_TL,
+      CANVAS_SIZE - INNER_RECT_PADDING_RB,
+      CANVAS_SIZE / 2 - INNER_RECT_PADDING_RB,
+    );
+    ctx.font = `${CANVAS_SIZE / 5.75}px monospace`;
     ctx.fillStyle = "white";
     ctx.textBaseline = "bottom";
     ctx.textAlign = "center";
+
     if (focusedIndex !== undefined) {
       const skillName = SKILLS[focusedIndex].name;
       const totalMonthsOfExperience = Object.values(workExperience).reduce((total, current) => {
@@ -61,9 +73,20 @@ export const Skills = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
       }, 0);
       const years = Math.floor(totalMonthsOfExperience / 12);
       const suffix = years > 1 ? "yrs" : "yr";
-      ctx.fillText(`${years}+ ${suffix}`, 128 / 2, 128 / 2, 128 - 8);
-      ctx.fillText("experience", 128 / 2, (3 * 128) / 4 - 10, 128 - 8);
+      ctx.fillText(
+        `${years}+ ${suffix}`,
+        CANVAS_SIZE / 2,
+        CANVAS_SIZE / 2,
+        CANVAS_SIZE - TEXT_PADDING,
+      );
+      ctx.fillText(
+        "experience",
+        CANVAS_SIZE / 2,
+        CANVAS_SIZE / 2 + LINE_HEIGHT,
+        CANVAS_SIZE - TEXT_PADDING,
+      );
     }
+
     return node;
   }, [focusedIndex]);
 
@@ -74,9 +97,9 @@ export const Skills = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
       target.lerpVectors(bricks.current.children[focusedIndex].position, camera.position, 0.2);
       target.y += 1;
       experience.current.position.set(
-        MathUtils.damp(x, target.x, 5, delta),
-        MathUtils.damp(y, target.y, 5, delta),
-        MathUtils.damp(z, target.z, 5, delta),
+        MathUtils.damp(x, target.x, LAMBDA, delta),
+        MathUtils.damp(y, target.y, LAMBDA, delta),
+        MathUtils.damp(z, target.z, LAMBDA, delta),
       );
     }
   });

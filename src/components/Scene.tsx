@@ -14,7 +14,6 @@ import { StaticNames } from "./StaticNames";
 import { Environment, type EnvironmentHandle } from "./Environment";
 
 const overlap = 0.25;
-// TODO: make an array so we can map things out below instead of hardcoding each one
 const nameDuration = 0.75;
 const floorDuration = 0.65;
 const wallsDuration = 2.5;

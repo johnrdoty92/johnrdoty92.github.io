@@ -27,7 +27,6 @@ export const drawCanvasTexture = (
   ctx: CanvasRenderingContext2D,
   { icon, label, color }: CanvasDrawingOptions,
 ) => {
-  // TODO: organize this better
   ctx.font = `${canvasTextureSize / 5.75}px monospace`;
   ctx.fillStyle = color;
   const logoWidth = canvasTextureSize * (2 / 3);

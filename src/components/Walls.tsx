@@ -19,7 +19,6 @@ const getTargetPosition = (
   index: number,
   bricksPerRow: number,
   startZero: boolean,
-  // TODO: probably don't need an out?
   out: Vector3,
 ) => {
   const rowLevel = Math.floor(index / bricksPerRow);
@@ -76,7 +75,6 @@ export const Walls = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
           const stop = chunk * (i + 1) + overlap * (1 - chunk * (i + 1));
           const localAlpha = MathUtils.smootherstep(alpha, start, stop);
           getTargetPosition(i, bricksPerRow, j % 2 === 1, target);
-          // TODO: adjust fog for height?
           const startingHeight = 15;
           const offsetY = (1 - localAlpha) * startingHeight + target.y;
           instances[j].current.setMatrixAt(i, mtx.setPosition(target.setY(offsetY)));

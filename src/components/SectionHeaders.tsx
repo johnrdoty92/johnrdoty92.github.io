@@ -28,7 +28,7 @@ const Header = ({ label, ...props }: HeaderProps) => {
   const size = isMobileScreen ? 0.6 : 0.75;
   const lineGap = 0.25;
   const onMount = useMergeTextGeometryGroups();
-  // TODO: add accessibility
+
   return (
     <group {...props}>
       {label.split(" ").map((text, i) => (

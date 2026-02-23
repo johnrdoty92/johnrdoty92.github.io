@@ -46,7 +46,7 @@ export const studGeometry = toCreasedNormals(
       generateSideWallUV: () => solidColorSideUV,
     },
   }).translate(0, 0, brickHeight),
-  Math.PI / 3
+  Math.PI / 3,
 ).rotateX(-Math.PI / 2);
 
 export const brickGeometry = mergeGeometries([
@@ -70,7 +70,6 @@ export const brickGeometry = mergeGeometries([
         }
         const isShortSide = a_x + b_x === 0;
         if (isShortSide) {
-          // TODO: replace magic numbers
           return [
             new Vector2(0, 0.6),
             new Vector2(0.6, 0.6),
