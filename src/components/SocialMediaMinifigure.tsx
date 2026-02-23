@@ -6,7 +6,7 @@ import { useAnimations, type OnFinished } from "../hooks/useAnimations";
 import type { SOCIAL_MEDIA_PROPS } from "../constants/socialMedia";
 import { hoverHandlers } from "../util/hoverHandlers";
 import { useSectionsContext } from "../contexts/Sections";
-import { SECTIONS } from "../constants/sections";
+import { SECTIONS } from "@/constants";
 
 const getRandomTimeout = (duration = 2500) => Math.random() * duration;
 

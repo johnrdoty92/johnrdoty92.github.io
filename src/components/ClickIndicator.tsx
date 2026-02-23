@@ -2,7 +2,7 @@ import { useFrame, useLoader, type ThreeElements } from "@react-three/fiber";
 import { MathUtils, Sprite, TextureLoader } from "three";
 import { getAssetUrl } from "../util/getAssetUrl";
 import { useRef } from "react";
-import { IS_TOUCH_DEVICE } from "../constants/device";
+import { IS_TOUCH_DEVICE } from "@/constants";
 import { useWiggle } from "../hooks/useWiggle";
 
 export const ClickIndicator = (props: ThreeElements["group"]) => {

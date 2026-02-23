@@ -8,7 +8,7 @@ import { useTargetFocusedPosition } from "../hooks/useTargetFocusedPosition";
 import { hoverHandlers } from "../util/hoverHandlers";
 import { ClickIndicator } from "./ClickIndicator";
 import { useSectionsContext } from "../contexts/Sections";
-import { SECTIONS } from "../constants/sections";
+import { SECTIONS } from "@/constants";
 import { getAssetUrl } from "../util/getAssetUrl";
 import type { JobTitle } from "../constants/workExperience";
 import { useToggleAnimationState } from "../hooks/useToggleAnimationState";

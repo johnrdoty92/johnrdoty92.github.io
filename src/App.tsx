@@ -8,7 +8,7 @@ import { Lighting } from "./components/Lighting";
 import { Fog } from "./components/Fog";
 import { Scene } from "./components/Scene";
 import { Perf } from "r3f-perf";
-import { cameraPosition as position, cameraFar as far } from "./constants/cameraProps";
+import { cameraPosition as position, cameraFar as far } from "@/constants";
 
 function App() {
   const rotatingDisplay = useRef<RotatingDisplayHandle>(null!);

@@ -1,7 +1,7 @@
 import { useRef, type ComponentProps } from "react";
 import { SEARCH_EVENT } from "../hooks/useSearchValue";
 import { useSectionsContext } from "../contexts/Sections";
-import { SECTIONS } from "../constants/sections";
+import { SECTIONS } from "@/constants";
 
 const SearchIcon = (props: ComponentProps<"svg">) => {
   return (

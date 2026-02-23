@@ -1,7 +1,7 @@
 import { useCallback, useState, type PropsWithChildren } from "react";
 import { SectionsContext } from "../contexts/Sections";
 import { clampAsSectionValue } from "../util/clampAsSectionValue";
-import type { Section } from "../constants/sections";
+import type { Section } from "@/constants";
 
 const classes: Record<Section, string> = {
   0: "skills",

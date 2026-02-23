@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import type { Section } from "../constants/sections";
+import type { Section } from "@/constants";
 
 type SectionsContextValue = {
   section: number;

@@ -2,8 +2,7 @@ import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import { Color, MathUtils, Fog as TFog } from "three";
 import { useSectionsContext } from "../contexts/Sections";
-import { SECTIONS } from "../constants/sections";
-import { cameraFar } from "../constants/cameraProps";
+import { SECTIONS, cameraFar } from "@/constants";
 import { theme } from "@/theme";
 
 const sectionColors = {

@@ -1,7 +1,7 @@
-import { IS_TOUCH_DEVICE } from "../constants/device";
+import { IS_TOUCH_DEVICE } from "@/constants";
 import { useSectionsContext } from "../contexts/Sections";
 import type { PropsWithChildren } from "react";
-import type { Section } from "../constants/sections";
+import type { Section } from "@/constants";
 import { clampAsSectionValue } from "../util/clampAsSectionValue";
 
 const SECTION_LABELS: Record<Section, string> = {
