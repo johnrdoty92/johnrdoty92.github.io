@@ -11,8 +11,8 @@ import {
 } from "three";
 import { brickWidth, studGeometry, brickHeight, studDepth } from "../util/brickGeometry";
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
-import { theme } from "../constants/styles";
 import { useAnimationHandle, type AnimationHandle } from "../hooks/useAnimationHandle";
+import { theme } from "@/theme";
 
 const floorStartingPosition = new Vector3(10, -15, 10);
 const floorTargetPosition = new Vector3();

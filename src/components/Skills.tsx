@@ -3,7 +3,6 @@ import { brickHeight } from "../util/brickGeometry";
 import { Brick } from "./Brick";
 import { useSearchValue } from "../hooks/useSearchValue";
 import { useMediaQuery } from "../hooks/useMediaQuery";
-import { MOBILE_BREAKPOINT_QUERY } from "../constants/styles";
 import { SKILLS } from "../constants/skills";
 import { MathUtils, type Sprite, type Group, Vector3, SRGBColorSpace } from "three";
 import { useMemo, useRef, useState, type RefObject } from "react";
@@ -12,6 +11,7 @@ import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { useFrame } from "@react-three/fiber";
 import type { WorkExperience } from "@johnrdoty92/resume-generator";
 import { workExperience } from "../constants/workExperience";
+import { MOBILE_BREAKPOINT_QUERY } from "@/theme";
 
 const fuse = new Fuse(SKILLS, { keys: ["name", "tags"], threshold: 0.25 });
 

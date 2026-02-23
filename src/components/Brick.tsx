@@ -8,7 +8,7 @@ import {
 } from "../util/canvasTexture";
 import { Color, MeshPhysicalMaterial, SRGBColorSpace } from "three";
 import { useToggleAnimationState } from "../hooks/useToggleAnimationState";
-import { theme } from "../constants/styles";
+import { theme } from "@/theme";
 
 export type BrickProps = {
   visibility: "normal" | "dimmed" | "selected";

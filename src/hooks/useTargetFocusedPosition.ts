@@ -1,8 +1,8 @@
 import { useThree } from "@react-three/fiber";
 import { type PerspectiveCamera, Vector2, Vector3, type Vector3Like } from "three";
 import { useMediaQuery } from "./useMediaQuery";
-import { MOBILE_BREAKPOINT_QUERY } from "../constants/styles";
 import { POSITIVE_Y } from "../constants/vectors";
+import { MOBILE_BREAKPOINT_QUERY } from "@/theme";
 
 const DIAGONAL = new Vector3(-1, 0, 1);
 
@@ -10,7 +10,7 @@ export const useTargetFocusedPosition = (
   /** Values between 0 and 1 representing distance from camera. 1 is camera position */
   proximity = 0.8,
   /** For specifying the origin of the mesh */
-  offset: Vector3Like = { x: 0, y: 0, z: 0 }
+  offset: Vector3Like = { x: 0, y: 0, z: 0 },
 ) => {
   const isMobileScreen = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
   const camera = useThree((state) => state.camera as PerspectiveCamera);

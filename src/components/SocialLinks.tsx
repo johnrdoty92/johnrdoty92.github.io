@@ -5,7 +5,7 @@ import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { MathUtils } from "three";
 import { SOCIAL_MEDIA_PROPS } from "../constants/socialMedia";
 import { useMediaQuery } from "../hooks/useMediaQuery";
-import { MOBILE_BREAKPOINT_QUERY } from "../constants/styles";
+import { MOBILE_BREAKPOINT_QUERY } from "@/theme";
 
 const MINIFIGURE_DIMENSIONS = {
   width: 2.5,
