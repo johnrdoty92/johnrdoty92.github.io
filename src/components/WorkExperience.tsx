@@ -1,4 +1,4 @@
-import { useFrame, type ObjectMap, type ThreeElements, type ThreeEvent } from "@react-three/fiber";
+import { type ObjectMap, type ThreeElements, type ThreeEvent } from "@react-three/fiber";
 import { Suspense, useEffect, useRef, useState, type ComponentProps } from "react";
 import { useGLTF } from "../hooks/useGLTF";
 import { useAnimations } from "../hooks/useAnimations";
@@ -11,16 +11,21 @@ import { useSectionsContext } from "../contexts/Sections";
 import { SECTIONS } from "../constants/sections";
 import { getAssetUrl } from "../util/getAssetUrl";
 import type { JobTitle } from "../constants/workExperience";
+import { useToggleAnimationState } from "../hooks/useToggleAnimationState";
+import { useWiggle, type WaveConfig } from "../hooks/useWiggle";
 
 interface MinifigureGLTF extends Partial<ObjectMap> {
   animations: (AnimationClip & { name: "typing" | "main" })[];
 }
+
+const wiggleOverride: Partial<WaveConfig> = {};
 
 const Minifigure = ({
   model,
   ...props
 }: Omit<ThreeElements["group"], "position"> & { model: JobTitle; position: Vector3Tuple }) => {
   const { open } = useModalContext();
+  const wiggle = useWiggle({ amplitude: 0.1, frequency: 0.6 });
   const { activeSection } = useSectionsContext();
   const isActiveSection = activeSection === SECTIONS.workExperience;
 
@@ -51,29 +56,20 @@ const Minifigure = ({
     actions[isFocused ? "typing" : "main"].fadeOut(0.5);
   }, [actions, isFocused, isActiveSection]);
 
-  const accumulator = useRef(0);
-  useFrame(({ clock }, delta) => {
-    const multiplier = 2;
-    const scaledDelta = multiplier * (isFocused ? delta : -delta);
-    accumulator.current = MathUtils.clamp(accumulator.current + scaledDelta, 0, 1);
-    const alpha = MathUtils.smoothstep(accumulator.current, 0, 1);
+  useToggleAnimationState(isFocused, (alpha) => {
     ref.current.position.lerpVectors(origin, focusedPosition, alpha);
-    // TODO: abstract into wiggle function
-    const elapsed = clock.getElapsedTime();
-    const amplitude = 0.1;
-    const frequency = 0.6;
-    ref.current.position.y += amplitude * Math.sin(elapsed * frequency) * accumulator.current;
+    ref.current.position.y += wiggle() * alpha;
     const heightAmplitude = 3;
     ref.current.position.y += heightAmplitude * Math.sin(MathUtils.lerp(0, Math.PI, alpha));
 
     const x = MathUtils.lerp(0, Math.PI / 8, alpha);
-    const yAmplitude = 0.25;
-    const yFrequency = 0.75;
-    const yBounce = yAmplitude * Math.sin(elapsed * yFrequency) * accumulator.current;
+    wiggleOverride.amplitude = 0.25;
+    wiggleOverride.frequency = 0.75;
+    const yBounce = wiggle(wiggleOverride) * alpha;
     const y = MathUtils.lerp((props.rotation as Vector3Tuple)[1], Math.PI, alpha) + yBounce;
-    const zAmplitude = 0.1;
-    const zFrequency = 0.5;
-    const zBounce = zAmplitude * Math.sin(elapsed * zFrequency) * accumulator.current;
+    wiggleOverride.amplitude = 0.1;
+    wiggleOverride.frequency = 0.5;
+    const zBounce = wiggle(wiggleOverride) * alpha;
     const z = MathUtils.lerp((props.rotation as Vector3Tuple)[2], Math.PI / 64, alpha) + zBounce;
     ref.current.rotation.set(x, y, z, "YXZ");
   });

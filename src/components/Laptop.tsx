@@ -1,10 +1,4 @@
-import {
-  useFrame,
-  useLoader,
-  useThree,
-  type ThreeElements,
-  type ThreeEvent,
-} from "@react-three/fiber";
+import { useLoader, useThree, type ThreeElements, type ThreeEvent } from "@react-three/fiber";
 import {
   MathUtils,
   Matrix4,
@@ -24,6 +18,8 @@ import { ClickIndicator } from "./ClickIndicator";
 import { brickHeight, studDepth } from "../util/brickGeometry";
 import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
 import type { ProjectName } from "../constants/workProjects";
+import { useToggleAnimationState } from "../hooks/useToggleAnimationState";
+import { useWiggle } from "../hooks/useWiggle";
 
 type LaptopGraph = {
   nodes: { laptop: Mesh; stool: Mesh };
@@ -34,8 +30,6 @@ const laptopModelPath = getAssetUrl("Laptop");
 const laptopOrigin = new Vector3(0, (brickHeight + studDepth) * 2, 0);
 const facingCenter = (5 * Math.PI) / 4;
 
-const amplitude = 0.1;
-const frequency = 2;
 const getTransforms = (length: number, spacing: number) =>
   ({
     left: { position: [-length, 0, -length - spacing], rotation: [0, (3 * Math.PI) / 2, 0] },
@@ -55,6 +49,7 @@ export function Laptop({
 }) {
   const { width } = useRotatingDisplayContext();
   const { open } = useModalContext();
+  const wiggle = useWiggle({ amplitude: 0.1, frequency: 2, verticalShift: -0.1 });
 
   const laptop = useRef<Mesh>(null!);
   const gl = useThree((state) => state.gl);
@@ -82,23 +77,13 @@ export function Laptop({
     open(screen, () => setIsFocused(false));
   };
 
-  const handleMiss = () => {
-    setIsFocused(false);
-    // TODO: handle modal close
-  };
+  const handleMiss = () => setIsFocused(false);
 
-  const accumulator = useRef(0);
-  useFrame(({ clock }, delta) => {
-    // TODO: refactor for readability and performance
+  useToggleAnimationState(isFocused, (alpha) => {
     parentMatrix.copy(laptop.current.parent!.matrixWorld).invert();
     targetPosition.copy(focusedPosition).applyMatrix4(parentMatrix);
-    const multiplier = 2;
-    const scaledDelta = multiplier * (isFocused ? delta : -delta);
-    accumulator.current = MathUtils.clamp(accumulator.current + scaledDelta, 0, 1);
-    const alpha = MathUtils.smoothstep(accumulator.current, 0, 1);
     laptop.current.position.lerpVectors(laptopOrigin, targetPosition, alpha);
-    const elapsed = clock.getElapsedTime();
-    laptop.current.position.y += amplitude * Math.sin(elapsed * frequency) * accumulator.current;
+    laptop.current.position.y += wiggle() * alpha;
     if (!isFocused) {
       const heightAmplitude = 2;
       laptop.current.position.y += heightAmplitude * Math.sin(MathUtils.lerp(0, Math.PI, alpha));
