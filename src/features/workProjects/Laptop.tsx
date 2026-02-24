@@ -12,7 +12,7 @@ import { useGLTF, useTargetFocusedPosition, useToggleAnimationState, useWiggle }
 import { getAssetUrl, hoverHandlers, brickHeight, studDepth } from "@/util";
 import { useRotatingDisplayContext } from "@/contexts/RotatingDisplay";
 import { useModalContext } from "@/contexts/Modal";
-import { ClickIndicator } from "./ClickIndicator";
+import { ClickIndicator } from "../../components/ClickIndicator";
 import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
 import type { ProjectName } from "@/constants";
 

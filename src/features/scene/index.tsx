@@ -1,16 +1,14 @@
-import { useFrame } from "@react-three/fiber";
-import { Floor } from "./Floor";
-import { SectionHeaders } from "./SectionHeaders";
-import { Skills } from "./Skills";
-import { SocialLinks } from "./SocialLinks";
-import { Walls } from "./Walls";
-import { WorkExperience } from "./WorkExperience";
-import { WorkProjects } from "./WorkProjects";
 import { Suspense, useRef } from "react";
 import { Group, MathUtils } from "three";
+import { useFrame } from "@react-three/fiber";
 import type { AnimationHandle } from "@/hooks";
-import { AnimatedName } from "./AnimatedName";
-import { StaticNames } from "./StaticNames";
+import { Skills } from "@/features/skills";
+import { Contact } from "@/features/contact";
+import { WorkExperience } from "@/features/workExperience";
+import { WorkProjects } from "@/features/workProjects";
+import { AnimatedName, StaticNames, SectionHeaders } from "@/features/headings";
+import { Floor } from "./Floor";
+import { Walls } from "./Walls";
 import { Environment, type EnvironmentHandle } from "./Environment";
 
 const overlap = 0.25;
@@ -75,7 +73,7 @@ export const Scene = () => {
       <group ref={sections}>
         <WorkExperience />
         <WorkProjects />
-        <SocialLinks />
+        <Contact />
         <StaticNames />
       </group>
       <Walls ref={walls} />

@@ -2,7 +2,7 @@ import { type ObjectMap, type ThreeElements } from "@react-three/fiber";
 import { AnimationAction, AnimationClip, LoopOnce } from "three";
 import { useEffect, useRef } from "react";
 import { useGLTF, useAnimations, type OnFinished } from "@/hooks";
-import { hoverHandlers } from "@/util";
+import { getAssetUrl, hoverHandlers } from "@/util";
 import { useSectionsContext } from "@/contexts/Sections";
 import { SECTIONS, type SOCIAL_MEDIA_PROPS } from "@/constants";
 
@@ -28,7 +28,7 @@ export function SocialMediaMinifigure({
   href,
   ...props
 }: SocialMediaMinifigureProps) {
-  const modelPath = new URL(`../assets/${minifigure}.glb`, import.meta.url).href;
+  const modelPath = getAssetUrl(minifigure);
   const gltf = useGLTF<MinifigureGLTF>(modelPath);
   const { mixer, actions } = useAnimations(gltf);
   const timeout = useRef<number | null>(null);

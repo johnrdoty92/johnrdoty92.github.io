@@ -12,7 +12,7 @@ const MINIFIGURE_DIMENSIONS = {
   depth: 1.5,
 };
 
-export const SocialLinks = () => {
+export const Contact = () => {
   const originToCameraDistance = useThree(({ camera }) => camera).position.length();
   const { width: wallWidth } = useRotatingDisplayContext();
 

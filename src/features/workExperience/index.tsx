@@ -10,7 +10,7 @@ import {
 } from "@/hooks";
 import { MathUtils, Vector3, type AnimationClip, type Group, type Vector3Tuple } from "three";
 import { useModalContext } from "@/contexts/Modal";
-import { ClickIndicator } from "./ClickIndicator";
+import { ClickIndicator } from "@/components";
 import { useSectionsContext } from "@/contexts/Sections";
 import { SECTIONS, type JobTitle } from "@/constants";
 import { hoverHandlers, getAssetUrl } from "@/util";
@@ -84,7 +84,9 @@ const Minifigure = ({
       onClick={handleClick}
       onPointerMissed={() => setIsFocused(false)}
     >
-      <ClickIndicator visible={!isFocused} position={[0, 3, 0]} />
+      <Suspense>
+        <ClickIndicator visible={!isFocused} position={[0, 3, 0]} />
+      </Suspense>
       <primitive object={gltf.scene} />
     </group>
   );
@@ -100,7 +102,7 @@ const WorkExperienceMinifigure = (props: ComponentProps<typeof Minifigure>) => {
 
 export const WorkExperience = () => {
   return (
-    <Suspense fallback={<></>}>
+    <>
       <WorkExperienceMinifigure
         model="Intern"
         position={[3, 0, -5.5]}
@@ -112,6 +114,6 @@ export const WorkExperience = () => {
         <boxGeometry args={[3, 1, 2]} />
         <meshStandardMaterial color="black" />
       </mesh>
-    </Suspense>
+    </>
   );
 };

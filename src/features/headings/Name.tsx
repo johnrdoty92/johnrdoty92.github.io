@@ -1,10 +1,15 @@
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, type RefObject } from "react";
 import { MOBILE_BREAKPOINT_QUERY, headerFont, subtitleFont } from "@/theme";
-import { Mesh, MeshBasicMaterial, MeshPhysicalMaterial } from "three";
+import { Group, MathUtils, Mesh, MeshBasicMaterial, MeshPhysicalMaterial } from "three";
 import { personalInfo } from "@/constants";
 import { type ThreeElements } from "@react-three/fiber";
 import { useRotatingDisplayContext } from "@/contexts/RotatingDisplay";
-import { useMergeTextGeometryGroups, useMediaQuery } from "@/hooks";
+import {
+  useMergeTextGeometryGroups,
+  useMediaQuery,
+  useAnimationHandle,
+  type AnimationHandle,
+} from "@/hooks";
 
 const white = new MeshBasicMaterial({ color: "white" });
 const black = new MeshPhysicalMaterial({
@@ -14,7 +19,7 @@ const black = new MeshPhysicalMaterial({
   clearcoat: 1,
 });
 
-export const Name = (props: ThreeElements["group"]) => {
+const Name = (props: ThreeElements["group"]) => {
   const { height } = useRotatingDisplayContext();
   const name = useRef<Mesh>(null!);
   const title = useRef<Mesh>(null!);
@@ -76,5 +81,29 @@ export const Name = (props: ThreeElements["group"]) => {
         />
       </mesh>
     </group>
+  );
+};
+
+export const AnimatedName = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
+  const groupRef = useRef<Group>(null!);
+
+  useAnimationHandle(
+    ref,
+    (alpha) => {
+      groupRef.current.position.y = MathUtils.lerp(10, 0, alpha);
+    },
+    [],
+  );
+
+  return <Name ref={groupRef} position={[1, 0, 1]} rotation={[0, Math.PI / 2, 0]} />;
+};
+
+export const StaticNames = () => {
+  return (
+    <>
+      <Name />
+      <Name rotation-y={-Math.PI / 2} position={[-1, 0, -1]} />
+      <Name rotation-y={-Math.PI} />
+    </>
   );
 };

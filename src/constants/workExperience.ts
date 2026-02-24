@@ -1,5 +1,5 @@
 import type { ResumeProps } from "@johnrdoty92/resume-generator";
-import { getAssetUrl } from "@/util";
+import { getAssetUrl } from "@/util/getAssetUrl";
 import type { SKILLS } from "@/constants";
 
 export const workExperience = {
