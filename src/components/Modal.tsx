@@ -6,8 +6,7 @@ import {
   type TransitionEventHandler,
 } from "react";
 import { ModalContext, type ModalContextValue } from "../contexts/Modal";
-import { workExperience, type JobTitle } from "../constants/workExperience";
-import { workProjects, type ProjectName } from "../constants/workProjects";
+import { workExperience, type JobTitle, workProjects, type ProjectName } from "@/constants";
 import type { WorkExperience } from "@johnrdoty92/resume-generator";
 
 const MODAL_CLASSNAMES = {

@@ -1,7 +1,7 @@
 import { useThree } from "@react-three/fiber";
 import { type PerspectiveCamera, Vector2, Vector3, type Vector3Like } from "three";
 import { useMediaQuery } from "./useMediaQuery";
-import { POSITIVE_Y } from "../constants/vectors";
+import { POSITIVE_Y } from "@/constants";
 import { MOBILE_BREAKPOINT_QUERY } from "@/theme";
 
 const DIAGONAL = new Vector3(-1, 0, 1);

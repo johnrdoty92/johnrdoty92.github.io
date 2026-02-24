@@ -3,10 +3,9 @@ import { AnimationAction, AnimationClip, LoopOnce } from "three";
 import { useGLTF } from "../hooks/useGLTF";
 import { useEffect, useRef } from "react";
 import { useAnimations, type OnFinished } from "../hooks/useAnimations";
-import type { SOCIAL_MEDIA_PROPS } from "../constants/socialMedia";
 import { hoverHandlers } from "../util/hoverHandlers";
 import { useSectionsContext } from "../contexts/Sections";
-import { SECTIONS } from "@/constants";
+import { SECTIONS, type SOCIAL_MEDIA_PROPS } from "@/constants";
 
 const getRandomTimeout = (duration = 2500) => Math.random() * duration;
 

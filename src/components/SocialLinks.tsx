@@ -3,7 +3,7 @@ import { SocialMediaMinifigure } from "./SocialMediaMinifigure";
 import { useThree } from "@react-three/fiber";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { MathUtils } from "three";
-import { SOCIAL_MEDIA_PROPS } from "../constants/socialMedia";
+import { SOCIAL_MEDIA_PROPS } from "@/constants";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { MOBILE_BREAKPOINT_QUERY } from "@/theme";
 

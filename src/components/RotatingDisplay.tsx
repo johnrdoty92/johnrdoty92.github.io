@@ -3,7 +3,7 @@ import { useCallback, useEffect, useImperativeHandle, useRef, useState, type Ref
 import { MathUtils, PerspectiveCamera, Vector2, Vector3, type Group } from "three";
 import { RotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { useSectionsContext } from "../contexts/Sections";
-import { POSITIVE_X, POSITIVE_Y } from "../constants/vectors";
+import { POSITIVE_X, POSITIVE_Y } from "@/constants";
 
 const ANIMATION_THRESHOLD = 0.00001;
 

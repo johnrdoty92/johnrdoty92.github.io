@@ -1,11 +1,14 @@
 import { Resume, type ResumeProps } from "@johnrdoty92/resume-generator";
 import { pdf } from "@react-pdf/renderer";
-import { githubUrl, linkedInUrl } from "../constants/socialMedia";
-import { SKILLS } from "../constants/skills";
 import { useState, type ComponentProps } from "react";
-import { personalInfo } from "../constants/personalInfo";
-import { workExperience } from "../constants/workExperience";
-import { workProjects } from "../constants/workProjects";
+import {
+  SKILLS,
+  personalInfo,
+  workExperience,
+  workProjects,
+  githubUrl,
+  linkedInUrl,
+} from "@/constants";
 
 const resumeProps: ResumeProps = {
   author: personalInfo.name,
