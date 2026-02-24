@@ -10,11 +10,11 @@ import {
 import { useRef, useState } from "react";
 import { useGLTF, useTargetFocusedPosition, useToggleAnimationState, useWiggle } from "@/hooks";
 import { getAssetUrl, hoverHandlers, brickHeight, studDepth } from "@/util";
-import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
-import { useModalContext } from "../contexts/Modal";
+import { useRotatingDisplayContext } from "@/contexts/RotatingDisplay";
+import { useModalContext } from "@/contexts/Modal";
 import { ClickIndicator } from "./ClickIndicator";
 import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
-import type { ProjectName } from "../constants/workProjects";
+import type { ProjectName } from "@/constants";
 
 type LaptopGraph = {
   nodes: { laptop: Mesh; stool: Mesh };

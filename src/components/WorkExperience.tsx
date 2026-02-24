@@ -9,12 +9,11 @@ import {
   type WaveConfig,
 } from "@/hooks";
 import { MathUtils, Vector3, type AnimationClip, type Group, type Vector3Tuple } from "three";
-import { useModalContext } from "../contexts/Modal";
+import { useModalContext } from "@/contexts/Modal";
 import { ClickIndicator } from "./ClickIndicator";
-import { useSectionsContext } from "../contexts/Sections";
-import { SECTIONS } from "@/constants";
+import { useSectionsContext } from "@/contexts/Sections";
+import { SECTIONS type JobTitle } from "@/constants";
 import { hoverHandlers, getAssetUrl } from "@/util";
-import type { JobTitle } from "../constants/workExperience";
 
 interface MinifigureGLTF extends Partial<ObjectMap> {
   animations: (AnimationClip & { name: "typing" | "main" })[];

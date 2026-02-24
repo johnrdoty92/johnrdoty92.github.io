@@ -1,5 +1,5 @@
 import { IS_TOUCH_DEVICE } from "@/constants";
-import { useSectionsContext } from "../contexts/Sections";
+import { useSectionsContext } from "@/contexts/Sections";
 import type { PropsWithChildren } from "react";
 import type { Section } from "@/constants";
 import { clampAsSectionValue } from "@/util";

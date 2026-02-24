@@ -5,7 +5,7 @@ import { useSearchValue, useMediaQuery, useAnimationHandle, type AnimationHandle
 import { SKILLS, workExperience } from "@/constants";
 import { MathUtils, type Sprite, type Group, Vector3, SRGBColorSpace } from "three";
 import { useMemo, useRef, useState, type RefObject } from "react";
-import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
+import { useRotatingDisplayContext } from "@/contexts/RotatingDisplay";
 import { useFrame } from "@react-three/fiber";
 import type { WorkExperience } from "@johnrdoty92/resume-generator";
 import { MOBILE_BREAKPOINT_QUERY } from "@/theme";

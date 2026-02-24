@@ -3,7 +3,7 @@ import { AnimationAction, AnimationClip, LoopOnce } from "three";
 import { useEffect, useRef } from "react";
 import { useGLTF, useAnimations, type OnFinished } from "@/hooks";
 import { hoverHandlers } from "@/util";
-import { useSectionsContext } from "../contexts/Sections";
+import { useSectionsContext } from "@/contexts/Sections";
 import { SECTIONS, type SOCIAL_MEDIA_PROPS } from "@/constants";
 
 const getRandomTimeout = (duration = 2500) => Math.random() * duration;

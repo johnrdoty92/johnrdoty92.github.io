@@ -5,7 +5,7 @@ import {
   type PropsWithChildren,
   type TransitionEventHandler,
 } from "react";
-import { ModalContext, type ModalContextValue } from "../contexts/Modal";
+import { ModalContext, type ModalContextValue } from "@/contexts/Modal";
 import { workExperience, type JobTitle, workProjects, type ProjectName } from "@/constants";
 import type { WorkExperience } from "@johnrdoty92/resume-generator";
 

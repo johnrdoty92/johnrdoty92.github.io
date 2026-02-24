@@ -1,8 +1,8 @@
 import { useFrame, useThree, type ThreeElements } from "@react-three/fiber";
 import { useCallback, useEffect, useImperativeHandle, useRef, useState, type Ref } from "react";
 import { MathUtils, PerspectiveCamera, Vector2, Vector3, type Group } from "three";
-import { RotatingDisplayContext } from "../contexts/RotatingDisplay";
-import { useSectionsContext } from "../contexts/Sections";
+import { RotatingDisplayContext } from "@/contexts/RotatingDisplay";
+import { useSectionsContext } from "@/contexts/Sections";
 import { POSITIVE_X, POSITIVE_Y } from "@/constants";
 
 const ANIMATION_THRESHOLD = 0.00001;

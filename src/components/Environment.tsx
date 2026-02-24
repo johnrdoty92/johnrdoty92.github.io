@@ -2,7 +2,7 @@ import { useLoader, useThree } from "@react-three/fiber";
 import { useEffect, useImperativeHandle, useRef, type RefObject } from "react";
 import { EquirectangularReflectionMapping } from "three";
 import { UltraHDRLoader } from "three/examples/jsm/loaders/UltraHDRLoader.js";
-import hdri from "../assets/bambanani_sunset_1k.jpg?url";
+import hdri from "@/assets/bambanani_sunset_1k.jpg?url";
 
 export interface EnvironmentHandle {
   checkIsLoaded: () => boolean;

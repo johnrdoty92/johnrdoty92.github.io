@@ -1,5 +1,5 @@
 import { useCallback, useState, type PropsWithChildren } from "react";
-import { SectionsContext } from "../contexts/Sections";
+import { SectionsContext } from "@/contexts/Sections";
 import { clampAsSectionValue } from "@/util";
 import type { Section } from "@/constants";
 

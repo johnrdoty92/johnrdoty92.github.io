@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, type RefObject } from "react";
 import { Color, InstancedMesh, MathUtils, Matrix4, MeshStandardMaterial, Vector3 } from "three";
 import { brickGeometry, brickHeight, brickLength } from "@/util";
 import { type ThreeElements } from "@react-three/fiber";
-import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
+import { useRotatingDisplayContext } from "@/contexts/RotatingDisplay";
 import { useAnimationHandle, type AnimationHandle } from "@/hooks";
 import { theme } from "@/theme";
 
