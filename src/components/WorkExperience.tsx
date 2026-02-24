@@ -10,11 +10,10 @@ import {
 } from "@/hooks";
 import { MathUtils, Vector3, type AnimationClip, type Group, type Vector3Tuple } from "three";
 import { useModalContext } from "../contexts/Modal";
-import { hoverHandlers } from "../util/hoverHandlers";
 import { ClickIndicator } from "./ClickIndicator";
 import { useSectionsContext } from "../contexts/Sections";
 import { SECTIONS } from "@/constants";
-import { getAssetUrl } from "../util/getAssetUrl";
+import { hoverHandlers, getAssetUrl } from "@/util";
 import type { JobTitle } from "../constants/workExperience";
 
 interface MinifigureGLTF extends Partial<ObjectMap> {

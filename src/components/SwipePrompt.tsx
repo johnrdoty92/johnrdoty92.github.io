@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useSectionsContext } from "../contexts/Sections";
 import { IS_TOUCH_DEVICE } from "@/constants";
-import { getAssetUrl } from "../util/getAssetUrl";
+import { getAssetUrl } from "@/util";
 
 export const SwipePrompt = () => {
   const { activeSection } = useSectionsContext();

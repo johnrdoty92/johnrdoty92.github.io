@@ -1,6 +1,6 @@
 import { useFrame, useLoader, type ThreeElements } from "@react-three/fiber";
 import { MathUtils, Sprite, TextureLoader } from "three";
-import { getAssetUrl } from "../util/getAssetUrl";
+import { getAssetUrl } from "@/util";
 import { useRef } from "react";
 import { IS_TOUCH_DEVICE } from "@/constants";
 import { useWiggle } from "@/hooks";

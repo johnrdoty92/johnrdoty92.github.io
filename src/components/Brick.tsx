@@ -1,11 +1,11 @@
 import type { ThreeElements } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
-import { brickGeometry } from "../util/brickGeometry";
 import {
+  brickGeometry,
   canvasTextureSize,
   drawCanvasTexture,
   type CanvasDrawingOptions,
-} from "../util/canvasTexture";
+} from "@/util";
 import { Color, MeshPhysicalMaterial, SRGBColorSpace } from "three";
 import { useToggleAnimationState } from "@/hooks";
 import { theme } from "@/theme";

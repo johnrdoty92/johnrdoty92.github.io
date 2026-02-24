@@ -1,5 +1,5 @@
 import Fuse from "fuse.js/min-basic";
-import { brickHeight } from "../util/brickGeometry";
+import { brickHeight } from "@/util";
 import { Brick } from "./Brick";
 import { useSearchValue, useMediaQuery, useAnimationHandle, type AnimationHandle } from "@/hooks";
 import { SKILLS, workExperience } from "@/constants";

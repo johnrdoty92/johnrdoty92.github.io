@@ -9,7 +9,7 @@ import {
   Vector3,
   type PerspectiveCamera,
 } from "three";
-import { brickWidth, studGeometry, brickHeight, studDepth } from "../util/brickGeometry";
+import { brickWidth, studGeometry, brickHeight, studDepth } from "@/util";
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import { useAnimationHandle, type AnimationHandle } from "@/hooks";
 import { theme } from "@/theme";

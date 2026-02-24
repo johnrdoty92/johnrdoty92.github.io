@@ -9,12 +9,10 @@ import {
 } from "three";
 import { useRef, useState } from "react";
 import { useGLTF, useTargetFocusedPosition, useToggleAnimationState, useWiggle } from "@/hooks";
-import { getAssetUrl } from "../util/getAssetUrl";
+import { getAssetUrl, hoverHandlers, brickHeight, studDepth } from "@/util";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { useModalContext } from "../contexts/Modal";
-import { hoverHandlers } from "../util/hoverHandlers";
 import { ClickIndicator } from "./ClickIndicator";
-import { brickHeight, studDepth } from "../util/brickGeometry";
 import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
 import type { ProjectName } from "../constants/workProjects";
 

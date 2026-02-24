@@ -4,7 +4,7 @@ import { MOBILE_BREAKPOINT_QUERY, theme, headerFont } from "@/theme";
 import { extend, type ThreeElement, type ThreeElements } from "@react-three/fiber";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
-import { brickWidth } from "../util/brickGeometry";
+import { brickWidth } from "@/util";
 import {
   useMediaQuery,
   useMergeTextGeometryGroups,
