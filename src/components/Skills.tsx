@@ -1,12 +1,10 @@
 import Fuse from "fuse.js/min-basic";
 import { brickHeight } from "../util/brickGeometry";
 import { Brick } from "./Brick";
-import { useSearchValue } from "../hooks/useSearchValue";
-import { useMediaQuery } from "../hooks/useMediaQuery";
+import { useSearchValue, useMediaQuery, useAnimationHandle, type AnimationHandle } from "@/hooks";
 import { SKILLS, workExperience } from "@/constants";
 import { MathUtils, type Sprite, type Group, Vector3, SRGBColorSpace } from "three";
 import { useMemo, useRef, useState, type RefObject } from "react";
-import { useAnimationHandle, type AnimationHandle } from "../hooks/useAnimationHandle";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { useFrame } from "@react-three/fiber";
 import type { WorkExperience } from "@johnrdoty92/resume-generator";

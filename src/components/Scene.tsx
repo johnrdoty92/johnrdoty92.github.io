@@ -8,7 +8,7 @@ import { WorkExperience } from "./WorkExperience";
 import { WorkProjects } from "./WorkProjects";
 import { Suspense, useRef } from "react";
 import { Group, MathUtils } from "three";
-import type { AnimationHandle } from "../hooks/useAnimationHandle";
+import type { AnimationHandle } from "@/hooks";
 import { AnimatedName } from "./AnimatedName";
 import { StaticNames } from "./StaticNames";
 import { Environment, type EnvironmentHandle } from "./Environment";

@@ -8,18 +8,15 @@ import {
   Vector3,
 } from "three";
 import { useRef, useState } from "react";
-import { useGLTF } from "../hooks/useGLTF";
+import { useGLTF, useTargetFocusedPosition, useToggleAnimationState, useWiggle } from "@/hooks";
 import { getAssetUrl } from "../util/getAssetUrl";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
 import { useModalContext } from "../contexts/Modal";
-import { useTargetFocusedPosition } from "../hooks/useTargetFocusedPosition";
 import { hoverHandlers } from "../util/hoverHandlers";
 import { ClickIndicator } from "./ClickIndicator";
 import { brickHeight, studDepth } from "../util/brickGeometry";
 import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
 import type { ProjectName } from "../constants/workProjects";
-import { useToggleAnimationState } from "../hooks/useToggleAnimationState";
-import { useWiggle } from "../hooks/useWiggle";
 
 type LaptopGraph = {
   nodes: { laptop: Mesh; stool: Mesh };

@@ -7,7 +7,7 @@ import {
   type CanvasDrawingOptions,
 } from "../util/canvasTexture";
 import { Color, MeshPhysicalMaterial, SRGBColorSpace } from "three";
-import { useToggleAnimationState } from "../hooks/useToggleAnimationState";
+import { useToggleAnimationState } from "@/hooks";
 import { theme } from "@/theme";
 
 export type BrickProps = {

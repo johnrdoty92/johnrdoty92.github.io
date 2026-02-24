@@ -2,10 +2,9 @@ import { useLayoutEffect, useRef } from "react";
 import { MOBILE_BREAKPOINT_QUERY, headerFont, subtitleFont } from "@/theme";
 import { Mesh, MeshBasicMaterial, MeshPhysicalMaterial } from "three";
 import { personalInfo } from "@/constants";
-import { useMediaQuery } from "../hooks/useMediaQuery";
 import { type ThreeElements } from "@react-three/fiber";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
-import { useMergeTextGeometryGroups } from "../hooks/useMergeTextGeometryGroups";
+import { useMergeTextGeometryGroups, useMediaQuery } from "@/hooks";
 
 const white = new MeshBasicMaterial({ color: "white" });
 const black = new MeshPhysicalMaterial({

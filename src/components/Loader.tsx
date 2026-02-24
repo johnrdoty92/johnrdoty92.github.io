@@ -1,7 +1,7 @@
 import { useFrame, useThree, type ThreeElements } from "@react-three/fiber";
 import { useRef } from "react";
 import { Group, InstancedMesh, Matrix4, MeshBasicMaterial, SphereGeometry, Vector3 } from "three";
-import { useWiggle, type WaveConfig } from "../hooks/useWiggle";
+import { useWiggle, type WaveConfig } from "@/hooks";
 
 const geometry = new SphereGeometry(0.25);
 const material = new MeshBasicMaterial();

@@ -1,18 +1,21 @@
 import { type ObjectMap, type ThreeElements, type ThreeEvent } from "@react-three/fiber";
 import { Suspense, useEffect, useRef, useState, type ComponentProps } from "react";
-import { useGLTF } from "../hooks/useGLTF";
-import { useAnimations } from "../hooks/useAnimations";
+import {
+  useGLTF,
+  useAnimations,
+  useTargetFocusedPosition,
+  useToggleAnimationState,
+  useWiggle,
+  type WaveConfig,
+} from "@/hooks";
 import { MathUtils, Vector3, type AnimationClip, type Group, type Vector3Tuple } from "three";
 import { useModalContext } from "../contexts/Modal";
-import { useTargetFocusedPosition } from "../hooks/useTargetFocusedPosition";
 import { hoverHandlers } from "../util/hoverHandlers";
 import { ClickIndicator } from "./ClickIndicator";
 import { useSectionsContext } from "../contexts/Sections";
 import { SECTIONS } from "@/constants";
 import { getAssetUrl } from "../util/getAssetUrl";
 import type { JobTitle } from "../constants/workExperience";
-import { useToggleAnimationState } from "../hooks/useToggleAnimationState";
-import { useWiggle, type WaveConfig } from "../hooks/useWiggle";
 
 interface MinifigureGLTF extends Partial<ObjectMap> {
   animations: (AnimationClip & { name: "typing" | "main" })[];

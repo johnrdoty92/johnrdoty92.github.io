@@ -1,8 +1,7 @@
 import { type ObjectMap, type ThreeElements } from "@react-three/fiber";
 import { AnimationAction, AnimationClip, LoopOnce } from "three";
-import { useGLTF } from "../hooks/useGLTF";
 import { useEffect, useRef } from "react";
-import { useAnimations, type OnFinished } from "../hooks/useAnimations";
+import { useGLTF, useAnimations, type OnFinished } from "@/hooks";
 import { hoverHandlers } from "../util/hoverHandlers";
 import { useSectionsContext } from "../contexts/Sections";
 import { SECTIONS, type SOCIAL_MEDIA_PROPS } from "@/constants";

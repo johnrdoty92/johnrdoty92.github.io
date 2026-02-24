@@ -1,5 +1,5 @@
 import { useRef, type ComponentProps } from "react";
-import { SEARCH_EVENT } from "../hooks/useSearchValue";
+import { SEARCH_EVENT } from "@/hooks";
 import { useSectionsContext } from "../contexts/Sections";
 import { SECTIONS } from "@/constants";
 

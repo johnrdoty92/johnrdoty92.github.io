@@ -1,5 +1,5 @@
 import { useRef, type RefObject } from "react";
-import { useAnimationHandle, type AnimationHandle } from "../hooks/useAnimationHandle";
+import { useAnimationHandle, type AnimationHandle } from "@/hooks";
 import { Name } from "./Name";
 import { MathUtils, type Group } from "three";
 

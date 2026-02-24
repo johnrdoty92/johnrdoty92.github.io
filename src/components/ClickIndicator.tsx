@@ -3,7 +3,7 @@ import { MathUtils, Sprite, TextureLoader } from "three";
 import { getAssetUrl } from "../util/getAssetUrl";
 import { useRef } from "react";
 import { IS_TOUCH_DEVICE } from "@/constants";
-import { useWiggle } from "../hooks/useWiggle";
+import { useWiggle } from "@/hooks";
 
 export const ClickIndicator = (props: ThreeElements["group"]) => {
   const cursorTexture = useLoader(

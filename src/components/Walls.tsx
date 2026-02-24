@@ -3,7 +3,7 @@ import { Color, InstancedMesh, MathUtils, Matrix4, MeshStandardMaterial, Vector3
 import { brickGeometry, brickHeight, brickLength } from "../util/brickGeometry";
 import { type ThreeElements } from "@react-three/fiber";
 import { useRotatingDisplayContext } from "../contexts/RotatingDisplay";
-import { useAnimationHandle, type AnimationHandle } from "../hooks/useAnimationHandle";
+import { useAnimationHandle, type AnimationHandle } from "@/hooks";
 import { theme } from "@/theme";
 
 const mtx = new Matrix4();
