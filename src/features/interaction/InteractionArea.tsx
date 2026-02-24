@@ -3,7 +3,7 @@ import { Search } from "./Search";
 import { SwipePrompt } from "./SwipePrompt";
 import { CarouselButtons } from "./CarouselButtons";
 
-const DownloadResumeButton = lazy(() => import("../components/DownloadResumeButton"));
+const DownloadResumeButton = lazy(() => import("@/features/interaction/DownloadResumeButton"));
 
 export const InteractionArea = () => {
   return (

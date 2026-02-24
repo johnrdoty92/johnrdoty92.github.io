@@ -1,9 +1,8 @@
 import { Canvas } from "@react-three/fiber";
 import { useRef } from "react";
 import { RotatingDisplay, type RotatingDisplayHandle } from "./components/RotatingDisplay";
-import { Modal } from "./components/Modal";
+import { Modal, InteractionArea } from "@/features/interaction";
 import { SectionsProvider } from "./components/SectionsProvider";
-import { InteractionArea } from "./components/InteractionArea";
 import { Lighting } from "./components/Lighting";
 import { Fog } from "./components/Fog";
 import { Scene } from "./components/Scene";

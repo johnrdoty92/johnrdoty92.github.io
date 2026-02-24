@@ -12,7 +12,7 @@ import { MathUtils, Vector3, type AnimationClip, type Group, type Vector3Tuple }
 import { useModalContext } from "@/contexts/Modal";
 import { ClickIndicator } from "./ClickIndicator";
 import { useSectionsContext } from "@/contexts/Sections";
-import { SECTIONS type JobTitle } from "@/constants";
+import { SECTIONS, type JobTitle } from "@/constants";
 import { hoverHandlers, getAssetUrl } from "@/util";
 
 interface MinifigureGLTF extends Partial<ObjectMap> {
