@@ -133,7 +133,7 @@ export const Skills = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
         brick.rotation.z = MathUtils.lerp(STARTING_ROTATION, TARGET_ROTATION, rotationAlpha);
       });
     },
-    [],
+    [spacing, wallOffset],
   );
 
   return (
