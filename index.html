@@ -127,11 +127,12 @@
         transition:
           opacity 0.25s ease-in-out,
           top 0.25s cubic-bezier(0.5, 0.74, 0.55, 0.97),
-          right 0.25s cubic-bezier(0.5, 0.74, 0.55, 0.97);
+          transform 0.25s cubic-bezier(0.5, 0.74, 0.55, 0.97);
         opacity: 0;
         top: 52.5%;
         margin-inline: auto;
         width: 100%;
+        max-width: 600px;
         height: calc(50dvh - 1rem);
       }
 
@@ -453,16 +454,18 @@
         dialog {
           top: 0%;
           padding: 2em;
-          right: -2.5%;
-          margin-right: 1rem;
+          left: 50%;
+          transform: translateX(5%);
           margin-block: auto;
+          margin-inline: unset;
+          margin-right: 1rem;
           width: 50%;
           height: fit-content;
         }
 
         dialog.modal-visible {
           top: 0%;
-          right: 0%;
+          transform: translateX(0%);
         }
 
         .interaction-area {
