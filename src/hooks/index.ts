@@ -7,3 +7,4 @@ export * from "./useSearchValue";
 export * from "./useTargetFocusedPosition";
 export * from "./useToggleAnimationState";
 export * from "./useWiggle";
+export * from "./useResponsiveFontSize";

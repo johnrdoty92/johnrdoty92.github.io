@@ -1,14 +1,13 @@
 import Fuse from "fuse.js/min-basic";
 import { brickHeight } from "@/util";
 import { Brick } from "./Brick";
-import { useSearchValue, useMediaQuery, useAnimationHandle, type AnimationHandle } from "@/hooks";
+import { useSearchValue, useAnimationHandle, type AnimationHandle } from "@/hooks";
 import { SKILLS, workExperience } from "@/constants";
 import { MathUtils, type Sprite, type Group, Vector3, SRGBColorSpace } from "three";
 import { useMemo, useRef, useState, type RefObject } from "react";
 import { useRotatingDisplayContext } from "@/contexts/RotatingDisplay";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import type { WorkExperience } from "@johnrdoty92/resume-generator";
-import { MOBILE_BREAKPOINT_QUERY } from "@/theme";
 
 const fuse = new Fuse(SKILLS, { keys: ["name", "tags"], threshold: 0.25 });
 
@@ -101,7 +100,9 @@ export const Skills = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
     }
   });
 
-  const isMobileScreen = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
+  const size = useThree((state) => state.size);
+  const aspect = size.width / size.height;
+  const isMobileScreen = aspect < 1;
   const columnCount = 3;
   const columnHeight = Math.floor(SKILLS.length / columnCount);
   const spacing = isMobileScreen ? 1.75 : 2;

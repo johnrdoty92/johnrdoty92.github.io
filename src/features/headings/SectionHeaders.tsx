@@ -1,16 +1,16 @@
 import { useRef, type RefObject } from "react";
 import { Group, MeshBasicMaterial } from "three";
-import { MOBILE_BREAKPOINT_QUERY, theme, headerFont } from "@/theme";
+import { theme, headerFont } from "@/theme";
 import { extend, type ThreeElement, type ThreeElements } from "@react-three/fiber";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
-import { useRotatingDisplayContext } from "@/contexts/RotatingDisplay";
 import { brickWidth } from "@/util";
 import {
-  useMediaQuery,
   useMergeTextGeometryGroups,
   useAnimationHandle,
   type AnimationHandle,
+  useResponsiveFontSize,
 } from "@/hooks";
+import { TEXT_HEIGHT } from "@/constants/text";
 
 extend({ TextGeometry });
 
@@ -22,13 +22,12 @@ declare module "@react-three/fiber" {
 const face = new MeshBasicMaterial({ color: theme.focus, transparent: true });
 const side = new MeshBasicMaterial({ color: theme.secondary, transparent: true });
 const startingYOffset = 4;
+const lineGap = 0.25;
 
 type HeaderProps = { label: string } & ThreeElements["group"];
 
 const Header = ({ label, ...props }: HeaderProps) => {
-  const isMobileScreen = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
-  const size = isMobileScreen ? 0.6 : 0.75;
-  const lineGap = 0.25;
+  const size = useResponsiveFontSize() * 0.9;
   const onMount = useMergeTextGeometryGroups();
 
   return (
@@ -59,10 +58,7 @@ const Header = ({ label, ...props }: HeaderProps) => {
 
 export const SectionHeaders = ({ ref }: { ref: RefObject<AnimationHandle> }) => {
   const groupRef = useRef<Group>(null!);
-  const { height } = useRotatingDisplayContext();
-  const isMobile = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
-  const heightOffset = isMobile ? 3.9 : 3.7;
-  const [x, y, z] = [brickWidth, height - heightOffset, brickWidth];
+  const [x, y, z] = [brickWidth, TEXT_HEIGHT, brickWidth];
 
   useAnimationHandle(ref, (alpha: number) => {
     face.opacity = alpha;

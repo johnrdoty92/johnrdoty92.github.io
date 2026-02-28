@@ -1,15 +1,15 @@
 import { useLayoutEffect, useRef, type RefObject } from "react";
-import { MOBILE_BREAKPOINT_QUERY, headerFont, subtitleFont } from "@/theme";
+import { headerFont, subtitleFont } from "@/theme";
 import { Group, MathUtils, Mesh, MeshBasicMaterial, MeshPhysicalMaterial } from "three";
 import { personalInfo } from "@/constants";
 import { type ThreeElements } from "@react-three/fiber";
-import { useRotatingDisplayContext } from "@/contexts/RotatingDisplay";
 import {
   useMergeTextGeometryGroups,
-  useMediaQuery,
   useAnimationHandle,
   type AnimationHandle,
+  useResponsiveFontSize,
 } from "@/hooks";
+import { TEXT_HEIGHT } from "@/constants/text";
 
 const white = new MeshBasicMaterial({ color: "white" });
 const black = new MeshPhysicalMaterial({
@@ -20,15 +20,11 @@ const black = new MeshPhysicalMaterial({
 });
 
 const Name = (props: ThreeElements["group"]) => {
-  const { height } = useRotatingDisplayContext();
   const name = useRef<Mesh>(null!);
   const title = useRef<Mesh>(null!);
-  const isMobile = useMediaQuery(MOBILE_BREAKPOINT_QUERY);
   const onMount = useMergeTextGeometryGroups();
-  const size = isMobile ? 0.7 : 0.9;
-  const padding = isMobile ? 0.3 : 1;
+  const size = useResponsiveFontSize();
   const subheaderSize = size * 0.4;
-  const heightOffset = 3.75;
   const fontBaseProps = {
     depth: 0.15,
     curveSegments: 4,
@@ -38,17 +34,18 @@ const Name = (props: ThreeElements["group"]) => {
   };
 
   useLayoutEffect(() => {
+    const padding = size / 2;
     name.current.geometry.computeBoundingBox();
     name.current.position.x = -name.current.geometry.boundingBox!.max.x - padding;
     title.current.geometry.computeBoundingBox();
     const titleCenter = title.current.geometry.boundingBox!.max.x / 2;
     const nameCenter = name.current.position.x / 2;
     title.current.position.x = -titleCenter + nameCenter - padding / 2;
-  }, [padding]);
+  }, [size]);
 
   return (
     <group {...props}>
-      <mesh ref={name} position-y={height - heightOffset} material={[white, black]}>
+      <mesh ref={name} position-y={TEXT_HEIGHT} material={[white, black]}>
         <textGeometry
           ref={onMount}
           args={[
@@ -62,11 +59,7 @@ const Name = (props: ThreeElements["group"]) => {
           ]}
         />
       </mesh>
-      <mesh
-        ref={title}
-        position-y={height - heightOffset - subheaderSize - 0.25}
-        material={[black, white]}
-      >
+      <mesh ref={title} position-y={TEXT_HEIGHT - subheaderSize - 0.25} material={[black, white]}>
         <textGeometry
           ref={onMount}
           args={[
