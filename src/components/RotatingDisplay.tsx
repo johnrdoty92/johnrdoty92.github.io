@@ -6,6 +6,10 @@ import { useSectionsContext } from "@/contexts/Sections";
 import { POSITIVE_X, POSITIVE_Y } from "@/constants";
 
 const ANIMATION_THRESHOLD = 0.00001;
+const MIN_ZOOM = 0.7;
+const MAX_ZOOM = 1;
+const ASPECT_THRESHOLD_START = 0.5;
+const ASPECT_THRESHOLD_BOUNDS = 0.4;
 
 const point = new Vector2();
 
@@ -19,7 +23,27 @@ const useDimensions = () => {
   const camera = useThree(({ camera }) => camera as PerspectiveCamera);
   const renderer = useThree(({ gl }) => gl);
 
+  const updateZoomForXsScreens = useCallback(() => {
+    if (camera.aspect < ASPECT_THRESHOLD_START) {
+      camera.zoom = MathUtils.clamp(
+        MathUtils.mapLinear(
+          camera.aspect,
+          ASPECT_THRESHOLD_START,
+          ASPECT_THRESHOLD_BOUNDS,
+          MAX_ZOOM,
+          MIN_ZOOM,
+        ),
+        MIN_ZOOM,
+        MAX_ZOOM,
+      );
+    } else {
+      camera.zoom = 1;
+    }
+    camera.updateProjectionMatrix();
+  }, [camera]);
+
   const calculateDimensions = useCallback(() => {
+    updateZoomForXsScreens();
     const cameraDistance = camera.position.length();
     const { x: viewWidth, y: viewHeight } = camera.getViewSize(cameraDistance, new Vector2());
     const cameraPlaneNormal = camera.position.clone().negate().normalize();
@@ -35,7 +59,7 @@ const useDimensions = () => {
     const height =
       Math.floor((viewHeight / 2) * Math.sin(gamma)) / Math.sin(Math.PI - gamma - beta);
     return { width, height };
-  }, [camera]);
+  }, [camera, updateZoomForXsScreens]);
 
   const [dimensions, setDimensions] = useState(calculateDimensions);
 
