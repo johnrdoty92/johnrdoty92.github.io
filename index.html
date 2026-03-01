@@ -290,35 +290,6 @@
         opacity: 0.75;
       }
 
-      .swipe-prompt {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        padding: 0.25em 2em;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        font-family: monospace;
-        background-color: black;
-        border-color: white;
-        border-width: 2px 4px 4px 2px;
-        border-style: solid;
-        border-radius: var(--border-radius);
-        text-align: center;
-        font-size: 2rem;
-        opacity: 1;
-        border-radius: var(--border-radius);
-      }
-
-      .swipe-prompt.acknowledged {
-        opacity: 0;
-      }
-
-      .swipe-prompt img.pointer {
-        animation: swipe 1.5s ease-in-out infinite normal;
-      }
-
       .actions {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
@@ -400,22 +371,6 @@
 
       .carousel-button p {
         padding-inline: 0.6em;
-      }
-
-      @keyframes swipe {
-        0% {
-          opacity: 0;
-          transform: translateX(100%) rotate(15deg);
-        }
-
-        75% {
-          opacity: 1;
-        }
-
-        100% {
-          opacity: 0;
-          transform: translateX(-100%) rotate(-15deg);
-        }
       }
 
       .initials {
