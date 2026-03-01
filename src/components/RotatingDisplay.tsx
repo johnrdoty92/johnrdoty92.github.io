@@ -6,6 +6,7 @@ import { useSectionsContext } from "@/contexts/Sections";
 import { POSITIVE_X, POSITIVE_Y } from "@/constants";
 
 const ANIMATION_THRESHOLD = 0.00001;
+const MIN_WIDTH = 3;
 const MIN_ZOOM = 0.7;
 const MAX_ZOOM = 1;
 const ASPECT_THRESHOLD_START = 0.5;
@@ -51,7 +52,10 @@ const useDimensions = () => {
     const planeOrthogonal = new Vector3(1, 0, -1).normalize();
     projectedX.setLength(viewWidth / 2 / Math.cos(projectedX.angleTo(planeOrthogonal)));
     const alpha = Math.abs(projectedX.z / (Math.abs(projectedX.z) + Math.abs(camera.position.z)));
-    const width = Math.floor(projectedX.lerp(camera.position, alpha).length() / 2);
+    const width = Math.max(
+      MIN_WIDTH,
+      Math.floor(projectedX.lerp(camera.position, alpha).length() / 2),
+    );
 
     const theta = MathUtils.degToRad(camera.fov / 2);
     const beta = Math.PI / 2 - camera.position.angleTo(POSITIVE_Y);
