@@ -292,7 +292,8 @@
 
       .actions {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        grid-template-columns: 1fr 1fr;
+        row-gap: 1rem;
         font-size: 0.875rem;
         margin-inline: auto;
         width: 100%;
@@ -304,6 +305,7 @@
       }
 
       .download {
+        grid-column: span 2;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -321,6 +323,7 @@
         color: white;
         font-size: 0.8rem;
         font-weight: 400;
+        grid-row: 1 / 2;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -371,6 +374,8 @@
 
       .carousel-button p {
         padding-inline: 0.6em;
+        font-weight: bold;
+        filter: drop-shadow(2.5px 2.5px black) drop-shadow(-0.5px -0.5px black);
       }
 
       .initials {
@@ -429,6 +434,18 @@
 
         .interaction-area {
           padding: 0.5em 1em 6em;
+        }
+
+        .actions {
+          grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        }
+
+        .download {
+          grid-column: unset;
+        }
+
+        .carousel-button {
+          grid-row: unset;
         }
       }
     </style>

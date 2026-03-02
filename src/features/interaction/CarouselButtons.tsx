@@ -1,4 +1,3 @@
-import { IS_TOUCH_DEVICE } from "@/constants";
 import { useSectionsContext } from "@/contexts/Sections";
 import type { PropsWithChildren } from "react";
 import type { Section } from "@/constants";
@@ -35,8 +34,6 @@ const Chrevron = ({ direction }: { direction: "right" | "left" }) => (
 
 export const CarouselButtons = ({ children }: PropsWithChildren) => {
   const { activeSection, rotate } = useSectionsContext();
-
-  if (IS_TOUCH_DEVICE) return children;
 
   const next = SECTION_LABELS[clampAsSectionValue(activeSection - 1)];
   const previous = SECTION_LABELS[clampAsSectionValue(activeSection + 1)];
