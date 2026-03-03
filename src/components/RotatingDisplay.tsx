@@ -102,7 +102,7 @@ export const RotatingDisplay = ({
       const currentRotation = group.current.rotation.y;
       const finalTarget = section * (Math.PI / 2);
       if (currentRotation === finalTarget) return;
-      const lambda = 5;
+      const lambda = 3.5;
       const isTransitionComplete = Math.abs(finalTarget - currentRotation) < ANIMATION_THRESHOLD;
       group.current.rotation.y = isTransitionComplete
         ? finalTarget
