@@ -26,7 +26,7 @@ export const workExperience = {
       "React",
       "Express",
       "Docker",
-      "Tailwind CSS",
+      "Tailwind",
       "Git",
       "GraphQL",
       "Nest.js",
